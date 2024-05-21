@@ -24,6 +24,7 @@
       "@utils/*":["lib/utils/*"],
       "@hooks/*":["lib/hooks/*"],
       "@context/*":["lib/context/*"],
+      "@client/*":["lib/client/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

@@ -1,13 +1,16 @@
-'use client'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { QueryClientProvider } from "react-query";
-import { queryClient } from "@service/query";
+
 import AuthContextProvider from "@context/auth-context";
+import { ReactQueryClientProvider } from "@components/client/react-query-client-provider";
+
 
 const inter = Inter({ subsets: ["latin"] });
-
+export const metadata: Metadata = {
+  title: 'FlavorHive',
+  description: 'FlavorHive is an app offering personalized restaurant recommendations based on users’ locations and taste preferences, simplifying the search for perfect dining spots.',
+}
 
 
 export default function RootLayout({
@@ -17,12 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <QueryClientProvider client={queryClient}>
+      <ReactQueryClientProvider>
         <AuthContextProvider>
 
           <body className={inter.className}>{children}</body>
         </AuthContextProvider>
-      </QueryClientProvider>
+      </ReactQueryClientProvider>
     </html>
   );
 }

@@ -8,7 +8,6 @@ export default function Register() {
     const { register:formRegister, handleSubmit, watch, formState: { errors } } = useForm();
 
     const {register:authRegister} = useAuth()
-    // register function
     async function handleRegister(data: any) {
         const newUser = {
             "username": data.username,

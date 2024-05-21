@@ -1,5 +1,6 @@
 'use server';
 import pb from '@service/pocketbase';
+import { revalidatePath } from 'next/cache';
 
 async function login(data: UserLogin) {
 	try {
@@ -24,6 +25,7 @@ async function register(user: UserRegister) {
 	} catch (error) {
 		throw error
 	}
+	revalidatePath('/register')
 }
 
 async function logout() {

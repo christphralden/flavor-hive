@@ -1,7 +1,6 @@
 'use client';
-import {queryClient} from '@service/query';
 import pb from '@service/pocketbase';
-import {useMutation, useQuery} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {ReactNode, useContext, useState} from 'react';
 import {RecordModel} from 'pocketbase';
 import {login, logout, fetchData, register} from '@service/auth';
@@ -22,15 +21,16 @@ export type AuthContextType = {
 
 export const AuthContext = React.createContext<AuthContextType>({
 	user: null,
-	login: login,
-	logout: logout,
-	register: register,
+	login: ()=>{},
+	logout: ()=>{},
+	register: ()=>{},
 	isLoading: false,
 });
 
 export default function AuthContextProvider({children}: AuthContextProviderProps) {
 	const [user, setUser] = useState<User | null>(null);
 	const router = useRouter()
+	const queryClient = useQueryClient()
 
 	const {mutate: authLogin} = useMutation(login, {
 		onSuccess: (data) => {
@@ -48,7 +48,6 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 		onSuccess: () => {
 			setUser(null);
 			queryClient.invalidateQueries(['user']);
-			router.refresh()
 		},
 	});
 
@@ -76,8 +75,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 			}
 		},
 		onError: (error) => {
-			alert(error);
-			//TODO:
+			console.error(error);
 		},
 	});
 
