@@ -9,7 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
     "navigation": "^6.2.0",
+=======
+>>>>>>> 7294ca39d8127479b4cdef565b898a187f9c4297
     "next": "^14.2.3",
     "pocketbase": "^0.21.2",
     "react": "^18.2.0",
