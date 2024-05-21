@@ -1,34 +1,15 @@
 "use client";
+import { login } from "@/lib/service/auth";
 import React from "react";
-import pb from "@/lib/service/pocketbase";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-export default function login() {
-  const router = useRouter();
+export default function loginPage() {
   //   login function
   const { register, handleSubmit } = useForm();
-  async function login(data: any) {
-    try {
-      const authData = await pb
-        .collection("users")
-        .authWithPassword(data.email, data.password);
-    } catch (e) {
-      alert(e);
-    }
-    router.push("/home");
-  }
 
-  //logout
-  function logout (){
-    pb.authStore.clear();
-  }
-
-  // if(!pb.authStore.model)return null
   return (
     <div>
       <h1>Login</h1>
-      <h1>Welcome, {pb.authStore.model?.email}</h1>
       <form onSubmit={handleSubmit(login)}>
         <input className="text-black" type="text" placeholder="email" {...register("email")}></input>
         <input
@@ -39,7 +20,6 @@ export default function login() {
         ></input>
         <button>Login</button>
       </form>
-      <button onClick={logout}>logout</button>
     </div>
   );
 }
