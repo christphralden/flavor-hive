@@ -1,5 +1,5 @@
 "use client"
-import pb from '@/lib/service/pocketbase';
+import pb from '@service/pocketbase';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 

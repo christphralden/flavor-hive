@@ -1,5 +1,5 @@
 "use client";
-import { login } from "@/lib/service/auth";
+import { login } from "@service/auth";
 import React from "react";
 import { useForm } from "react-hook-form";
 

@@ -1,4 +1,4 @@
-import pb from "@/lib/service/pocketbase";
+import pb from "@service/pocketbase";
 
 // login
 async function login(data: any) {
@@ -11,7 +11,6 @@ async function login(data: any) {
   }
 }
 
-//logout
 function logout() {
   pb.authStore.clear();
 }

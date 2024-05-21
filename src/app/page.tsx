@@ -1,5 +1,5 @@
 import Link from "next/link";
-import pb from "@/lib/service/pocketbase";
+import pb from "@service/pocketbase";
 
 export default function page() {
 
