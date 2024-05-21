@@ -1,13 +1,14 @@
+'use client'
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { QueryClientProvider } from "react-query";
+import { queryClient } from "@service/query";
+import AuthContextProvider from "@context/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "FlavorHive",
-  description: "FlavorHive",
-};
+
 
 export default function RootLayout({
   children,
@@ -16,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <QueryClientProvider client={queryClient}>
+        <AuthContextProvider>
+
+          <body className={inter.className}>{children}</body>
+        </AuthContextProvider>
+      </QueryClientProvider>
     </html>
   );
 }

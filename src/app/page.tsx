@@ -1,7 +1,6 @@
 import Link from "next/link";
-import pb from "@service/pocketbase";
 
-export default function page() {
+export default function Main() {
 
   return (
     <main className="w-screen h-screen bg-black">

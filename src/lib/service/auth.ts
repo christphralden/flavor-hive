@@ -1,18 +1,33 @@
-import pb from "@service/pocketbase";
+'use server';
+import pb from '@service/pocketbase';
 
-// login
-async function login(data: any) {
-  try {
-    const authData = await pb
-      .collection("users")
-      .authWithPassword(data.email, data.password);
-  } catch (e) {
-    alert(e);
-  }
+async function login(data: UserLogin) {
+	try {
+		return await pb.collection('users').authWithPassword(data.email, data.password);
+	} catch (error) {
+		throw error;
+	}
 }
 
-function logout() {
-  pb.authStore.clear();
+async function fetchData() {
+	const auth = await pb.authStore.model;
+	if (auth) {
+		return await pb.collection('users').getOne(auth.id, {
+			// expand: 'relField1,relField2.subRelField', => additional
+		});
+	}
 }
 
-export {login, logout}
+async function register(user: UserRegister) {
+	try {
+		return await pb.collection('users').create(user);
+	} catch (error) {
+		throw error
+	}
+}
+
+async function logout() {
+	pb.authStore.clear();
+}
+
+export {login, logout, fetchData, register};
