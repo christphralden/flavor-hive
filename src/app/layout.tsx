@@ -22,7 +22,6 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <AuthContextProvider>
-
           <body className={inter.className}>{children}</body>
         </AuthContextProvider>
       </ReactQueryClientProvider>

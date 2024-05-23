@@ -44,11 +44,6 @@ export async function middleware(request: NextRequest) {
     }
 
     if (pb.authStore.model && request.nextUrl.pathname.startsWith('/login')) {
-        const next_url = request.headers.get('next-url') as string;
-        if (next_url) {
-            const redirect_to = new URL(next_url, request.url);
-            return NextResponse.redirect(redirect_to);
-        }
         const redirect_to = new URL(`/home`, request.url);
         return NextResponse.redirect(redirect_to);
     }
