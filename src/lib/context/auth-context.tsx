@@ -1,9 +1,9 @@
 'use client';
-import pb from '@service/pocketbase';
+import pb, { PB_KEYS } from '@service/pocketbase';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {ReactNode, useContext, useState} from 'react';
 import {RecordModel} from 'pocketbase';
-import {login, logout, fetchData, register} from '@service/auth';
+import {fetchData, register} from '@service/auth';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextProviderProps {
@@ -31,9 +31,17 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
-	const {mutate: authLogin} = useMutation(login, {
+	const {mutate: authLogin} = useMutation(async (data:UserLogin)=>{
+		const auth = await pb.collection(PB_KEYS.PB_USERS_COLLECTION).authWithPassword(data.email, data.password);
+		return auth
+	}, {
 		onSuccess: (data) => {
 			if (data) {
+				document.cookie = pb.authStore.exportToCookie({
+					httpOnly:false,
+					maxAge:24*60*60,
+					path:'/',
+				}),
 				queryClient.invalidateQueries(['user']);
 				router.push('/home')
 			}
@@ -43,7 +51,14 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 		},
 	});
 
-	const {mutate: authLogout} = useMutation(logout, {
+	const {mutate: authLogout} = useMutation(async()=>{
+		pb.authStore.clear();
+		document.cookie = pb.authStore.exportToCookie({
+			httpOnly:false,
+			maxAge:24*60*60,
+			path:'/',
+		})
+	}, {
 		onSuccess: () => {
 			setUser(null);
 			queryClient.invalidateQueries(['user']);
@@ -63,6 +78,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 
 	const {isLoading} = useQuery(['user', pb.authStore.isValid], () => fetchData(), {
 		onSuccess: (data: RecordModel) => {
+			console.log(pb.authStore.isValid)
 			if (data) {
 				setUser({
 					id: data.id,

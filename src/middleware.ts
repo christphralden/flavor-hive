@@ -1,37 +1,39 @@
 import pb, { PB_KEYS } from '@service/pocketbase';
+import { parseCookie } from '@utils/cookie-utils';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-    const cookieStore = cookies()
-    const cookieAuth = cookieStore.get(PB_KEYS.PB_AUTH_TOKEN);
+    const cookieAuth = request.cookies.get(PB_KEYS.PB_AUTH_TOKEN)
+    const parsedCookie = await parseCookie(cookieAuth)
     const response = NextResponse.next();
     
     if (cookieAuth) {
         try {
-            await pb.authStore.loadFromCookie(cookieAuth.value);
+            await pb.authStore.loadFromCookie(parsedCookie);
         } catch (error) {
             pb.authStore.clear();
-			cookieStore.set({
-				name: PB_KEYS.PB_AUTH_TOKEN,
-				value: pb.authStore.exportToCookie(),
-				httpOnly: true,
-				path: '/',
-			});
+			response.headers.set(
+                "Set-Cookie",
+                pb.authStore.exportToCookie({ httpOnly: false })
+            );
         }
-
+    }
+    else{
         try {
             if (pb.authStore.isValid) {
                 await pb.collection(PB_KEYS.PB_USERS_COLLECTION).authRefresh();
+                response.headers.set(
+                    "Set-Cookie",
+                    pb.authStore.exportToCookie({ httpOnly: false })
+                );
             }
         } catch (error) {
             pb.authStore.clear();
-            cookieStore.set({
-                name: PB_KEYS.PB_AUTH_TOKEN,
-                value: pb.authStore.exportToCookie(),
-                httpOnly: true,
-                path: '/',
-            });
+            response.headers.set(
+                "Set-Cookie",
+                pb.authStore.exportToCookie({ httpOnly: false })
+            );
         }
     }
 
