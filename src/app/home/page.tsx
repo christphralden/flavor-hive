@@ -1,8 +1,6 @@
 'use client'
-import { AuthContext } from "@context/auth-context";
 import { useAuth } from "@hooks/useAuth";
-import pb from "@service/pocketbase";
-import React, { useContext } from "react";
+import React from "react";
 
 export default function Home() {
   
@@ -12,7 +10,6 @@ export default function Home() {
   if(isLoading)return null
   return <div>
     <h1>Welcome, {`${user?.email}`}</h1>
-    <h1>Welcome, {`${pb.authStore.model?.email}`}</h1>
     <button onClick={()=>logout()}>LGOUT</button>
   </div>;
 }

@@ -11,11 +11,12 @@ export default function LoginPage() {
   const {login} = useAuth();
 
   const handleLogin = async (data: any) => {
-		const loginData: UserLogin = {
-			email: data.email,
-			password: data.password,
-		};
-		await login(loginData);
+
+		const res = await login({
+      email: data.email,
+      password: data.password
+    });
+
 	};
 
   return (

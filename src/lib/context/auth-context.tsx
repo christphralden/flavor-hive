@@ -4,7 +4,6 @@ import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {ReactNode, useContext, useState} from 'react';
 import {RecordModel} from 'pocketbase';
 import {login, logout, fetchData, register} from '@service/auth';
-import {error} from 'console';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextProviderProps {
@@ -48,6 +47,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 		onSuccess: () => {
 			setUser(null);
 			queryClient.invalidateQueries(['user']);
+			router.refresh()
 		},
 	});
 
