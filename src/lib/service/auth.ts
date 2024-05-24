@@ -24,18 +24,18 @@ in-depth: https://github.com/pocketbase/js-sdk#authstore, baca yg nextjs
 
 async function fetchData() {
 	const cookieStore = cookies();
-	const cookieAuth = cookieStore.get(PB_KEYS.PB_AUTH_TOKEN);
+	const cookieAuth = cookieStore.get(PB_KEYS.AUTH_TOKEN);
 	const parsedCookie = await parseCookie(cookieAuth)
 	cookieAuth && (await pb.authStore.loadFromCookie(parsedCookie))
 	const pbAuth = pb.authStore.model;
 	if (pbAuth) {
-		return await pb.collection(PB_KEYS.PB_USERS_COLLECTION).getOne(pbAuth.id);
+		return await pb.collection(PB_KEYS.USERS).getOne(pbAuth.id);
 	}
 }
 
 async function register(user: UserRegister) {
 	try {
-		return await pb.collection(PB_KEYS.PB_USERS_COLLECTION).create(user);
+		return await pb.collection(PB_KEYS.USERS).create(user);
 	} catch (error) {
 		throw error
 	}

@@ -32,7 +32,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 	const queryClient = useQueryClient()
 
 	const {mutate: authLogin} = useMutation(async (data:UserLogin)=>{
-		const auth = await pb.collection(PB_KEYS.PB_USERS_COLLECTION).authWithPassword(data.email, data.password);
+		const auth = await pb.collection(PB_KEYS.USERS).authWithPassword(data.email, data.password);
 		return auth
 	}, {
 		onSuccess: (data) => {
@@ -78,7 +78,6 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 
 	const {isLoading} = useQuery(['user', pb.authStore.isValid], () => fetchData(), {
 		onSuccess: (data: RecordModel) => {
-			console.log(pb.authStore.isValid)
 			if (data) {
 				setUser({
 					id: data.id,

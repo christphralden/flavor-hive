@@ -4,7 +4,7 @@ import { parseCookie } from '@utils/cookie-utils';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {
-    const cookieAuth = request.cookies.get(PB_KEYS.PB_AUTH_TOKEN)
+    const cookieAuth = request.cookies.get(PB_KEYS.AUTH_TOKEN)
     const parsedCookie = await parseCookie(cookieAuth)
     const response = NextResponse.next();
     
@@ -22,7 +22,7 @@ export async function middleware(request: NextRequest) {
     else{
         try {
             if (pb.authStore.isValid) {
-                await pb.collection(PB_KEYS.PB_USERS_COLLECTION).authRefresh();
+                await pb.collection(PB_KEYS.USERS).authRefresh();
                 response.headers.set(
                     "Set-Cookie",
                     pb.authStore.exportToCookie({ httpOnly: false })
@@ -38,7 +38,6 @@ export async function middleware(request: NextRequest) {
     }
 
     if (!pb.authStore.isValid && !request.nextUrl.pathname.startsWith('/login')) {
-        console.log('noatuh')
         const redirect_to = new URL('/login', request.url);
         redirect_to.search = new URLSearchParams({
             next: request.nextUrl.pathname,
