@@ -1,6 +1,6 @@
 import pb, { PB_KEYS } from '@service/pocketbase';
 import { parseCookie } from '@utils/cookie-utils';
-import { cookies } from 'next/headers';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function middleware(request: NextRequest) {

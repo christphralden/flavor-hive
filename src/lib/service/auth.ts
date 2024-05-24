@@ -17,6 +17,9 @@ tapi wtf cookienya isinya user data awkwwkwkwwk
 dan saat lu logout, kalo misalnya lu apus cookienya dia bakal lead to unexpected behaviour
 bisa workaroundnnya lu clear client dan server sidenya
 tapi pocketbasenya sendiri reccomend setting cookie attributesnya jadi "" biar kosong, tp ga apus cookienya (wtf)
+
+in-depth: https://github.com/pocketbase/js-sdk#authstore, baca yg nextjs
+: to prevent XSS, it is recommended to configure a basic CSP for your application 🥴
 */
 
 async function fetchData() {

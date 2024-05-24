@@ -1,7 +1,7 @@
 'use client';
 import pb, { PB_KEYS } from '@service/pocketbase';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import React, {ReactNode, useContext, useState} from 'react';
+import React, {ReactNode,  useState} from 'react';
 import {RecordModel} from 'pocketbase';
 import {fetchData, register} from '@service/auth';
 import { useRouter } from 'next/navigation';
