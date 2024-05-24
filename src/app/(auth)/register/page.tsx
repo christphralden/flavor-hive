@@ -1,28 +1,14 @@
 "use client"
-import { useAuth } from '@hooks/useAuth';
-import pb from '@service/pocketbase';
+import { register } from '@service/auth';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function Register() {
-    const { register:formRegister, handleSubmit, watch, formState: { errors } } = useForm();
-
-    const {register:authRegister} = useAuth()
-    async function handleRegister(data: any) {
-        const newUser = {
-            "username": data.username,
-            "email": data.email,
-            "emailVisibility": true,
-            "password": data.password,
-            "passwordConfirm": data.passwordConfirm,
-            "name": data.name
-        };
-        await authRegister(newUser)
-    }
+    const { register:formRegister, watch, formState: { errors } } = useForm();
 
     return (
         <div>
-            <form onSubmit={handleSubmit(handleRegister)}>
+            <form action={register}>
                 <div>
                     <label>Username:</label>
                     <input type='text' className='text-black' {...formRegister("username", { required: true })} />

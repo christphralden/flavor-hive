@@ -1,0 +1,15 @@
+import pb, { PB_KEYS } from "./pocketbase";
+
+export async function getRestaurant(recordId:string):Promise<Restaurant>{
+    return pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId,{
+        cache:"no-cache", 
+    });
+}
+
+export async function getRestaurantReviews(recordId:string):Promise<Review_Poster[]>{
+    return pb.collection(PB_KEYS.REVIEWS).getFullList({
+        cache: 'no-cache',
+        expand:"poster",
+        filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
+    });
+}

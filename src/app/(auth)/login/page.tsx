@@ -1,6 +1,5 @@
 "use client";
 import { useAuth } from "@hooks/useAuth";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -10,12 +9,10 @@ export default function LoginPage() {
   const {login} = useAuth();
 
   const handleLogin = async (data: any) => {
-
-		const res = await login({
-      email: data.email,
-      password: data.password
-    });
-
+		await login({
+			email: data.email,
+			password: data.password,
+		});
 	};
 
   return (

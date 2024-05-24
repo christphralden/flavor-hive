@@ -3,7 +3,7 @@ import pb, { PB_KEYS } from '@service/pocketbase';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {ReactNode, useState} from 'react';
 import {RecordModel} from 'pocketbase';
-import {fetchData, register} from '@service/auth';
+import {fetchData} from '@service/auth';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextProviderProps {
@@ -14,7 +14,6 @@ export type AuthContextType = {
 	user: User | null;
 	login: (data: UserLogin) => any;
 	logout: () => any;
-	register: (user: UserRegister) => any;
 	isLoading: boolean;
 };
 
@@ -22,7 +21,6 @@ export const AuthContext = React.createContext<AuthContextType>({
 	user: null,
 	login: ()=>{},
 	logout: ()=>{},
-	register: ()=>{},
 	isLoading: false,
 });
 
@@ -66,16 +64,6 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 		},
 	});
 
-	const {mutate: authRegister} = useMutation(register, {
-		onSuccess: () => {
-			queryClient.invalidateQueries(['user']);
-			router.push('/login')
-		},
-		onError: (error) => {
-			console.error(error);
-		},
-	});
-
 	const {isLoading} = useQuery(['user', pb.authStore.isValid], () => fetchData(), {
 		onSuccess: (data: RecordModel) => {
 			if (data) {
@@ -101,7 +89,6 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 				user,
 				login: authLogin,
 				logout: authLogout,
-				register: authRegister,
 			}}
 		>
 			{children}
