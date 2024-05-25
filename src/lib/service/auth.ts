@@ -3,6 +3,7 @@ import pb, {PB_KEYS} from '@service/pocketbase';
 import { parseCookie } from '@utils/cookie-utils';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { RecordModel } from 'pocketbase';
 
 /*
 TL;DR : POCKETBASE AUTHNYA CLIENTSIDE, GOOFY BGT
@@ -23,7 +24,7 @@ in-depth: https://github.com/pocketbase/js-sdk#authstore, baca yg nextjs
 : to prevent XSS, it is recommended to configure a basic CSP for your application 🥴
 */
 
-async function fetchData() {
+async function fetchData():Promise<RecordModel|undefined> {
 	const cookieStore = cookies();
 	const cookieAuth = cookieStore.get(PB_KEYS.AUTH_TOKEN);
 	const parsedCookie = await parseCookie(cookieAuth)
@@ -35,7 +36,6 @@ async function fetchData() {
 }
 
 async function register(formData:FormData) {
-	//server action
 	let redirectPath;
 	const user:UserRegister={
 		email:formData.get('email') as string,

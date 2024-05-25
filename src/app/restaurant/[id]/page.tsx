@@ -1,4 +1,3 @@
-"use server"
 import { Suspense } from 'react';
 import RestaurantHeader from '../_components/restaurant-header';
 import RestaurantReview from '../_components/restaurant-review';
