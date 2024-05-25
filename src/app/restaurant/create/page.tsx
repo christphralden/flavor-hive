@@ -1,6 +1,6 @@
 
 "use client"
-import CreateRestaurantForm from "./_components/create-restaurant-form";
+import CreateRestaurantForm from "../_components/create-restaurant-form";
 import { useForm } from "react-hook-form";
 import { useFormState } from "react-dom";
 import { createRestaurant, State } from "@actions/actions";
