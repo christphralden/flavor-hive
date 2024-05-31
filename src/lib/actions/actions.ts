@@ -1,7 +1,7 @@
 "use server"
 
 import { fetchData } from "@service/auth";
-import pb, { PB_KEYS } from "@service/pocketbase";
+import pb, { PB_KEYS } from "@service/pocketbase.service";
 import { revalidatePath } from "next/cache";
 
 export interface State{
@@ -9,8 +9,7 @@ export interface State{
 }
 
 
-
-export async function createRestaurant(revState: State, data: FormData): Promise<State> {
+export async function createRestaurant(prevState: State, data: FormData): Promise<State> {
 	const userData = await fetchData();
 
 	if (!userData) return {

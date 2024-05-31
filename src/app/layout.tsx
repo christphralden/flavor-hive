@@ -1,12 +1,41 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
 import AuthContextProvider from "@context/auth-context";
 import { ReactQueryClientProvider } from "@components/client/react-query-client-provider";
+import localFont from 'next/font/local'
 
 
-const inter = Inter({ subsets: ["latin"] });
+const restart = localFont({
+  src: [
+    {
+      path: './_fonts/restart_hard/RestartHard-Light.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: './_fonts/restart_hard/RestartHard-Regular.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './_fonts/restart_hard/RestartHard-Medium.ttf',
+      weight: '500',
+      style: 'normal`',
+    },
+    {
+      path: './_fonts/restart_hard/RestartHard-SemiBold.ttf',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: './_fonts/restart_hard/RestartHard-Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+})
+
+
 export const metadata: Metadata = {
   title: 'FlavorHive',
   description: 'FlavorHive is an app offering personalized restaurant recommendations based on users’ locations and taste preferences, simplifying the search for perfect dining spots.',
@@ -22,7 +51,7 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <AuthContextProvider>
-          <body className={inter.className}>{children}</body>
+          <body className={restart.className}>{children}</body>
         </AuthContextProvider>
       </ReactQueryClientProvider>
     </html>

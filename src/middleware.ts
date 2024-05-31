@@ -1,4 +1,4 @@
-import pb, { PB_KEYS } from '@service/pocketbase';
+import pb, { PB_KEYS } from '@service/pocketbase.service';
 import { parseCookie } from '@utils/cookie-utils';
 
 import { NextRequest, NextResponse } from 'next/server';

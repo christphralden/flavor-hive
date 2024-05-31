@@ -11,7 +11,6 @@ interface RestaurantProps{
 export default async function Restaurant({params}: RestaurantProps) {
 	return (
 		<>
-            <div>ini kerender langsung, tp bawah gw bakal loading</div>
 			<Suspense fallback='loading...'>
                 <RestaurantHeader recordId={params.id} />
             </Suspense>

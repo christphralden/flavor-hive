@@ -1,9 +1,9 @@
 'use client';
-import pb, { PB_KEYS } from '@service/pocketbase';
+import pb, { PB_KEYS } from '@service/pocketbase.service';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {ReactNode, useState} from 'react';
 import {RecordModel} from 'pocketbase';
-import {fetchData} from '@service/auth';
+import {fetchData} from '@service/auth.service';
 import { useRouter } from 'next/navigation';
 
 interface AuthContextProviderProps {

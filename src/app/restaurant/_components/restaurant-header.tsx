@@ -1,5 +1,5 @@
-import pb, { PB_KEYS } from "@service/pocketbase";
-import { getRestaurant } from "@service/restaurant";
+import pb, { PB_KEYS } from "@service/pocketbase.service";
+import { getRestaurant } from "@service/restaurant.service";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
 

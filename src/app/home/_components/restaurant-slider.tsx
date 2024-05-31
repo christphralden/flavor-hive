@@ -1,5 +1,4 @@
-import { Button } from "@components/ui/button";
-import { getAllRestaurantPaged } from "@service/restaurant"
+import { getAllRestaurantPaged } from "@service/restaurant.service"
 import Link from "next/link";
 import { ListResult, RecordModel } from "pocketbase";
 

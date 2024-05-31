@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@geist-ui/icons": "^1.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.381.0",
     "navigation": "^6.2.0",
     "next": "^14.2.3",
     "pocketbase": "^0.21.2",
@@ -20,6 +22,7 @@
     "react-hook-form": "^7.51.4",
     "react-query": "^3.39.3",
     "tailwind-merge": "^2.3.0",
+    "tailwindcss-animate": "^1.0.7",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {

@@ -1,14 +1,21 @@
 "use client"
-import { FieldErrors, FieldValues, useForm, UseFormRegister } from "react-hook-form";
+import { createRestaurant, State } from "@actions/actions";
+import { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { useForm } from "react-hook-form";
 
-interface CreateRestaurantFormProps{
-    formRegister: UseFormRegister<RestaurantBase>
-    errors: FieldErrors<FieldValues>
-}
+export default function CreateRestaurantForm(){
+    const { register:formRegister, watch, formState: { errors }, reset } = useForm<RestaurantBase>();
+    const [state, formAction] = useFormState<State, FormData>(createRestaurant, {});
 
-export default function CreateRestaurantForm({formRegister, errors}:CreateRestaurantFormProps){
+    useEffect(() => {
+        if (state.status === 200) {
+            reset();
+        }
+    }, [state])
+    
     return(
-        <>
+        <form action={formAction}>
             <div>
                 <label>Name:</label>
                 <input type='text' className='text-black' {...formRegister("name", { required: true })} />
@@ -32,9 +39,9 @@ export default function CreateRestaurantForm({formRegister, errors}:CreateRestau
             <div>
                 <label>Tags:</label>
                 <input type='text' multiple className='text-black' {...formRegister("keywords.tags", { required: true })} />
-                {errors.tags && <p>Tags is required</p>}
+                {errors.keywords?.tags && <p>Tags is required</p>}
             </div>
             <button type="submit">submit</button>
-        </>
+        </form>
     )
 }
