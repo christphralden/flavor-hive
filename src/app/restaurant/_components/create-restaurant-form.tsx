@@ -1,5 +1,5 @@
 "use client"
-import { createRestaurant, State } from "@actions/actions";
+import { createRestaurant } from "@service/restaurant.service"
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";

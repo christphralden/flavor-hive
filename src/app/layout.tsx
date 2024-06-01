@@ -3,6 +3,7 @@ import "./globals.css";
 import AuthContextProvider from "@context/auth-context";
 import { ReactQueryClientProvider } from "@components/client/react-query-client-provider";
 import localFont from 'next/font/local'
+import { Toaster } from "@components/ui/sonner";
 
 
 const restart = localFont({
@@ -51,7 +52,10 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <AuthContextProvider>
-          <body className={restart.className}>{children}</body>
+          <body className={restart.className}>
+            {children}
+            <Toaster position="top-right" visibleToasts={3}/>
+          </body>
         </AuthContextProvider>
       </ReactQueryClientProvider>
     </html>

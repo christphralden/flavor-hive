@@ -5,6 +5,9 @@ import React, {ReactNode, useState} from 'react';
 import {RecordModel} from 'pocketbase';
 import {fetchData} from '@service/auth.service';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { AlertCircle } from '@geist-ui/icons'
+
 
 interface AuthContextProviderProps {
 	children: ReactNode;
@@ -44,8 +47,10 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 				router.refresh();
 			}
 		},
-		onError: (error) => {
-			console.error(error);
+		onError: (error:any) => {
+			toast.error(error.message,{
+				icon:<AlertCircle className='w-full'/>
+			})
 		},
 	});
 

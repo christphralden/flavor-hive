@@ -1,6 +1,7 @@
 "use server"
 import pb, {PB_KEYS} from '@service/pocketbase.service';
 import { parseCookie } from '@utils/cookie-utils';
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { RecordModel } from 'pocketbase';
@@ -20,25 +21,22 @@ async function fetchData():Promise<RecordModel|undefined> {
 	}
 }
 
-async function register(formData:FormData) {
-	let redirectPath;
+async function register(data: UserRegister): Promise<any> {
 	const user:UserRegister={
-		email:formData.get('email') as string,
-		name:formData.get('name') as string,
-		password:formData.get('password') as string,
-		passwordConfirm:formData.get('passwordConfirm') as string,
-		username:formData.get('username') as string,
+		email:data.email.trim(),
+		name:data.name.trim(),
+		password:data.password.trim(),
+		passwordConfirm:data.passwordConfirm.trim(),
+		username:data.username.trim(),
 		emailVisibility:true
 	}
 	try {
 		await pb.collection(PB_KEYS.USERS).create(user);
-		redirectPath = '/login'
-	} catch (error) {
-		console.error(error)
-	} finally {
-		if(redirectPath){
-			redirect("/login")
-		}
+		
+	} catch (error:any) {
+		throw error
+	}finally{
+		revalidatePath('/register')
 	}
 }
 

@@ -19,7 +19,7 @@ interface UserRegister extends UserBase{
     passwordConfirm:string,
 };
 
-type UserLogin = {
+interface UserLogin {
     email: string,
     password: string,
 }

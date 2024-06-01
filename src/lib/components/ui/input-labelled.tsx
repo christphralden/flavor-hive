@@ -5,13 +5,17 @@ import { cn } from "@utils/utils"
 
 export interface InputLabelledProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label:string
+    children?: React.ReactNode
 }
 
 const InputLabelled = React.forwardRef<HTMLInputElement, InputLabelledProps>(
-  ({ className, type, label, ...props }, ref) => {
+  ({ className, type, label, children, ...props }, ref) => {
     return (
      <div className="flex flex-col gap-1">
-     <p className="font-medium">{label}</p>
+     <div className="flex gap-2 items-baseline justify-between">
+        <p className="font-medium">{label}</p>
+        <div className="text-gray-500 text-sm ">{children}</div>
+     </div>
      <input
         type={type}
         className={cn(
