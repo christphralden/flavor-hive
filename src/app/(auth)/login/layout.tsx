@@ -12,7 +12,7 @@ export default function LoginLayout({
 					{children}
             </div>
             <div className="w-full h-[10%] flex justify-start items-end">
-					<Link href={'/register'} className="text-base text-gray-500 underline">Dont have an account?</Link>
+					<Link href={'/register'} className="text-sm lg:text-base text-gray-500 underline">Dont have an account?</Link>
             </div>
         </>
 	);

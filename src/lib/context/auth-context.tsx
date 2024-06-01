@@ -63,6 +63,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 		})
 	}, {
 		onSuccess: () => {
+			console.log('run')
 			setUser(null);
 			queryClient.invalidateQueries(['user']);
 			router.refresh()

@@ -52,7 +52,7 @@ export default function RootLayout({
     <html lang="en">
       <ReactQueryClientProvider>
         <AuthContextProvider>
-          <body className={restart.className}>
+          <body className={`${restart.className} w-screen`}>
             {children}
             <Toaster position="top-right" visibleToasts={3}/>
           </body>

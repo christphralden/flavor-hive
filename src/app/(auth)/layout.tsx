@@ -8,22 +8,22 @@ export default function AuthLayout({
 }>) {
 
 	return (
-		<div className="w-screen h-screen p-4 flex gap-8">
-			<div className="w-[65%] h-full bg-black rounded-lg overflow-clip">
+		<div className="w-full h-screen p-8 flex gap-8 justify-center ">
+			<section className="w-[65%] h-full bg-black rounded-xl overflow-clip hidden lg:block">
                 {/* nanti ganti slider */}
                 <Image
                     src={placeholder}
                     alt="placeholder"
                     className="w-full h-full object-cover opacity-[0.75]"
                 />
-            </div>
+            </section>
 
-			<div className="flex flex-col w-[35%] min-w-[450px] h-full p-8 pl-4 py-4">
+			<section className="flex flex-col w-[100%] md:w-[50%] lg:w-[35%] min-w-[350px] h-full lg:pl-4 lg:p-8 py-4 ">
 				<div className="w-full h-[10%]">
-					<h1 className="text-3xl font-medium">FlavorHive</h1>
+					<h1 className="text-2xl lg:text-3xl font-medium">FlavorHive</h1>
 				</div>
 				{children}
-			</div>
+			</section>
 		</div>
 	);
 }

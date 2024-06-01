@@ -20,7 +20,7 @@ export default function RegisterForm() {
 
     const router = useRouter();
 
-    const {mutate: handleRegister} = useMutation(register,
+    const {mutate: handleRegister, isLoading} = useMutation(register,
         {
             onSuccess:()=>{
                 reset();
@@ -49,7 +49,6 @@ export default function RegisterForm() {
 					placeholder="josex@gmail.com"
 					label="Email"
 					type="email"
-					className="text-black"
 					{...formRegister('email', FormPlaybook.email)}
                     children={errors.email && <p>{errors.email?.message}</p>}
 				/>
@@ -57,7 +56,6 @@ export default function RegisterForm() {
 					placeholder="Josex Tano"
 					label="Name"
 					type="text"
-					className="text-black"
 					{...formRegister('name', FormPlaybook.name)}
                     children={errors.name && <p>{errors.name?.message}</p>}
 				/>
@@ -65,7 +63,6 @@ export default function RegisterForm() {
 					placeholder="ilovenilou"
 					label="Username"
 					type="text"
-					className="text-black"
 					{...formRegister('username', FormPlaybook.username)}
                     children={errors.username && <p>{errors.username?.message}</p>}
 				/>
@@ -73,7 +70,6 @@ export default function RegisterForm() {
 					placeholder="Yellomeowmeow:3"
 					label="Password"
 					type="password"
-					className="text-black"
 					{...formRegister('password', FormPlaybook.password)}
                     children={errors.password && <p>{errors.password?.message}</p>}
 				/>
@@ -81,7 +77,6 @@ export default function RegisterForm() {
 					placeholder="Yellomeowmeow:3"
 					label="Confirm Password"
 					type="password"
-					className="text-black"
 					{...formRegister('passwordConfirm', {
                         validate: (value:string) => value === watch('password') || "Passwords do not match"
                     })}
@@ -90,12 +85,14 @@ export default function RegisterForm() {
 			</div>
 			<div className="flex gap-4 w-full flex-col ">
 				<Button
+                    disabled={isLoading}
 					className="w-full"
 					type="submit"
 				>
 					Register
 				</Button>
 				<Button
+                    disabled={isLoading}
 					variant={'secondary'}
 					className="w-full"
 				>
