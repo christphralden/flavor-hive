@@ -5,7 +5,7 @@ export default function CreateRestaurantLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-        <div className="h-full w-full flex justify-center items-center flex-col gap-8">
+        <div className="h-full w-full flex justify-start  items-center flex-col gap-16 py-8">
             {children}
         </div>
     )

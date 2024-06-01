@@ -8,7 +8,7 @@ export default function AuthLayout({
 }>) {
 
 	return (
-		<div className="w-full h-screen p-8 flex gap-8 justify-center ">
+		<div className="w-full h-screen p-8 py-4 lg:py-8 flex gap-8 justify-center ">
 			<section className="w-[65%] h-full bg-black rounded-xl overflow-clip hidden lg:block">
                 {/* nanti ganti slider */}
                 <Image
