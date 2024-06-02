@@ -35,7 +35,10 @@ interface Menu{
     restaurant:string
 }
 
+
+
+// ======= form handling =========
 interface AppendRestaurantData{
-    data:any,
-    key:"name"|"images"|"coverImage"|"description"|"location"|"keywords.tags"|"restaurantOwner"
+    data: any,
+    key: keyof RestaurantBase
 }

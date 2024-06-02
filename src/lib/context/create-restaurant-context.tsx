@@ -7,57 +7,56 @@ interface CreateRestaurantProviderProps{
 }
 
 export type CreateRestaurantContextType = {
-	restaurantData: RestaurantBase | null;
-    menuData: MenuBase[] | null
-    appendRestaurantData: ({data, key} : AppendRestaurantData) => any
+	restaurantData: Partial<RestaurantBase>;
+    menuData: MenuBase[] 
+    appendRestaurantData: (data: Partial<RestaurantBase>) => any
     appendMenuData: (data : MenuBase) => any
+    finalize: () => any,
     isLoading: boolean
 };
 
 
 export const CreateRestaurantContext = createContext<CreateRestaurantContextType>({
-    restaurantData: null,
-    menuData: null,
+    restaurantData: {},
+    menuData: [],
     appendRestaurantData: ()=>{},
     appendMenuData: ()=>{},
+    finalize: ()=>{},
     isLoading:false
 })
 
-const InitialRestaurantData:RestaurantBase = {
-    coverImage:"",
-    description:"",
-    images:[],
-    location:"",
-    name:"",
-    restaurantOwner:"",
-    keywords:{
-        tags:[]
-    }
+const InitialRestaurantData: Partial<RestaurantBase> = {};
+
+function isRestaurantBase(obj: Partial<RestaurantBase>): obj is RestaurantBase {
+    return (
+        typeof obj.name === 'string' &&
+        typeof obj.coverImage === 'string' &&
+        Array.isArray(obj.images) &&
+        typeof obj.description === 'string' &&
+        typeof obj.location === 'string' &&
+        typeof obj.keywords === 'object' &&
+        Array.isArray(obj.keywords.tags) &&
+        typeof obj.restaurantOwner === 'string'
+    );
 }
 
 export default function CreateRestaurantContextProvider({children}: CreateRestaurantProviderProps){
-    const [restaurantData, setRestaurantData] = useState<RestaurantBase>(InitialRestaurantData) 
+    const [restaurantData, setRestaurantData] = useState<Partial<RestaurantBase>>(InitialRestaurantData);
     const [menuData, setMenuData] = useState<MenuBase[]>([]) 
 
 
-    const {mutate:appendRestaurantData, isLoading:isAppendRestaurantDataLoading} = useMutation(
-        async ({data, key}:AppendRestaurantData)=>{
-            if(key !== "keywords.tags"){
-                setRestaurantData((prev)=>({
-                    ...prev,
-                    [key]: data
-                }))
-            }
-            else if(key === "keywords.tags"){
-                setRestaurantData((prev)=>({
-                    ...restaurantData,
-                    keywords:{
-                        tags:[...prev.keywords.tags, data]
-                    }
-                }))
-            }
+    const { mutate: appendRestaurantData, isLoading: isAppendRestaurantDataLoading } = useMutation(
+        async (data: Partial<RestaurantBase>) => {
+            setRestaurantData((prev) => ({
+                ...prev,
+                ...data,
+                keywords: {
+                    ...prev.keywords,
+                    tags: [...(prev.keywords?.tags || []), ...(data.keywords?.tags || [])]
+                }
+            }));
         }
-    )
+    );
 
 
     const {mutate:appendMenuData, isLoading:isAppendMenuDataLoading} = useMutation(
@@ -69,6 +68,27 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
         }
     )
 
+    const completeRestaurantData = () => {
+        if (!isRestaurantBase(restaurantData)) {
+            throw new Error("Incomplete restaurant data");
+        }
+        return restaurantData as RestaurantBase;
+    };
+
+    const {mutate:finalize, isLoading:isFinalizeLoading} = useMutation(
+        async ()=>{
+
+        },
+        {
+            onSuccess:()=>{
+
+            },
+            onError:()=>{
+
+            }
+        }
+    )
+
 
     return(
         <CreateRestaurantContext.Provider
@@ -77,7 +97,8 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
                 menuData,
                 appendRestaurantData,
                 appendMenuData,
-                isLoading: isAppendRestaurantDataLoading || isAppendMenuDataLoading
+                finalize,
+                isLoading: isAppendRestaurantDataLoading || isAppendMenuDataLoading || isFinalizeLoading
             }}
         >
             {children}

@@ -1,16 +1,21 @@
+"use client"
 import {Button} from '@components/ui/button';
 import {InputLabelled} from '@components/ui/input-labelled';
 import {useAuth} from '@hooks/useAuth';
-import { FormPlaybook } from '@utils/form-utils';
+import {FormPlaybook} from '@utils/form-utils';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 
 export default function LoginForm() {
-	const {register, handleSubmit, formState:{errors}} = useForm<UserLogin>();
+	const {
+		register,
+		handleSubmit,
+		formState: {errors},
+	} = useForm<UserLogin>();
 
 	const {login} = useAuth();
 
-    const submit = (data:UserLogin) => login(data)
+	const submit = (data: UserLogin) => login(data);
 
 	return (
 		<form
@@ -23,15 +28,17 @@ export default function LoginForm() {
 					type="email"
 					placeholder="josex@gmail.com"
 					{...register('email', FormPlaybook.email)}
-                    children={errors.email && <p>{errors.email?.message}</p>}
-				/>
+				>
+					{errors.email && <p>{errors.email?.message}</p>}
+				</InputLabelled>
 				<InputLabelled
 					label="Password"
 					type="password"
 					placeholder="Yellowmeowmeow:3"
 					{...register('password', FormPlaybook.password)}
-                    children={errors.password && <p>{errors.password?.message}</p>}
-				/>
+				>
+					{errors.password && <p>{errors.password?.message}</p>}
+				</InputLabelled>
 			</div>
 			<div className="flex gap-4 w-full flex-col ">
 				<Button

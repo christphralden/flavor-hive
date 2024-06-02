@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter } from '@components/ui/card';
 import CreateRestaurantHeader from '../_components/create-restaurant-header';
 import Link from 'next/link';
@@ -10,99 +10,117 @@ import { Badge } from '@components/ui/badge';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { AlertCircle } from '@geist-ui/icons';
+import { useCreateRestaurant } from '@hooks/useCreateRestaurant';
+import { useRouter } from 'next/navigation';
 
 export default function CreateRestaurantCategory() {
     const [tags, setTags] = useState<string[]>([]);
     const {
-		register: formRegister,
-		formState: {errors},
+		register,
 		handleSubmit,
-        watch,
-		reset,
-	} = useForm<{tag:string}>();
+		formState: {errors}
+	} = useForm<{ tag: string }>();
+	const {appendRestaurantData, restaurantData} = useCreateRestaurant();
+	const router = useRouter();
 
-    const handleAddTag = ({tag}:{tag:string}) => {
-        if(tags.length >8) {
+    const handleAddTag = (data: { tag: string }) => {
+        const newTag = data.tag.trim();
+        if (!newTag) return; 
+        if (tags.length >= 8) {
             toast.error("You can only add up to 8 tags", {
-                description:'Click a tag to remove ',
+                description: 'Click a tag to remove it.',
                 icon: <AlertCircle className="h-full " />,
-            })
-            return
+            });
+            return;
         }
-        if (!tags.includes(tag)) {
-            setTags([...tags, tag]);
+        if (!tags.includes(newTag)) {
+            setTags(prevTags => [...prevTags, newTag]);
         }
     };
 
-    const handleRemoveTag = (tag:string) => {
-        setTags(tags.filter((t) => t !== tag));
+    const handleRemoveTag = (tag: string) => {
+        setTags(prevTags => prevTags.filter(t => t !== tag));
     };
+
+    const handleContinue = () => {
+        appendRestaurantData({
+			keywords: {
+				tags: tags
+			}
+		});
+        router.push('menu');
+    };
+
+	useEffect(() => {
+        if (restaurantData?.keywords?.tags) {
+            setTags(restaurantData.keywords.tags);
+        }
+    }, [restaurantData]);
 
     return (
-			<>
-				<section className="w-full">
-					<CreateRestaurantHeader
-						header="Define your flavor profile"
-						description="Tell us your restaurant’s category with tags that reflect its unique flavors and specialties."
-						step={3}
-					/>
-				</section>
-				<section className="w-full h-full">
-					<Card className="w-full h-full p-4 py-8 flex flex-col justify-between">
-						<CardContent className="mb-8">
-							<form
-								className="flex flex-col gap-8 w-full h-64"
-								onSubmit={handleSubmit(handleAddTag)}
-							>
-								<div className="flex w-full items-end gap-4">
-									<InputLabelled
-										id="tag"
-										className="w-3/4"
-										label="Tags"
-										{...formRegister('tag', {required: 'Must be filled'})}
-                                        children={errors.tag && <p>{errors.tag?.message}</p>}
-									/>
-									<Button
-										className="w-1/4"
-										type="submit"
-									>
-										Add
-									</Button>
-								</div>
-								<div className="flex flex-wrap gap-2 overflow-y-scroll">
-									{tags.map((tag, index) => (
-										<Badge
-											variant={'outline'}
-											key={index}
-											onClick={() => handleRemoveTag(tag)}
-										>
-											{tag}
-										</Badge>
-									))}
-								</div>
-							</form>
-						</CardContent>
-						<CardFooter className="flex justify-between w-full gap-4">
-							<Link
-								className="w-1/4"
-								href={'images'}
-							>
+		<>
+			<section className="w-full">
+				<CreateRestaurantHeader
+					header="Define your flavor profile"
+					description="Tell us your restaurant’s category with tags that reflect its unique flavors and specialties."
+					step={3}
+				/>
+			</section>
+			<section className="w-full h-full">
+				<Card className="w-full h-full p-4 py-8 flex flex-col justify-between">
+					<CardContent className="mb-8">
+						<form
+							onSubmit={handleSubmit(handleAddTag)}
+							className="flex flex-col gap-8 w-full h-64"
+						>
+							<div className="flex w-full items-end gap-4">
+								<InputLabelled
+									id="tag"
+									className="w-3/4"
+									label="Tags"
+									{...register('tag', { required: 'Tag is required' })}
+								/>
 								<Button
-									variant={'secondary'}
-									className="w-full"
+									className="w-1/4"
+									type="submit"
 								>
-									Back
+									Add
 								</Button>
-							</Link>
-							<Link
-								className="w-3/4"
-								href={'menu'}
+							</div>
+							<div className="flex flex-wrap gap-2 overflow-y-scroll">
+								{tags.map((tag, index) => (
+									<Badge
+										variant={'outline'}
+										key={index}
+										onClick={() => handleRemoveTag(tag)}
+									>
+										{tag}
+									</Badge>
+								))}
+							</div>
+						</form>
+					</CardContent>
+					<CardFooter className="flex justify-between w-full gap-4">
+						<Link
+							className="w-1/4"
+							href={'images'}
+						>
+							<Button
+								variant={'secondary'}
+								className="w-full"
 							>
-								<Button className="w-full">Continue</Button>
-							</Link>
-						</CardFooter>
-					</Card>
-				</section>
-			</>
-		);
+								Back
+							</Button>
+						</Link>
+						<Button
+							className="w-3/4"
+							onClick={handleContinue}
+						>
+							Continue
+						</Button>
+					</CardFooter>
+				</Card>
+			</section>
+		</>
+	);
 }
