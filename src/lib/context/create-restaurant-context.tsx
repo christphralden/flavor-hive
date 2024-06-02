@@ -52,7 +52,7 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
                 ...data,
                 keywords: {
                     ...prev.keywords,
-                    tags: [...(prev.keywords?.tags || []), ...(data.keywords?.tags || [])]
+                    tags: [...(data.keywords?.tags || [])]
                 }
             }));
         }

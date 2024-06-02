@@ -55,8 +55,10 @@ export default function CreateRestaurantCategory() {
         if (restaurantData?.keywords?.tags) {
             setTags(restaurantData.keywords.tags);
         }
-    }, [restaurantData]);
+    }, []);
 
+	console.log(restaurantData)
+	console.log(tags)
     return (
 		<>
 			<section className="w-full">
