@@ -1,7 +1,7 @@
 'use client';
 import pb, { PB_KEYS } from '@service/pocketbase.service';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
-import React, {ReactNode, useState} from 'react';
+import React, {createContext, ReactNode, useState} from 'react';
 import {RecordModel} from 'pocketbase';
 import {fetchData} from '@service/auth.service';
 import { useRouter } from 'next/navigation';
@@ -20,7 +20,7 @@ export type AuthContextType = {
 	isLoading: boolean;
 };
 
-export const AuthContext = React.createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
 	user: null,
 	login: ()=>{},
 	logout: ()=>{},

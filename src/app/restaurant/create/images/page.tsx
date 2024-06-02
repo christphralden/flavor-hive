@@ -1,20 +1,24 @@
+"use client"
 import { Card, CardContent, CardFooter } from '@components/ui/card'
 import CreateRestaurantHeader from '../_components/create-restaurant-header'
 import Link from 'next/link'
 import { Button } from '@components/ui/button'
 import { InputLabelled } from '@components/ui/input-labelled'
+import { useCreateRestaurant } from '@hooks/useCreateRestaurant'
 
 export default function CreateRestaurantImages() {
+    const {restaurantData, appendRestaurantData} = useCreateRestaurant();
+    console.log(restaurantData)
     return (
         <>
-            <section className='w-1/2'>
+            <section className='w-full'>
                 <CreateRestaurantHeader
                     header="Let your food do the talking"
-                    description="Give those hungry fellas a glimpse of what they're tasting"
+                    description="Give those hungry fellas a glimpse of what they're tasting."
                     step={2}
                 />
             </section>
-            <section className='w-1/2 h-full'>
+            <section className='w-full h-full'>
                 <Card className="w-full h-full p-4 py-8 flex flex-col justify-between">
                     <CardContent className="mb-8">
                         <form className="flex flex-col gap-8" action="">

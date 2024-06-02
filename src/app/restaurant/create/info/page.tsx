@@ -1,4 +1,5 @@
 
+"use client"
 import {
     Card,
     CardContent,
@@ -10,19 +11,30 @@ import { Button } from "@components/ui/button";
 import { TextareaLabelled } from "@components/ui/textarea-labelled";
 import Link from "next/link";
 import CreateRestaurantHeader from "../_components/create-restaurant-header";
+import { useCreateRestaurant } from "@hooks/useCreateRestaurant";
+import { useEffect } from "react";
 
 
 export default function CreateRestaurantInfo(){
+    const {restaurantData, appendRestaurantData} = useCreateRestaurant();
+    useEffect(() => {
+      appendRestaurantData({
+        key:"name",
+        data:"pantek"
+      })
+     
+    }, [])
+    console.log(restaurantData)
     return(
         <>
-            <section className="w-1/2">
+            <section className="w-full">
                 <CreateRestaurantHeader
                     header="Lets get you started!"
                     description="We just need some basic info to get your restaurant up and running."
                     step={1}
                 />
             </section>
-            <section className="w-1/2 h-full">
+            <section className="w-full h-full">
                 <Card className="w-full h-full p-4 py-8 flex flex-col justify-between">
                     <CardContent className="mb-8">
                         <form className="flex flex-col gap-8" action="">

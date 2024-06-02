@@ -9,7 +9,7 @@ import { Button } from '@components/ui/button';
 
 export default function Navbar() {
 	return (
-		<div className="fixed w-full z-[100]">
+		<div className="fixed w-full z-[50]">
 			<div className="flex w-full h-full justify-between p-4 px-8 items-center bg-white">
 				<section className="w-fit flex justify-start gap-8 items-center">
 					<div className="w-fit">
@@ -30,7 +30,7 @@ export default function Navbar() {
 
 				<section className="w-fit flex gap-4">
                     <Link href={'/restaurant/create/info'}>
-                        <Button className='p-2 px-4 text-gray-500 font-normal' variant={'outline'} >Set up restaurant</Button>
+                        <Button className='p-2 px-4 text-gray-500 font-normal ' variant={'outline'} >Set up restaurant</Button>
                     </Link>
 					<Link
 						href={'/profile'}

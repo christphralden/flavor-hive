@@ -6,10 +6,11 @@ interface Restaurant extends RestaurantBase{
 
 interface RestaurantBase{
     name:string,
+    coverImage:string,
     images:string[],
     description:string,
     location:string,
-    keywords?:RestaurantKeywords,
+    keywords:RestaurantKeywords,
     restaurantOwner:string,
 }
 
@@ -20,6 +21,21 @@ interface Restaurant_RestaurantOwner{
 }
 
 interface RestaurantKeywords{
-    tags?:string[]
+    tags:string[]
     //tambahin nanti mungkin buat sentiment AI
+}
+
+interface MenuBase{
+    name:string,
+    description: string,
+    price: number,
+    image:string,
+}
+interface Menu{
+    restaurant:string
+}
+
+interface AppendRestaurantData{
+    data:any,
+    key:"name"|"images"|"coverImage"|"description"|"location"|"keywords.tags"|"restaurantOwner"
 }

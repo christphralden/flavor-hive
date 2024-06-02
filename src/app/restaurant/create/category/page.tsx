@@ -40,14 +40,14 @@ export default function CreateRestaurantCategory() {
 
     return (
 			<>
-				<section className="w-1/2">
+				<section className="w-full">
 					<CreateRestaurantHeader
 						header="Define your flavor profile"
 						description="Tell us your restaurant’s category with tags that reflect its unique flavors and specialties."
 						step={3}
 					/>
 				</section>
-				<section className="w-1/2 h-full">
+				<section className="w-full h-full">
 					<Card className="w-full h-full p-4 py-8 flex flex-col justify-between">
 						<CardContent className="mb-8">
 							<form
@@ -58,7 +58,7 @@ export default function CreateRestaurantCategory() {
 									<InputLabelled
 										id="tag"
 										className="w-3/4"
-										label="Input Tags"
+										label="Tags"
 										{...formRegister('tag', {required: 'Must be filled'})}
                                         children={errors.tag && <p>{errors.tag?.message}</p>}
 									/>
