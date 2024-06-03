@@ -1,6 +1,10 @@
 "use client"
+import { AlertCircle } from "@geist-ui/icons";
+import { createRestaurant } from "@service/restaurant.service";
+import { useRouter } from "next/navigation";
 import { createContext, ReactNode, useState } from "react";
 import { useMutation } from "react-query";
+import { toast } from "sonner";
 
 interface CreateRestaurantProviderProps{
     children: ReactNode
@@ -27,22 +31,11 @@ export const CreateRestaurantContext = createContext<CreateRestaurantContextType
 
 const InitialRestaurantData: Partial<RestaurantBase> = {};
 
-function isRestaurantBase(obj: Partial<RestaurantBase>): obj is RestaurantBase {
-    return (
-        typeof obj.name === 'string' &&
-        typeof obj.coverImage === 'string' &&
-        Array.isArray(obj.images) &&
-        typeof obj.description === 'string' &&
-        typeof obj.location === 'string' &&
-        typeof obj.keywords === 'object' &&
-        Array.isArray(obj.keywords.tags) &&
-        typeof obj.restaurantOwner === 'string'
-    );
-}
 
 export default function CreateRestaurantContextProvider({children}: CreateRestaurantProviderProps){
     const [restaurantData, setRestaurantData] = useState<Partial<RestaurantBase>>(InitialRestaurantData);
     const [menuData, setMenuData] = useState<MenuBase[]>([]) 
+    const router = useRouter();
 
 
     const { mutate: appendRestaurantData, isLoading: isAppendRestaurantDataLoading } = useMutation(
@@ -58,7 +51,6 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
         }
     );
 
-
     const {mutate:appendMenuData, isLoading:isAppendMenuDataLoading} = useMutation(
         async (data:MenuBase)=>{
             if(restaurantData.restaurantOwner == ""){
@@ -68,23 +60,43 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
         }
     )
 
-    const completeRestaurantData = () => {
-        if (!isRestaurantBase(restaurantData)) {
-            throw new Error("Incomplete restaurant data");
+    const transformRestaurantData = () => {
+        const formData = new FormData();
+        if (restaurantData.cover instanceof FileList && restaurantData.cover.length > 0) {
+            formData.append('cover', restaurantData.cover[0]);
         }
-        return restaurantData as RestaurantBase;
+    
+        if (restaurantData.images && restaurantData.images.length) {
+            for (let i = 0; i < restaurantData.images.length; i++) {
+                formData.append('images', restaurantData.images[i]);
+            }
+        }
+        const otherData = {
+            name: restaurantData.name,
+            description: restaurantData.description,
+            location: restaurantData.location,
+            restaurantOwner: restaurantData.restaurantOwner,
+            keywords: restaurantData.keywords, 
+        };
+        formData.append('otherData', JSON.stringify(otherData));
+
+        return formData
     };
 
     const {mutate:finalize, isLoading:isFinalizeLoading} = useMutation(
         async ()=>{
-
+            const restaurant:FormData = transformRestaurantData();
+            return await createRestaurant(restaurant)
         },
         {
-            onSuccess:()=>{
-
+            onSuccess:(data)=>{
+                toast("Restaurant successfully created!")
+                router.push("/home")
             },
-            onError:()=>{
-
+            onError:(error:Error)=>{
+                toast.error(error.message,{
+                    icon:<AlertCircle className='w-full'/>
+                })
             }
         }
     )

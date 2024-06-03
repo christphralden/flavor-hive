@@ -19,7 +19,7 @@ const InputPrefixed = React.forwardRef<HTMLInputElement, InputPrefixedProps>(({c
             <input
 			type={type}
 			className={
-                "px-3 placeholder:text-gray-400 focus-visible:outline-none outline-gray-500 focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50"
+                "px-3 w-full placeholder:text-gray-400 focus-visible:outline-none outline-gray-500 focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50"
             }
 			ref={ref}
 			{...props}

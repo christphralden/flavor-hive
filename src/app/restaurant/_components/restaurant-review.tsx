@@ -1,4 +1,3 @@
-import pb, { PB_KEYS } from '@service/pocketbase.service';
 import { getRestaurantReviews } from '@service/restaurant.service';
 import { notFound } from 'next/navigation';
 

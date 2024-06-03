@@ -6,11 +6,11 @@ interface Restaurant extends RestaurantBase{
 
 interface RestaurantBase{
     name:string,
-    coverImage:string,
-    images:string[],
+    cover?: File | FileList | string,
+    images?: File[] | FileList | string[],
     description:string,
     location:string,
-    keywords:RestaurantKeywords,
+    keywords?:RestaurantKeywords,
     restaurantOwner:string,
 }
 
@@ -19,6 +19,7 @@ interface Restaurant_RestaurantOwner{
         restaurantOwner:User
     }
 }
+
 
 interface RestaurantKeywords{
     tags:string[]
@@ -34,8 +35,6 @@ interface MenuBase{
 interface Menu{
     restaurant:string
 }
-
-
 
 // ======= form handling =========
 interface AppendRestaurantData{

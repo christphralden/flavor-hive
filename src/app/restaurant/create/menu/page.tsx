@@ -15,12 +15,15 @@ import {
     AlertDialogTrigger
 } from "@components/ui/alert-dialog"
 import { useState } from 'react'
+import { useCreateRestaurant } from '@hooks/useCreateRestaurant'
 
 export default function CreateRestaurantMenu() {
+    const {finalize, isLoading} = useCreateRestaurant()
     const [dialogState, setDialogState] = useState<boolean>(false)
 
     const toggleDialog = () => setDialogState(!dialogState)
     const closeDialog = () => setDialogState(false)
+
     return (
         <>
             <section className='w-full'>
@@ -57,8 +60,8 @@ export default function CreateRestaurantMenu() {
                     </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                    <AlertDialogCancel onClick={closeDialog}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
+                    <AlertDialogCancel disabled={isLoading} onClick={closeDialog}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction disabled={isLoading} onClick={async ()=>{await finalize(); closeDialog()}}>Continue</AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>

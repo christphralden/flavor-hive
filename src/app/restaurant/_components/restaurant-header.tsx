@@ -1,4 +1,3 @@
-import pb, { PB_KEYS } from "@service/pocketbase.service";
 import { getRestaurant } from "@service/restaurant.service";
 import { notFound } from "next/navigation";
 import { Fragment } from "react";
@@ -16,7 +15,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                 <div>restaurant name:<span>{record.name}</span></div>
                 <div>restaurant location:<span>{record.location}</span></div>
                 <div>restaurant tags:<span>{record.keywords?.tags?.map((tag,i)=><Fragment key={i}>{tag},</Fragment>)}</span></div>
-                <div>restaurant image:<span>{record.images}</span></div>
+                {/* <div>restaurant image:<span>{record.images}</span></div> */}
                 <div>restaurant owner:<span>{record.restaurantOwner}</span></div>
             </div>
         );

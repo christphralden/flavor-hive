@@ -1,5 +1,5 @@
 "use client"
-import { Card, CardContent, CardFooter } from '@components/ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@components/ui/card'
 import CreateRestaurantHeader from '../_components/create-restaurant-header'
 import Link from 'next/link'
 import { Button } from '@components/ui/button'
@@ -51,12 +51,13 @@ export default function CreateRestaurantImages() {
 						>
 							<CardContent className="flex flex-col gap-8 ">
 								<InputLabelled
-									{...formRegister('coverImage', {required: 'Cover Image is required'})}
+									{...formRegister('cover')}
 									label="Cover image"
 									type="file"
-								>{errors.coverImage && <p>{errors.coverImage?.message}</p>}</InputLabelled>
+                                    multiple={false}
+								>{errors.cover && <p>{errors.cover?.message}</p>}</InputLabelled>
 								<InputLabelled
-									{...formRegister('images', {required: 'Restaurant Images is required'})}
+									{...formRegister('images')}
 									label="Restaurant Images"
 									type="file"
 									multiple

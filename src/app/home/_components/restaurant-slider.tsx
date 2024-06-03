@@ -1,16 +1,21 @@
 import { getAllRestaurantPaged } from "@service/restaurant.service"
+import RestaurantProfileCard from "app/_components/restaurant-profile-card";
 import Link from "next/link";
 import { ListResult, RecordModel } from "pocketbase";
 
 export default async function RestaurantSlider(){
     try{
-        const records:ListResult<RecordModel> = await getAllRestaurantPaged(1,10);
+        const restaurants:Restaurant[] = await getAllRestaurantPaged(1,10);
+
+        
         return(
-            <div className="flex gap-4">
+            <div className="flex gap-4 w-full overflow-scroll">
                 {
-                    records.items.map((record,i)=>(
-                        <Link href={`/restaurant/${record.id}`} key={i}>{record.name}</Link>
-                    ))
+                    restaurants.map((restaurant,i)=>{
+                        return(
+                            <RestaurantProfileCard restaurant={restaurant} key={i}/>
+                        )
+                    })
                 }
             </div>
         )

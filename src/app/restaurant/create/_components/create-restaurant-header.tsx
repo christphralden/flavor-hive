@@ -11,7 +11,7 @@ interface CreateRestaurantHeaderProps{
 export default function CreateRestaurantHeader({header, description, step}:CreateRestaurantHeaderProps) {
 	const [progress, setProgress] = useState(0);
 	useEffect(() => {
-		const timer = setTimeout(() => setProgress(100), 500);
+		const timer = setTimeout(() => setProgress(100), 200);
 		return () => clearTimeout(timer);
 	}, []);
 	return (
