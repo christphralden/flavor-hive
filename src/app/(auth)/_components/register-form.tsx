@@ -39,7 +39,7 @@ export default function RegisterForm() {
 
 	return (
 		<form
-			className="w-full h-full flex flex-col gap-8"
+			className="w-full h-full  flex flex-col gap-8"
 			onSubmit={handleSubmit(submit)}
 		>
 			<div className="w-full gap-4 flex flex-col">

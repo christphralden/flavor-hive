@@ -18,7 +18,7 @@ export default function AuthLayout({
                 />
             </section>
 
-			<section className="flex flex-col w-[100%] md:w-[50%] lg:w-[35%] min-w-[350px] h-full lg:pl-4 lg:p-8 py-4 ">
+			<section className="flex flex-col w-[100%] md:w-[50%] lg:w-[35%] min-w-[350px] h-fit lg:h-full lg:pl-4 lg:p-8 py-4 gap-4 ">
 				<div className="w-full h-[10%]">
 					<h1 className="text-2xl lg:text-3xl font-medium">FlavorHive</h1>
 				</div>

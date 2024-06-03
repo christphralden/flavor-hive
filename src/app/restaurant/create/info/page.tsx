@@ -46,7 +46,7 @@ export default function CreateRestaurantInfo() {
 				/>
 			</section>
 			<section className="w-full h-full">
-				<Card className="w-full h-full p-4 py-8 ">
+				<Card className="w-full h-full pt-6 ">
 					<form
 						className="flex flex-col justify-between h-full"
 						onSubmit={handleSubmit(submit)}
