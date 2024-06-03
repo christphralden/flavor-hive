@@ -69,7 +69,7 @@ export default function CreateRestaurantImages() {
 									href={'info'}
 								>
 									<Button
-										variant={'secondary'}
+										variant={'outline'}
 										className="w-full"
 									>
 										Back

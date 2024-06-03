@@ -23,19 +23,34 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@components/ui/dialog"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useCreateRestaurant } from '@hooks/useCreateRestaurant'
 import { InputLabelled } from '@components/ui/input-labelled'
 import { TextareaLabelled } from '@components/ui/textarea-labelled'
+import { useForm } from 'react-hook-form'
+import { Separator } from '@components/ui/separator'
 
 export default function CreateRestaurantMenu() {
-    const {finalize, isLoading} = useCreateRestaurant()
+    const {finalize, isLoading, appendMenuData, menuData} = useCreateRestaurant()
+    const { register: formRegister, handleSubmit, reset, formState: { errors }, setValue } = useForm<MenuBase>();
+
+    const [menuItems, setMenuItems] = useState<MenuBase[]>([]);
+
+    const submit = (data:MenuBase) => {
+        setMenuItems(prevItems => [...prevItems, data]);
+        appendMenuData(data)
+        reset();  
+    };
+    
     const [dialogState, setDialogState] = useState<boolean>(false)
 
     const toggleDialog = () => setDialogState(!dialogState)
     const closeDialog = () => setDialogState(false)
 
-    
+
+	useEffect(() => {
+        setMenuItems(menuData)
+    }, []);
 
     return (
 			<>
@@ -49,49 +64,45 @@ export default function CreateRestaurantMenu() {
 				<section className="w-full h-full">
 					<Card className="w-full h-full flex flex-col justify-between">
 						<CardHeader>
-							
 							<CardDescription>Dont worry, you can always change this later</CardDescription>
 						</CardHeader>
-						<CardContent className="h-full">
-							<Dialog>
-								<DialogTrigger
-									asChild
-									className="w-full justify-center items-center"
-								>
-									<Button
-										variant="default"
-										className="flex gap-2"
-									>
-										<Plus className="w-4 h-4" /> <p>Add</p>
-									</Button>
-								</DialogTrigger>
-								<DialogContent className="sm:max-w-[50%]">
-									<DialogHeader>
-										<DialogTitle className="font-medium">Add Menu</DialogTitle>
-										<DialogDescription>
-											Input details of your menu
-										</DialogDescription>
-									</DialogHeader>
-									<div className="grid gap-4 py-4">
-										<div className="w-full flex gap-4">
-											<InputLabelled label="Name" />
-											<InputLabelled
-												type="number"
-												label="Price"
-											/>
-										</div>
-										<TextareaLabelled
-											label="Description"
-											className="h-[150px] max-h-[150px] min-h-[150px]"
-											placeholder="Talk about your restaurant here"
-										/>
-                                        <InputLabelled type='file' label='Image'/>
-									</div>
-									<DialogFooter>
-										<Button type="submit">Save changes</Button>
-									</DialogFooter>
-								</DialogContent>
-							</Dialog>
+						<CardContent className="h-full flex flex-col gap-4">
+                            <Dialog >
+                                <DialogTrigger asChild className='w-full justify-center items-center'>
+                                    <Button variant="default">
+                                        <Plus /> <span>Add Menu</span>
+                                    </Button>
+                                </DialogTrigger>
+                                <DialogContent className='pt-10 w-full'>
+                                    <form onSubmit={handleSubmit(submit)} className='flex flex-col gap-4'>
+                                        <InputLabelled
+                                            label="Name"
+                                            {...formRegister('name', { required: 'Name is required' })}
+                                        >{errors.name && errors.name.message}</InputLabelled>
+                                        <InputLabelled
+                                            type="number"
+                                            label="Price"
+                                            {...formRegister('price', { required: 'Price is required' })}
+                                        >{errors.price && errors.price.message}</InputLabelled>
+                                        <TextareaLabelled
+                                            label="Description"
+                                            {...formRegister('description', { required: 'Description is required' })}
+                                        >{errors.description && errors.description.message}</TextareaLabelled>
+                                        <InputLabelled
+                                            {...formRegister('image',  { required: 'Image is required' })}
+                                            label="Image"
+                                            type="file"
+                                        >{errors.image && <p>{errors.image?.message}</p>}</InputLabelled>
+                                        <Button className='mt-4' type="submit">Save Changes</Button>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                            <Separator className='w-full border-1'/>
+                            <div className='w-full flex flex-col gap-2'>
+                                {menuItems.map((menu,i)=>(
+                                    <p key={i}>{menu.name}</p>
+                                ))}
+                            </div>
 						</CardContent>
 						<CardFooter className="flex justify-between w-full gap-4">
 							<Link
@@ -99,7 +110,7 @@ export default function CreateRestaurantMenu() {
 								href={'category'}
 							>
 								<Button
-									variant={'secondary'}
+									variant={'outline'}
 									className="w-full"
 								>
 									Back

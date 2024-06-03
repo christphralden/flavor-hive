@@ -30,9 +30,9 @@ interface MenuBase{
     name:string,
     description: string,
     price: number,
-    image:string,
+    image?:File | FileList | string,
 }
-interface Menu{
+interface Menu extends MenuBase{
     restaurant:string
 }
 

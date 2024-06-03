@@ -32,5 +32,14 @@ export const RestaurantGetSchema = z.object({
     updated: z.string().transform((str) => new Date(str)),
 });
 
+export const MenuSchema = z.object({
+    name: z.string(),
+    description: z.string(),
+    price: z.number(),
+    restaurant: z.string(),
+    image: z.optional(fileSchema)
+})
+
+export const MenuPostSchema = z.array(MenuSchema)
 
 export const RestaurantListGetSchema = z.array(RestaurantGetSchema)

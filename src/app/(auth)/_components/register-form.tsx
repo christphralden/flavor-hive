@@ -96,7 +96,7 @@ export default function RegisterForm() {
 				</Button>
 				<Button
 					disabled={isLoading}
-					variant={'secondary'}
+					variant={'outline'}
 					className="w-full"
 				>
 					Continue with Google

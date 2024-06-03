@@ -16,7 +16,7 @@ import { Plus } from 'lucide-react';
 export default function CreateRestaurantCategory() {
     const [tags, setTags] = useState<string[]>([]);
     const {
-		register,
+		register:formRegister,
 		handleSubmit,
 		formState: {errors}
 	} = useForm<{ tag: string }>();
@@ -79,7 +79,7 @@ export default function CreateRestaurantCategory() {
 											id="tag"
 											className="w-5/6"
 											label="Tags"
-											{...register('tag', {required: 'Tag is required'})}
+											{...formRegister('tag', {required: 'Tag is required'})}
 										/>
 										<Button className="flex gap-2 w-1/6">
 											<Plus className="w-4 h-4" />
@@ -109,7 +109,7 @@ export default function CreateRestaurantCategory() {
 								href={'images'}
 							>
 								<Button
-									variant={'secondary'}
+									variant={'outline'}
 									className="w-full"
 								>
 									Back

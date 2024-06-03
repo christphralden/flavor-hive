@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 
 export default function LoginForm() {
 	const {
-		register,
+		register:formRegister,
 		handleSubmit,
 		formState: {errors},
 	} = useForm<UserLogin>();
@@ -27,7 +27,7 @@ export default function LoginForm() {
 					label="Email"
 					type="email"
 					placeholder="josex@gmail.com"
-					{...register('email', FormPlaybook.email)}
+					{...formRegister('email', FormPlaybook.email)}
 				>
 					{errors.email && <p>{errors.email?.message}</p>}
 				</InputLabelled>
@@ -35,7 +35,7 @@ export default function LoginForm() {
 					label="Password"
 					type="password"
 					placeholder="Yellowmeowmeow:3"
-					{...register('password', FormPlaybook.password)}
+					{...formRegister('password', FormPlaybook.password)}
 				>
 					{errors.password && <p>{errors.password?.message}</p>}
 				</InputLabelled>
@@ -48,7 +48,7 @@ export default function LoginForm() {
 					Login
 				</Button>
 				<Button
-					variant={'secondary'}
+					variant={'outline'}
 					className="w-full"
 				>
 					Continue with Google

@@ -1,10 +1,10 @@
 
 "use server"
-import { ListResult, RecordModel } from "pocketbase";
 import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
-import { RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import {MenuPostSchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import { ZodError } from "zod";
 
 export async function getRestaurant(recordId: string): Promise<Restaurant> {
     try {
@@ -42,36 +42,56 @@ export async function getAllRestaurantPaged(page:number, perPage:number = 10):Pr
     return validRestaurants
 }
 
+function parseMenus(menus: FormData[], restaurantId: string) {
+    const menuData = menus.map(menu => {
+        const menuImage = menu.getAll('image') as File[];
+        const name = menu.get('name') as string;
+        const price = parseFloat(menu.get('price') as string); 
+        const description = menu.get('description') as string;
 
-export async function createRestaurant(data: FormData): Promise<any> {
+        // if (menuImage.length == 0) continue
+        
+        const record: Menu = {
+            image: menuImage[0],  
+            name,
+            price,
+            description,
+            restaurant: restaurantId
+        };
+        return record;
+    });
+
+    return menuData;
+}
+
+// TODO: Masalahnya gaada batch transaction, jd gaada auto rollback. restonya bisa amam, tp menunya engge
+// terus restonya kebikin tp menunya kaga, tp errornya failed to process (gw gaperduli)
+export async function createRestaurant(restaurant: FormData, menus: FormData[]): Promise<any> {
     const userData = await fetchData();
-
-    if (!userData) throw new Error("You are not authorized to create a restaurant.")
-
-    const cover = data.getAll('cover') as File[];
-    const images = data.getAll('images') as File[];
-    const otherData = JSON.parse(data.get('otherData') as string);
-
+    if (!userData) throw new Error("You are not authorized to create a restaurant.");
 
     try {
-        const restaurant: RestaurantBase = RestaurantPostSchema.parse({
-            ...otherData,
-            cover: cover[0],
-            images: images,
+        const otherRestaurantData = JSON.parse(restaurant.get('otherData') as string);
+        const restaurantRecord: RestaurantBase = RestaurantPostSchema.parse({
+            ...otherRestaurantData,
+            cover: restaurant.getAll('cover')[0] as File,
+            images: restaurant.getAll('images') as File[],
             restaurantOwner: userData.id,
         });
 
-        try {
-            const res = await pb.collection(PB_KEYS.RESTAURANTS).create(restaurant);
-            revalidatePath("/restaurant/create/menu");
-            return res;
-        } catch (error) {
+        const resRestaurant = await pb.collection(PB_KEYS.RESTAURANTS).create(restaurantRecord);
+        const menuRecords = MenuPostSchema.parse(parseMenus(menus, resRestaurant.id));
+        const resMenu = await Promise.all(menuRecords.map(record =>
+            pb.collection('menus').create(record, { '$autoCancel': false })
+        ));
+
+        revalidatePath("/restaurant/create/menu");
+        return { resRestaurant, resMenu };
+    } catch (error) {
+        if (error instanceof ZodError) {
+            throw new Error("Please fill in the necessary data correctly.");
+        } else {
             throw new Error("Failed to process the request.");
         }
-
-    } catch (error) {
-        throw new Error("Please fill in the necessary data correctly")
     }
-
-    
 }

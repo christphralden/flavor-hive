@@ -53,22 +53,19 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
 
     const {mutate:appendMenuData, isLoading:isAppendMenuDataLoading} = useMutation(
         async (data:MenuBase)=>{
-            if(restaurantData.restaurantOwner == ""){
-                throw new Error("Restaurant data not available yet")
-            }
             setMenuData(prev=>[...prev, data])
         }
     )
 
     const transformRestaurantData = () => {
-        const formData = new FormData();
+        const restaurantForm = new FormData();
         if (restaurantData.cover instanceof FileList && restaurantData.cover.length > 0) {
-            formData.append('cover', restaurantData.cover[0]);
+            restaurantForm.append('cover', restaurantData.cover[0]);
         }
     
         if (restaurantData.images && restaurantData.images.length) {
             for (let i = 0; i < restaurantData.images.length; i++) {
-                formData.append('images', restaurantData.images[i]);
+                restaurantForm.append('images', restaurantData.images[i]);
             }
         }
         const otherData = {
@@ -78,20 +75,36 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
             restaurantOwner: restaurantData.restaurantOwner,
             keywords: restaurantData.keywords, 
         };
-        formData.append('otherData', JSON.stringify(otherData));
+        restaurantForm.append('otherData', JSON.stringify(otherData));
 
-        return formData
+        return restaurantForm
+    };
+
+    const transformMenuData = () => {
+        const menusForm = menuData.map(menu => {
+            const menuForm = new FormData();
+            menuForm.append('name', menu.name);
+            menuForm.append('description', menu.description);
+            menuForm.append('price', menu.price.toString());
+            if (menu.image instanceof FileList && menu.image.length > 0) {
+                menuForm.append('image', menu.image[0]); 
+            }
+            return menuForm;
+        });
+        return menusForm;
     };
 
     const {mutate:finalize, isLoading:isFinalizeLoading} = useMutation(
         async ()=>{
             const restaurant:FormData = transformRestaurantData();
-            return await createRestaurant(restaurant)
+            const menu:FormData[] = transformMenuData()
+            return await createRestaurant(restaurant, menu)
         },
         {
             onSuccess:(data)=>{
+                const restaurantId = data.resRestaurant.id
                 toast("Restaurant successfully created!")
-                router.push("/home")
+                router.push(`/restaurant/${restaurantId}`)
             },
             onError:(error:Error)=>{
                 toast.error(error.message,{

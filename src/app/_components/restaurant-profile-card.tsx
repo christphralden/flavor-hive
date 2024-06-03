@@ -18,7 +18,7 @@ export default function RestaurantProfileCard({restaurant}:RestaurantProfileCard
         <Link className='m-0' href={`/restaurant/${restaurant.id}`}>
             <Card className='w-[250px] h-[350px] lg:w-[350px] lg:h-[500px] overflow-clip bg-white rounded-lg'>
                 <CardHeader className='h-[40%] w-full bg-black p-0 relative '>
-                    <Image objectFit='contain' width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='coverImage'></Image>
+                    <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='coverImage'></Image>
                     <div className='w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end'>
                         <Badge className='text-white lg:text-xs px-4 py-2 lg:p-3 h-fit lg:h-full' variant={'dark'}>Liked by 1.2k</Badge>
                         <Badge className='text-white lg:text-xs px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-4'/></Badge>
@@ -52,10 +52,10 @@ export default function RestaurantProfileCard({restaurant}:RestaurantProfileCard
                             restaurant.keywords?.tags.map((tag, i)=>{
                                 const limit = 2
                                 if(i==limit)return(
-                                    <Badge variant={'outline'} className='p-2 px-4 text-xs lg:text-xs'>+{(restaurant.keywords?.tags.length||0) - limit}</Badge>
+                                    <Badge key={i} variant={'outline'} className='p-2 px-4 text-xs lg:text-xs'>+{(restaurant.keywords?.tags.length||0) - limit}</Badge>
                                 )
                                 if(i<limit)return(
-                                    <Badge variant={'secondary'} className='p-2 px-4 text-xs lg:text-xs'>{tag}</Badge>
+                                    <Badge key={i} variant={'secondary'} className='p-2 px-4 text-xs lg:text-xs'>{tag}</Badge>
                                 )
                             })
                         }
