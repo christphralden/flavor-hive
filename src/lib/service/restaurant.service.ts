@@ -3,8 +3,9 @@
 import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
-import {MenuPostSchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
 import { ZodError } from "zod";
+import { MenuGetArraySchema, MenuGetSchema, MenuPostArraySchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import { ListResult, RecordModel } from "pocketbase";
 
 export async function getRestaurant(recordId: string): Promise<Restaurant> {
     try {
@@ -32,7 +33,7 @@ export async function getRestaurantReviews(recordId:string):Promise<Review_Poste
 
 export async function getAllRestaurantPaged(page:number, perPage:number = 10):Promise<Restaurant[]>{
     const response = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
-        cache: 'no-cache'
+        cache: 'no-cache',
     });
     const validRestaurants:Restaurant[] = response.items.filter(item => {
         const result = RestaurantGetSchema.safeParse(item);
@@ -40,6 +41,29 @@ export async function getAllRestaurantPaged(page:number, perPage:number = 10):Pr
     }) as unknown as Restaurant[];
     
     return validRestaurants
+}
+
+export async function getRestaurantMenusPaged(restaurantId:string, page:number, perPage:number = 10):Promise<Menu[]>{
+    try {
+        const response = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
+            filter: pb.filter('restaurant ?= {:id}', {id: restaurantId}),
+            // fields: 'id,name,description,price,image,restaurant',
+            cache: "force-cache", 
+        });
+
+        try {
+            const validMenus:Menu[] = response.items.filter(item=>{
+                const result = MenuGetSchema.safeParse(item)
+                return result.success
+            }) as unknown as Menu[]
+            return validMenus
+        } catch (error) {
+            throw new Error("Invalid menu data")
+        }
+    } catch (error) {
+        console.error(error)
+        throw new Error("Error retrieving restaurant's menu data");
+    }
 }
 
 function parseMenus(menus: FormData[], restaurantId: string) {
@@ -51,7 +75,7 @@ function parseMenus(menus: FormData[], restaurantId: string) {
 
         // if (menuImage.length == 0) continue
         
-        const record: Menu = {
+        const record: MenuPost = {
             image: menuImage[0],  
             name,
             price,
@@ -80,9 +104,9 @@ export async function createRestaurant(restaurant: FormData, menus: FormData[]):
         });
 
         const resRestaurant = await pb.collection(PB_KEYS.RESTAURANTS).create(restaurantRecord);
-        const menuRecords = MenuPostSchema.parse(parseMenus(menus, resRestaurant.id));
+        const menuRecords = MenuPostArraySchema.parse(parseMenus(menus, resRestaurant.id));
         const resMenu = await Promise.all(menuRecords.map(record =>
-            pb.collection('menus').create(record, { '$autoCancel': false })
+            pb.collection(PB_KEYS.MENUS).create(record, { '$autoCancel': false })
         ));
 
         revalidatePath("/restaurant/create/menu");

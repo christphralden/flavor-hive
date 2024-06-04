@@ -32,8 +32,12 @@ interface MenuBase{
     price: number,
     image?:File | FileList | string,
 }
-interface Menu extends MenuBase{
+interface MenuPost extends MenuBase{
     restaurant:string
+}
+
+interface Menu extends MenuPost{
+    id:string
 }
 
 // ======= form handling =========

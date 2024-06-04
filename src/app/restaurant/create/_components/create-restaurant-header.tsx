@@ -15,7 +15,7 @@ export default function CreateRestaurantHeader({header, description, step}:Creat
 		return () => clearTimeout(timer);
 	}, []);
 	return (
-		<div className="w-full flex flex-col gap-8">
+		<div className="w-full flex flex-col gap-4">
 			<div className="flex flex-col gap-1 w-full">
 				<h1 className="text-2xl lg:text-3xl font-medium">{header}</h1>
 				<p className="text-gray-500">{description}</p>

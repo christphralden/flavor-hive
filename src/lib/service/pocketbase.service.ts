@@ -9,4 +9,5 @@ export enum PB_KEYS {
     USERS = 'users',
     RESTAURANTS = 'restaurants',
     REVIEWS = 'reviews',
+    MENUS = 'menus',
 }

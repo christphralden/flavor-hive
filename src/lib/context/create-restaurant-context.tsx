@@ -15,6 +15,7 @@ export type CreateRestaurantContextType = {
     menuData: MenuBase[] 
     appendRestaurantData: (data: Partial<RestaurantBase>) => any
     appendMenuData: (data : MenuBase) => any
+    removeMenuData: (data: MenuBase)=>any
     finalize: () => any,
     isLoading: boolean
 };
@@ -25,6 +26,7 @@ export const CreateRestaurantContext = createContext<CreateRestaurantContextType
     menuData: [],
     appendRestaurantData: ()=>{},
     appendMenuData: ()=>{},
+    removeMenuData: ()=>{},
     finalize: ()=>{},
     isLoading:false
 })
@@ -37,6 +39,7 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
     const [menuData, setMenuData] = useState<MenuBase[]>([]) 
     const router = useRouter();
 
+    console.log(menuData)
 
     const { mutate: appendRestaurantData, isLoading: isAppendRestaurantDataLoading } = useMutation(
         async (data: Partial<RestaurantBase>) => {
@@ -56,6 +59,9 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
             setMenuData(prev=>[...prev, data])
         }
     )
+    const removeMenuData = (menu:MenuBase) => {
+        setMenuData(currentItems => currentItems.filter(item => item !== menu));
+    };
 
     const transformRestaurantData = () => {
         const restaurantForm = new FormData();
@@ -122,6 +128,7 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
                 menuData,
                 appendRestaurantData,
                 appendMenuData,
+                removeMenuData,
                 finalize,
                 isLoading: isAppendRestaurantDataLoading || isAppendMenuDataLoading || isFinalizeLoading
             }}

@@ -1,7 +1,6 @@
 import { getAllRestaurantPaged } from "@service/restaurant.service"
 import RestaurantProfileCard from "app/_components/restaurant-profile-card";
-import Link from "next/link";
-import { ListResult, RecordModel } from "pocketbase";
+
 
 export default async function RestaurantSlider(){
     try{

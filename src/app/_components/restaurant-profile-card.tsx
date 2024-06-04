@@ -11,7 +11,7 @@ import { Badge } from '@components/ui/badge';
 interface RestaurantProfileCardInterface{
     restaurant:Restaurant
 }
-export default function RestaurantProfileCard({restaurant}:RestaurantProfileCardInterface) {
+export default async function RestaurantProfileCard({restaurant}:RestaurantProfileCardInterface) {
     const headerImage = pb.files.getUrl(restaurant, (Array.isArray(restaurant.images) ? restaurant.images[0] as string : "") , {'thumb': '0x300'});
     const coverImage = pb.files.getUrl(restaurant, restaurant.cover as string , {'thumb': '0x300'});
     return (

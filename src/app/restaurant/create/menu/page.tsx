@@ -23,30 +23,43 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@components/ui/dialog"
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { useCreateRestaurant } from '@hooks/useCreateRestaurant'
 import { InputLabelled } from '@components/ui/input-labelled'
 import { TextareaLabelled } from '@components/ui/textarea-labelled'
 import { useForm } from 'react-hook-form'
 import { Separator } from '@components/ui/separator'
+import { toast } from 'sonner'
+import { AlertCircle } from 'lucide-react'
+import MenuTab from 'app/restaurant/_components/menu-tab'
 
 export default function CreateRestaurantMenu() {
-    const {finalize, isLoading, appendMenuData, menuData} = useCreateRestaurant()
-    const { register: formRegister, handleSubmit, reset, formState: { errors }, setValue } = useForm<MenuBase>();
+    const {finalize, isLoading, appendMenuData, removeMenuData, menuData} = useCreateRestaurant()
+    const { register: formRegister, handleSubmit, resetField, formState: { errors }, setValue } = useForm<MenuBase>();
 
     const [menuItems, setMenuItems] = useState<MenuBase[]>([]);
 
-    const submit = (data:MenuBase) => {
-        setMenuItems(prevItems => [...prevItems, data]);
-        appendMenuData(data)
-        reset();  
+    const removeMenuItem = (menu:MenuBase) => {
+        removeMenuData(menu)
+        setMenuItems(currentItems => currentItems.filter(item => item !== menu));
     };
-    
+
+    const submit = async (data:MenuBase) =>{
+        try {
+            await appendMenuData(data)
+            await setMenuItems(prevItems => [...prevItems, data]);
+            toast.success("New menu added")
+        } catch (error) {
+            toast.error('Failed to add menu', {
+				icon: <AlertCircle className="h-full " />,
+			});
+        }
+    }
+
     const [dialogState, setDialogState] = useState<boolean>(false)
 
     const toggleDialog = () => setDialogState(!dialogState)
     const closeDialog = () => setDialogState(false)
-
 
 	useEffect(() => {
         setMenuItems(menuData)
@@ -54,23 +67,23 @@ export default function CreateRestaurantMenu() {
 
     return (
 			<>
-				<section className="w-full">
+				<section className="w-full h-fit">
 					<CreateRestaurantHeader
 						header="Hol' up, let him cook"
 						description="Share the heart and soul of your restaurant with us. Let the world know what delicious dishes you’re cooking up!"
 						step={4}
 					/>
 				</section>
-				<section className="w-full h-full">
+				<section className="w-full h-[70%] flex-1">
 					<Card className="w-full h-full flex flex-col justify-between">
-						<CardHeader>
+						<CardHeader className='h-[10%]'>
 							<CardDescription>Dont worry, you can always change this later</CardDescription>
 						</CardHeader>
-						<CardContent className="h-full flex flex-col gap-4">
+						<CardContent className="h-[80%] max-h-[80%] flex flex-col gap-4">
                             <Dialog >
                                 <DialogTrigger asChild className='w-full justify-center items-center'>
                                     <Button variant="default">
-                                        <Plus /> <span>Add Menu</span>
+                                        <Plus /><span>Add Menu</span>
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent className='pt-10 w-full'>
@@ -89,22 +102,22 @@ export default function CreateRestaurantMenu() {
                                             {...formRegister('description', { required: 'Description is required' })}
                                         >{errors.description && errors.description.message}</TextareaLabelled>
                                         <InputLabelled
-                                            {...formRegister('image',  { required: 'Image is required' })}
-                                            label="Image"
+                                            {...formRegister('image')}
+                                            label="Cover image"
                                             type="file"
                                         >{errors.image && <p>{errors.image?.message}</p>}</InputLabelled>
                                         <Button className='mt-4' type="submit">Save Changes</Button>
                                     </form>
                                 </DialogContent>
+                                <Separator className='w-full border-1'/>
+                                <div className='w-full  overflow-y-scroll flex flex-col gap-4'>
+                                    {menuItems.map((menu,i)=>(
+                                        <MenuTab onClick={removeMenuItem} key={i} menu={menu}/>
+                                    ))}
+                                </div>
                             </Dialog>
-                            <Separator className='w-full border-1'/>
-                            <div className='w-full flex flex-col gap-2'>
-                                {menuItems.map((menu,i)=>(
-                                    <p key={i}>{menu.name}</p>
-                                ))}
-                            </div>
 						</CardContent>
-						<CardFooter className="flex justify-between w-full gap-4">
+						<CardFooter className="flex justify-between w-full gap-4 h-[10%]">
 							<Link
 								className="w-1/4"
 								href={'category'}
