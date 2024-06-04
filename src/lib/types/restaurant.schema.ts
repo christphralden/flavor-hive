@@ -28,8 +28,8 @@ export const RestaurantGetSchema = z.object({
         tags: z.array(z.string())
     }).optional(),
     restaurantOwner: z.string(),
-    created: z.string().transform((str) => new Date(str)),
-    updated: z.string().transform((str) => new Date(str)),
+    created: z.union([z.string(), z.string().transform((str) => new Date(str))]),
+    updated: z.union([z.string(), z.string().transform((str) => new Date(str))]),
 });
 
 export const MenuPostSchema = z.object({

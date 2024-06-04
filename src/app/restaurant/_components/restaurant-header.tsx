@@ -1,6 +1,11 @@
+import pb from "@service/pocketbase.service";
 import { getRestaurant } from "@service/restaurant.service";
+import { RestaurantGetSchema } from "lib/types/restaurant.schema";
+import { PocketbaseTyped } from "lib/types/utils.types";
+import Image from "next/image";
 import { notFound } from "next/navigation";
-import { Fragment } from "react";
+import { RecordModel } from "pocketbase";
+import { z } from "zod";
 
 interface RestaurantHeaderProps {
     recordId: string;
@@ -8,18 +13,23 @@ interface RestaurantHeaderProps {
 
 export default async function RestaurantHeader({ recordId }: RestaurantHeaderProps) {
     try {
-        const record:Restaurant = await getRestaurant(recordId)
+        const restaurant:PocketbaseTyped<Restaurant> = await getRestaurant(recordId)
+
+        const images:string[] = (restaurant.data.images as string[]).map(image=>{
+            return pb.files.getUrl(restaurant.record, image , {'thumb': '0x300'});
+        })
+        
         return (
-            <div className="flex flex-col gap-2">
-                <div>id:<span>{record.id}</span></div>
-                <div>restaurant name:<span>{record.name}</span></div>
-                <div>restaurant location:<span>{record.location}</span></div>
-                <div>restaurant tags:<span>{record.keywords?.tags?.map((tag,i)=><Fragment key={i}>{tag},</Fragment>)}</span></div>
-                {/* <div>restaurant image:<span>{record.images}</span></div> */}
-                <div>restaurant owner:<span>{record.restaurantOwner}</span></div>
-            </div>
+            <>
+                <div className="w-full h-screen bg-red-200">
+                    <h1 className="text-2xl lg:text-3xl font-medium">{restaurant.data.name}</h1>
+                    <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={images[0]} alt='coverImage'></Image>
+                </div>
+            </>
+            
         );
     } catch (error) {
-        return notFound();
+        console.error(error)
+        // return notFound();
     }
 }

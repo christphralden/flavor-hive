@@ -1,10 +1,11 @@
 import { getAllRestaurantPaged } from "@service/restaurant.service"
 import RestaurantProfileCard from "app/_components/restaurant-profile-card";
+import { PocketbaseTyped } from "lib/types/utils.types";
 
 
 export default async function RestaurantSlider(){
     try{
-        const restaurants:Restaurant[] = await getAllRestaurantPaged(1,10);
+        const restaurants:PocketbaseTyped<Restaurant>[] = await getAllRestaurantPaged(1,10);
 
         
         return(

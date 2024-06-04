@@ -1,7 +1,7 @@
 interface Restaurant extends RestaurantBase{
     id:string,
-    created?:Date,
-    updated?:Date,
+    created?:Date|string,
+    updated?:Date|string,
 }
 
 interface RestaurantBase{

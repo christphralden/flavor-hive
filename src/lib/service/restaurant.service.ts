@@ -4,25 +4,34 @@ import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
-import { MenuGetArraySchema, MenuGetSchema, MenuPostArraySchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
-import { ListResult, RecordModel } from "pocketbase";
+import { MenuGetSchema, MenuPostArraySchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import { RecordModel } from "pocketbase";
+import { PocketbaseTyped } from "lib/types/utils.types";
 
-export async function getRestaurant(recordId: string): Promise<Restaurant> {
+export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<Restaurant>> {
     try {
-        const data = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
-            cache: "force-cache", 
+        const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
+            cache: "force-cache",
         });
-        try {
-            const restaurant = RestaurantGetSchema.parse(data);
-            return restaurant;
-        } catch (error) {
-            throw new Error("Invalid restaurant data")
-        }
+
+        const restaurant: Restaurant = RestaurantGetSchema.parse({
+            id: record.id,
+            description: record.description,
+            location: record.location,
+            name: record.name,
+            restaurantOwner: record.restaurantOwner,
+            cover: record.cover,
+            images: record.images,
+            created: record.created,
+            updated: record.updated,
+            keywords: record.keywords
+        });
+
+        return { record, data: restaurant };
     } catch (error) {
         throw new Error("Error retrieving restaurant data");
     }
 }
-
 export async function getRestaurantReviews(recordId:string):Promise<Review_Poster[]>{
     return pb.collection(PB_KEYS.REVIEWS).getFullList({
         cache: 'no-cache',
@@ -31,32 +40,63 @@ export async function getRestaurantReviews(recordId:string):Promise<Review_Poste
     });
 }
 
-export async function getAllRestaurantPaged(page:number, perPage:number = 10):Promise<Restaurant[]>{
-    const response = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
-        cache: 'no-cache',
-    });
-    const validRestaurants:Restaurant[] = response.items.filter(item => {
-        const result = RestaurantGetSchema.safeParse(item);
-        return result.success;
-    }) as unknown as Restaurant[];
-    
-    return validRestaurants
+export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseTyped<Restaurant>[]> {
+    try {
+        const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
+            cache: 'no-cache',
+        });
+
+        const recordsTransformed: PocketbaseTyped<Restaurant>[] = records.items.map(record => {
+
+            const restaurant = RestaurantGetSchema.parse({
+                id: record.id,
+                description: record.description,
+                location: record.location,
+                name: record.name,
+                restaurantOwner: record.restaurantOwner,
+                cover: record.cover,
+                images: record.images,
+                created: record.created,
+                updated: record.updated,
+                keywords: record.keywords
+            })
+            return {
+                record,
+                data:restaurant
+            };
+        });
+
+        return recordsTransformed
+    } catch (error) {
+        throw new Error("Error retrieving paginated restaurant data");
+    }
 }
 
-export async function getRestaurantMenusPaged(restaurantId:string, page:number, perPage:number = 10):Promise<Menu[]>{
+export async function getRestaurantMenusPaged(restaurantId:string, page:number, perPage:number = 10):Promise<PocketbaseTyped<Menu>[]>{
     try {
-        const response = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
+        const records = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
             filter: pb.filter('restaurant ?= {:id}', {id: restaurantId}),
             // fields: 'id,name,description,price,image,restaurant',
             cache: "force-cache", 
         });
 
         try {
-            const validMenus:Menu[] = response.items.filter(item=>{
-                const result = MenuGetSchema.safeParse(item)
-                return result.success
-            }) as unknown as Menu[]
-            return validMenus
+            const recordTransformed:PocketbaseTyped<Menu>[] = records.items.map(record=>{
+                const menu = MenuGetSchema.parse({
+                    name:record.name,
+                    description:record.description,
+                    price:record.price,
+                    image:record.image,
+                    restaurant:record.restaurant,
+                    id:record.id
+                })
+
+                return{
+                    record,
+                    data:menu
+                }
+            }) 
+            return recordTransformed
         } catch (error) {
             throw new Error("Invalid menu data")
         }

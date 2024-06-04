@@ -16,13 +16,12 @@ export default async function Restaurant({params}: RestaurantProps) {
             <Suspense fallback='loading...'>
                 <RestaurantHeader recordId={params.id} />
             </Suspense>
-            <br/>
-            <Suspense fallback='loading...'>
+            {/* <Suspense fallback='loading...'>
                 <RestaurantReview recordId={params.id} />
             </Suspense>
             <Suspense fallback='loading...'>
                 <RestaurantMenus recordId={params.id}/>
-            </Suspense>
+            </Suspense> */}
         </>
     );
 
