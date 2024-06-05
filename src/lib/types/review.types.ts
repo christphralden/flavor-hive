@@ -11,6 +11,8 @@ interface Review{
     expand?:any
 }
 
+// TODO: price range, remove title, add upvotes and downvotes
+
 interface Review_Poster extends Review{
     expand:{
         poster:User

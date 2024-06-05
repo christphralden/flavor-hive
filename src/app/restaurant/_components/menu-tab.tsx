@@ -8,10 +8,10 @@ import { Button } from '@components/ui/button';
 
 interface MenuTabProps {
     menu: MenuBase;
-    onClick: (menu:MenuBase)=>any
+    onClick?: (menu:MenuBase)=>any
 }
 
-export default function MenuTab({ menu, onClick }: MenuTabProps) {
+export default function MenuTab({ menu, onClick =()=>{} }: MenuTabProps) {
     const [imageUrl, setImageUrl] = useState('');
 
     useEffect(() => {

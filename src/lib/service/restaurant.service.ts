@@ -10,7 +10,9 @@ import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<RestaurantBase>> {
     try {
         const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
-            cache: "no-store",
+            next:{
+                revalidate:3600
+            }
         });
 
         const restaurant: PocketbaseTyped<RestaurantBase> = RestaurantGetSchema.parse(record);
@@ -36,7 +38,9 @@ export async function getRestaurantReviews(recordId:string):Promise<Review_Poste
 export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
     try {
         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
-            cache: 'no-cache',
+            next:{
+                revalidate:3600
+            }
         });
 
         const recordsTransformed: PocketbaseListTyped<PocketbaseTyped<RestaurantBase>> = RestaurantListGetSchema.parse(records)
@@ -55,7 +59,9 @@ export async function getRestaurantMenusPaged(restaurantId:string, page:number, 
     try {
         const records = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
             filter: pb.filter('restaurant ?= {:id}', {id: restaurantId}),
-            cache: "force-cache", 
+            next:{
+                revalidate:3600
+            }
         });
 
         const recordTransformed:PocketbaseListTyped<PocketbaseTyped<MenuBase>> = MenuListGetSchema.parse(records)
@@ -117,7 +123,7 @@ export async function createRestaurant(restaurant: FormData, menus: FormData[]):
         userData.isRestaurantOwner = true
         await pb.collection('users').update(userData.id, userData);
         
-        revalidatePath('/restaurant/create/menu')
+        revalidatePath('/restaurant')
         return { resRestaurant, resMenu };
     } catch (error) {
         console.error(error)

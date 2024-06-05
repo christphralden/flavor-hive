@@ -1,28 +1,34 @@
+import { Separator } from '@components/ui/separator';
 import { getRestaurantReviews } from '@service/restaurant.service';
+import Comment from 'app/_components/comment';
 import { notFound } from 'next/navigation';
 
 interface RestaurantReviewProps {
 	recordId: string;
 }
+
+// TODO: Sort based on recent, most upvoted
 export default async function RestaurantReview({recordId}: RestaurantReviewProps) {
 	try {
 		const record: Review_Poster[] = await getRestaurantReviews(recordId);
-
+        if (record.length == 0)  {
+            return(
+                <>
+                    <Separator/>
+                    <p className='text-gray-500'>Restaurant has no reviews yet, Be the first one to leave an impression</p>
+                </>
+            )
+        }
         return (
-            <div className="flex gap-12 flex-col">
-                {record.map((review: Review_Poster) => (
-                    <div key={review.id} className="flex flex-col gap-1 bg-white text-black">
-                        <div>id:<span>{review.id}</span></div>
-                        <div>title:<span>{review.title}</span></div>
-                        <div>description:<span>{review.description}</span></div>
-                        <div>rating:<span>{review.rating}</span></div>
-                        <div>created:<span>{review.created.toLocaleString()}</span></div>
-                        <div>restaurant<span>{review.restaurant}</span></div>
-                        <div>poster name:<span>{review.expand.poster.name}</span></div>
-                        <div>poster username:<span>{review.expand.poster.username}</span></div>
-                    </div>
+            <>
+            <Separator/>
+            <h1 className='text-lg lg:text-xl font-medium'>{record.length}&nbsp;Reviews</h1>
+            <div className="flex flex-col">
+                {record.map((review: Review_Poster, i) => (
+                    <Comment review={review} key={i}/>
                 ))}
             </div>
+            </>
         );
 	} catch (error) {
 		notFound()

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";
 import { Button } from "@components/ui/button";
+import { Separator } from "@components/ui/separator";
 
 interface RestaurantHeaderProps {
     recordId: string;
@@ -16,26 +17,25 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
         const images:string[] = (restaurant.images as string[]).map(image=>{
             return pb.files.getUrl(restaurant, image , {'thumb': '0x300'});
         })
-        //TODO: breadcrumbs
         return (
             <>
                 <section className="w-full h-[60dvh] flex-grow max-h-full flex flex-col gap-8">
                     <div className="w-full h-full  gap-4 flex">
                         <div className="w-[45%] h-full bg-black rounded-xl overflow-clip">
-                            <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[0]} alt='coverImage'/>
+                            {images[0] && <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[0]} alt='coverImage'/>}
                         </div>
                         <div className="w-[25%] h-full bg-black rounded-xl overflow-clip">
-                            <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[1]} alt='coverImage'/>
+                            {images[1] && <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[1]} alt='coverImage'/>}
                         </div>
                         <div className="w-[30%] h-full flex flex-col gap-4">
                             <div className="w-full h-[50%] bg-black rounded-xl overflow-clip">
-                                <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[2]} alt='coverImage'/>
+                                {images[2] && <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[2]} alt='coverImage'/>}
                             </div>
                             <div className="w-full h-[50%] bg-black rounded-xl overflow-clip relative">
                                 {
                                     images.length <= 4 ?
                                     (
-                                        <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[3]} alt='coverImage'/>
+                                        images[3] && <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[3]} alt='coverImage'/>
                                     )
                                     :
                                     (
@@ -49,11 +49,11 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                         </div>
                     </div>
                 </section>
-
+                {/* TODO: ini bisa cabut component */}
                 <section className="w-full h-fit flex justify-between gap-8">
                         <div className="w-[60%] h-full  flex flex-col gap-8">
-                            <div className="w-full h-fit flex flex-col gap-4">
-                                <div className="w-full flex flex-col gap-1">
+                            <div className="w-full h-full flex flex-col gap-8">
+                                <div className="w-full h-full flex flex-col gap-1">
                                     <h1 className="text-2xl lg:text-3xl font-medium">{restaurant.name}</h1>
                                     <div className="flex gap-4">
                                         <div className="flex gap-2">
@@ -76,7 +76,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                                 </div>
                                 <p className="text-sm lg:text-base text-gray-500 w-[80%]">{restaurant.description}</p>
                             </div>
-                            {/* TODO: ini bisa cabut component */}
+                            
                             <div className="bg-secondary p-4 rounded-lg flex flex-col gap-2">
                                 <h1 className="text-sm lg:text-base font-medium">Customer Sentiment Overview:</h1>
                                 <div>
@@ -84,7 +84,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                                 </div>
                             </div>
                         </div>
-                        <div className="w-[40%] h-full flex items-end flex-col">
+                        <div className="w-[40%] h-full flex items-end flex-col gap-1">
 
                             <span className="flex h-fit gap-2 items-start justify-center ">
                                 <MapPin color='#6b7280' className="w-4 flex-shrink-0 "/>
