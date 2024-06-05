@@ -12,6 +12,7 @@ import { AlertCircle } from '@geist-ui/icons';
 import { useCreateRestaurant } from '@hooks/useCreateRestaurant';
 import { useRouter } from 'next/navigation';
 import { Plus } from 'lucide-react';
+import { Separator } from '@components/ui/separator';
 
 export default function CreateRestaurantCategory() {
     const [tags, setTags] = useState<string[]>([]);
@@ -42,6 +43,7 @@ export default function CreateRestaurantCategory() {
         setTags(prevTags => prevTags.filter(t => t !== tag));
     };
 
+	// TODO: Back juga save
     const handleContinue = () => {
         appendRestaurantData({
 			keywords: {
@@ -89,8 +91,8 @@ export default function CreateRestaurantCategory() {
 								</form>
 							</CardTitle>
 						</CardHeader>
-						<CardContent className="h-full">
-							
+						<CardContent className="h-full flex flex-col gap-4">
+							<Separator/>
 							<div className="flex flex-wrap gap-2 overflow-y-scroll">
 									{tags.map((tag, index) => (
 										<Badge

@@ -38,8 +38,7 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
     const [restaurantData, setRestaurantData] = useState<Partial<RestaurantBase>>(InitialRestaurantData);
     const [menuData, setMenuData] = useState<MenuBase[]>([]) 
     const router = useRouter();
-
-    console.log(menuData)
+    //TODO: useCallback for performance
 
     const { mutate: appendRestaurantData, isLoading: isAppendRestaurantDataLoading } = useMutation(
         async (data: Partial<RestaurantBase>) => {

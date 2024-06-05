@@ -9,11 +9,11 @@ interface RestaurantMenusProps{
 
 export default async function RestaurantMenus({recordId}:RestaurantMenusProps) {
     try {
-        const menus:Menu[] = await getRestaurantMenusPaged(recordId, 1,10)
+        const menus = await getRestaurantMenusPaged(recordId, 1,10)
 
         return (
             <div>
-                { menus.length != 0 &&  menus.map((menu)=>{
+                { menus.items.length != 0 &&  menus.items.map((menu)=>{
                     const menuImage = pb.files.getUrl(menu, menu.image as string, {'thumb': '0x300'});
                     return(
                         <div>

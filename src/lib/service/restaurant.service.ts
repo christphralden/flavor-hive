@@ -4,34 +4,27 @@ import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
-import { MenuGetSchema, MenuPostArraySchema, RestaurantGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
-import { RecordModel } from "pocketbase";
-import { PocketbaseTyped } from "lib/types/utils.types";
+import { MenuGetSchema, MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 
-export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<Restaurant>> {
+export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<RestaurantBase>> {
     try {
         const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
             cache: "force-cache",
         });
 
-        const restaurant: Restaurant = RestaurantGetSchema.parse({
-            id: record.id,
-            description: record.description,
-            location: record.location,
-            name: record.name,
-            restaurantOwner: record.restaurantOwner,
-            cover: record.cover,
-            images: record.images,
-            created: record.created,
-            updated: record.updated,
-            keywords: record.keywords
-        });
+        const restaurant: PocketbaseTyped<RestaurantBase> = RestaurantGetSchema.parse(record);
 
-        return { record, data: restaurant };
+        return restaurant
     } catch (error) {
-        throw new Error("Error retrieving restaurant data");
+        if (error instanceof ZodError) {
+            throw new Error("Please fill in the necessary data correctly.");
+        } else {
+            throw new Error("Error retrieving restaurant data");
+        }
     }
 }
+
 export async function getRestaurantReviews(recordId:string):Promise<Review_Poster[]>{
     return pb.collection(PB_KEYS.REVIEWS).getFullList({
         cache: 'no-cache',
@@ -40,69 +33,41 @@ export async function getRestaurantReviews(recordId:string):Promise<Review_Poste
     });
 }
 
-export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseTyped<Restaurant>[]> {
+export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
     try {
         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
             cache: 'no-cache',
         });
 
-        const recordsTransformed: PocketbaseTyped<Restaurant>[] = records.items.map(record => {
-
-            const restaurant = RestaurantGetSchema.parse({
-                id: record.id,
-                description: record.description,
-                location: record.location,
-                name: record.name,
-                restaurantOwner: record.restaurantOwner,
-                cover: record.cover,
-                images: record.images,
-                created: record.created,
-                updated: record.updated,
-                keywords: record.keywords
-            })
-            return {
-                record,
-                data:restaurant
-            };
-        });
-
+        const recordsTransformed: PocketbaseListTyped<PocketbaseTyped<RestaurantBase>> = RestaurantListGetSchema.parse(records)
+        
         return recordsTransformed
     } catch (error) {
-        throw new Error("Error retrieving paginated restaurant data");
+        if (error instanceof ZodError) {
+            throw new Error("Please fill in the necessary data correctly.");
+        } else {
+            throw new Error("Error retrieving restaurant data");
+        }
     }
 }
 
-export async function getRestaurantMenusPaged(restaurantId:string, page:number, perPage:number = 10):Promise<PocketbaseTyped<Menu>[]>{
+export async function getRestaurantMenusPaged(restaurantId:string, page:number, perPage:number = 10):Promise<PocketbaseListTyped<PocketbaseTyped<MenuBase>>>{
     try {
         const records = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
             filter: pb.filter('restaurant ?= {:id}', {id: restaurantId}),
-            // fields: 'id,name,description,price,image,restaurant',
             cache: "force-cache", 
         });
 
-        try {
-            const recordTransformed:PocketbaseTyped<Menu>[] = records.items.map(record=>{
-                const menu = MenuGetSchema.parse({
-                    name:record.name,
-                    description:record.description,
-                    price:record.price,
-                    image:record.image,
-                    restaurant:record.restaurant,
-                    id:record.id
-                })
-
-                return{
-                    record,
-                    data:menu
-                }
-            }) 
-            return recordTransformed
-        } catch (error) {
-            throw new Error("Invalid menu data")
-        }
+        const recordTransformed:PocketbaseListTyped<PocketbaseTyped<MenuBase>> = MenuListGetSchema.parse(records)
+        return recordTransformed
+        
     } catch (error) {
-        console.error(error)
-        throw new Error("Error retrieving restaurant's menu data");
+        if (error instanceof ZodError) {
+            throw new Error("Please fill in the necessary data correctly.");
+        } else {
+            throw new Error("Error retrieving restaurant's menu data");
+        }
+        
     }
 }
 
@@ -144,8 +109,8 @@ export async function createRestaurant(restaurant: FormData, menus: FormData[]):
         });
 
         const resRestaurant = await pb.collection(PB_KEYS.RESTAURANTS).create(restaurantRecord);
-        const menuRecords = MenuPostArraySchema.parse(parseMenus(menus, resRestaurant.id));
-        const resMenu = await Promise.all(menuRecords.map(record =>
+        const menuRecords = MenuListPostSchema.parse(parseMenus(menus, resRestaurant.id));
+        const resMenu = await Promise.all(menuRecords.map((record) =>
             pb.collection(PB_KEYS.MENUS).create(record, { '$autoCancel': false })
         ));
 

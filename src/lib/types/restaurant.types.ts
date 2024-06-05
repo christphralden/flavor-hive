@@ -1,11 +1,6 @@
-interface Restaurant extends RestaurantBase{
-    id:string,
-    created?:Date|string,
-    updated?:Date|string,
-}
 
 interface RestaurantBase{
-    name:string,
+    name: string,
     cover?: File | FileList | string,
     images?: File[] | FileList | string[],
     description:string,
@@ -36,9 +31,6 @@ interface MenuPost extends MenuBase{
     restaurant:string
 }
 
-interface Menu extends MenuPost{
-    id:string
-}
 
 // ======= form handling =========
 interface AppendRestaurantData{

@@ -1,54 +1,72 @@
+import { z } from "zod";
 
-import {z} from "zod"
-
+// Reusable Schemas
 const fileSchema = z.instanceof(File);
+const fileArraySchema = z.array(fileSchema);
+const dateStringSchema = z.union([z.string(), z.string().transform((str) => new Date(str))]);
 
-const fileArray = z.array(fileSchema)
+// Keywords Schema
+const keywordsSchema = z.object({
+    tags: z.array(z.string())
+}).optional();
 
-export const RestaurantPostSchema = z.object({
+// Restaurant Schemas
+export const RestaurantBaseSchema = z.object({
     name: z.string(),
     cover: fileSchema.optional(),
-    images: fileArray.optional(),
+    images: fileArraySchema.optional(),
     description: z.string(),
     location: z.string(),
-    keywords: z.object({
-        tags: z.array(z.string())
-    }).optional(),
+    keywords: keywordsSchema,
     restaurantOwner: z.string(),
 });
 
-export const RestaurantGetSchema = z.object({
-    id:z.string(),
-    name: z.string(),
+export const RestaurantPostSchema = RestaurantBaseSchema;
+
+export const RestaurantGetSchema = RestaurantBaseSchema.extend({
     cover: z.string().optional(),
     images: z.array(z.string()).optional(),
-    description: z.string(),
-    location: z.string(),
-    keywords: z.object({
-        tags: z.array(z.string())
-    }).optional(),
-    restaurantOwner: z.string(),
-    created: z.union([z.string(), z.string().transform((str) => new Date(str))]),
-    updated: z.union([z.string(), z.string().transform((str) => new Date(str))]),
+    id: z.string(),
+    created: dateStringSchema,
+    updated: dateStringSchema,
+    collectionId: z.string(),
+    collectionName: z.string(),
 });
 
-export const MenuPostSchema = z.object({
+export const RestaurantListGetSchema = z.object({
+    page: z.number(),
+    perPage: z.number(),
+    totalPages: z.number(),
+    totalItems: z.number(),
+    items: z.array(RestaurantGetSchema)
+});
+
+// Menu Schemas
+export const MenuBaseSchema = z.object({
     name: z.string(),
     description: z.string(),
     price: z.number(),
     restaurant: z.string(),
-    image: z.optional(fileSchema)
-})
-export const MenuGetSchema = z.object({
-    id:z.string(),
-    name: z.string(),
-    description: z.string(),
-    price: z.number(),
-    restaurant: z.string(),
-    image: z.string()
-})
+    image: fileSchema.optional(),
+});
 
-export const MenuPostArraySchema = z.array(MenuPostSchema)
-export const MenuGetArraySchema = z.array(MenuGetSchema)
+export const MenuPostSchema = MenuBaseSchema;
 
-export const RestaurantListGetSchema = z.array(RestaurantGetSchema)
+export const MenuGetSchema = MenuBaseSchema.extend({
+    image: z.string(),
+    id: z.string(),
+    created: dateStringSchema,
+    updated: dateStringSchema,
+    collectionId: z.string(),
+    collectionName: z.string(),
+});
+
+export const MenuListPostSchema = z.array(MenuPostSchema)
+
+export const MenuListGetSchema = z.object({
+    page: z.number(),
+    perPage: z.number(),
+    totalPages: z.number(),
+    totalItems: z.number(),
+    items: z.array(MenuGetSchema)
+});

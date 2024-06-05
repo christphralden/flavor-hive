@@ -1,10 +1,23 @@
-import { RecordModel } from "pocketbase"
 
-interface State{
-    status?:number
-    message?:string
+// interface State{
+//     status?:number
+//     message?:string
+// }
+
+interface PocketbaseAttributes {
+    id: string
+    created: string | Date
+    updated: string | Date
+    collectionId: string
+    collectionName: string
 }
-export interface PocketbaseTyped<Type> {
-    record: RecordModel;
-    data: Type;
+
+export interface PocketbaseListTyped<T> {
+    page: number,
+    perPage: number,
+    totalPages: number,
+    totalItems: number,
+    items: T[]
 }
+export type PocketbaseTyped<T> = T & PocketbaseAttributes;
+
