@@ -55,6 +55,9 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
 
     const {mutate:appendMenuData, isLoading:isAppendMenuDataLoading} = useMutation(
         async (data:MenuBase)=>{
+            if (menuData.length >= 20) {
+                return;
+            }
             setMenuData(prev=>[...prev, data])
         }
     )

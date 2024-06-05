@@ -36,7 +36,7 @@ export default function Navbar() {
 						href={'/profile'}
 						className="p-2 hover:bg-secondary rounded-lg transition-all duration-300"
 					>
-						<User color='#6b7280' className='color-gray-500' />
+						<User color='#6b7280' />
 					</Link>
                     
 				</section>

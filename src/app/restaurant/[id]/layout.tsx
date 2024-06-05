@@ -8,7 +8,7 @@ export default function RestaurantDetailLayout({
 	return (
         <>
             <Navbar/>
-            <div className="w-full h-full p-8 pt-[100px]">
+            <div className="w-full h-full p-8 pt-[100px] flex flex-col gap-8">
                 {children}
             </div>
         </>

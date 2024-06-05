@@ -2,11 +2,11 @@
 import pb, { PB_KEYS } from '@service/pocketbase.service';
 import {useMutation, useQuery, useQueryClient} from 'react-query';
 import React, {createContext, ReactNode, useState} from 'react';
-import {RecordModel} from 'pocketbase';
 import {fetchData} from '@service/auth.service';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { AlertCircle } from '@geist-ui/icons'
+import { PocketbaseTyped } from 'lib/types/utils.types';
 
 
 interface AuthContextProviderProps {
@@ -70,7 +70,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 	});
 
 	const {isLoading} = useQuery(['user', pb.authStore.isValid], () => fetchData(), {
-		onSuccess: (data: RecordModel) => {
+		onSuccess: (data: PocketbaseTyped<User>) => {
 			if (data) {
 				setUser({
 					id: data.id,
@@ -79,6 +79,7 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 					username: data.username,
 					name: data.name,
 					verified: data.verified,
+					isRestaurantOwner: data.isRestaurantOwner
 				});
 			}
 		},

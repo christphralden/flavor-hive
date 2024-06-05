@@ -22,7 +22,7 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                     <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='coverImage'></Image>
                     <div className='w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end'>
                         <Badge className='text-white lg:text-xs px-4 py-2 lg:p-3 h-fit lg:h-full' variant={'dark'}>Liked by 1.2k</Badge>
-                        <Badge className='text-white lg:text-xs px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-4'/></Badge>
+                        <Badge className='text-white lg:text-xs px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-fit'/></Badge>
                     </div>
                     <Avatar className='lg:w-20 lg:h-20 w-16 h-16 absolute bottom-0 lg:left-8 left-4 translate-y-[50%]' >
                         <AvatarImage className='w-full h-full object-cover' src={coverImage} alt={`@${restaurant.name}`}/>
@@ -35,7 +35,7 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                             <div className='w-full flex justify-start items-start font-medium leading-5 '>
                                 <h1 className='w-[70%] text-wrap line-clamp-2'>{restaurant.name}</h1>
                                 <div className='w-[30%] flex gap-1 items-center justify-end'>
-                                    <Star className='w-4 h-4' color='#FDCC0D'/>
+                                    <Star className='w-4 flex-shrink-0' color='#FDCC0D'/>
                                     <p>4.5</p>
                                 </div>
                             </div>

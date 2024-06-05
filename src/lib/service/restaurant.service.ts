@@ -10,7 +10,7 @@ import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<RestaurantBase>> {
     try {
         const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
-            cache: "force-cache",
+            cache: "no-store",
         });
 
         const restaurant: PocketbaseTyped<RestaurantBase> = RestaurantGetSchema.parse(record);
@@ -71,17 +71,15 @@ export async function getRestaurantMenusPaged(restaurantId:string, page:number, 
     }
 }
 
-function parseMenus(menus: FormData[], restaurantId: string) {
+async function parseMenus(menus: FormData[], restaurantId: string) {
     const menuData = menus.map(menu => {
         const menuImage = menu.getAll('image') as File[];
         const name = menu.get('name') as string;
         const price = parseFloat(menu.get('price') as string); 
         const description = menu.get('description') as string;
 
-        // if (menuImage.length == 0) continue
-        
         const record: MenuPost = {
-            image: menuImage[0],  
+            image: (menuImage.length == 0) ? "" : menuImage[0],  
             name,
             price,
             description,
@@ -109,14 +107,20 @@ export async function createRestaurant(restaurant: FormData, menus: FormData[]):
         });
 
         const resRestaurant = await pb.collection(PB_KEYS.RESTAURANTS).create(restaurantRecord);
-        const menuRecords = MenuListPostSchema.parse(parseMenus(menus, resRestaurant.id));
-        const resMenu = await Promise.all(menuRecords.map((record) =>
-            pb.collection(PB_KEYS.MENUS).create(record, { '$autoCancel': false })
+        const menuRecords = MenuListPostSchema.parse(await parseMenus(menus, resRestaurant.id));
+        // if(menuRecords.length>20) throw new Error("Currently you can only add up to 20 menus")
+
+        const resMenu = await Promise.all(menuRecords.map(async(record) =>
+            await pb.collection(PB_KEYS.MENUS).create(record, { '$autoCancel': false })
         ));
 
-        revalidatePath("/restaurant/create/menu");
+        userData.isRestaurantOwner = true
+        await pb.collection('users').update(userData.id, userData);
+        
+        revalidatePath('/restaurant/create/menu')
         return { resRestaurant, resMenu };
     } catch (error) {
+        console.error(error)
         if (error instanceof ZodError) {
             throw new Error("Please fill in the necessary data correctly.");
         } else {

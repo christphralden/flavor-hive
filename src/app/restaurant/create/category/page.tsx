@@ -84,7 +84,7 @@ export default function CreateRestaurantCategory() {
 											{...formRegister('tag', {required: 'Tag is required'})}
 										/>
 										<Button className="flex gap-2 w-1/6">
-											<Plus className="w-4 h-4" />
+											<Plus className="w-4 flex-shrink-0" />
 											<p>Add</p>
 										</Button>
 									</div>

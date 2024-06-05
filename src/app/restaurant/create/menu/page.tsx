@@ -45,6 +45,13 @@ export default function CreateRestaurantMenu() {
     };
 
     const submit = async (data:MenuBase) =>{
+        if (menuItems.length >= 20 || menuData.length >= 20) {
+            toast.error("You currently can only add up to 20 menus", {
+                description: 'Please remove to add more.',
+                icon: <AlertCircle className="h-full " />,
+            });
+            return;
+        }
         try {
             await appendMenuData(data)
             await setMenuItems(prevItems => [...prevItems, data]);

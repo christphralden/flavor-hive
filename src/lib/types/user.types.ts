@@ -4,6 +4,7 @@ interface UserBase{
     username: string,
     email:string,
     name:string,
+    isRestaurantOwner:boolean,
 }
 
 interface User extends UserBase{
