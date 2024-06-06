@@ -1,10 +1,9 @@
 import pb from "@service/pocketbase.service";
-import { getRestaurant } from "@service/restaurant.service";
+import { getRestaurant, getRestaurantReviewsAmount } from "@service/restaurant.service";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";
-import { Button } from "@components/ui/button";
-import { Separator } from "@components/ui/separator";
+
 
 interface RestaurantHeaderProps {
     recordId: string;
@@ -12,15 +11,21 @@ interface RestaurantHeaderProps {
 
 export default async function RestaurantHeader({ recordId }: RestaurantHeaderProps) {
     try {
-        const restaurant = await getRestaurant(recordId)
+        const restaurantRequest = getRestaurant(recordId)
+        const reviewAmountRequest = getRestaurantReviewsAmount(recordId)
 
-        const images:string[] = (restaurant.images as string[]).map(image=>{
+        const [restaurant, reviewAmount] =  await Promise.all([
+            restaurantRequest,
+            reviewAmountRequest
+        ])
+
+        const images:string[] = (restaurant.images as string[] || []).map(image=>{
             return pb.files.getUrl(restaurant, image , {'thumb': '0x300'});
         })
         return (
             <>
                 <section className="w-full h-[60dvh] flex-grow max-h-full flex flex-col gap-8">
-                    <div className="w-full h-full  gap-4 flex">
+                    <div className="w-full h-full gap-4 flex">
                         <div className="w-[45%] h-full bg-black rounded-xl overflow-clip">
                             {images[0] && <Image width={1024} height={720} className='w-full h-full object-cover opacity-80' src={images[0]} alt='coverImage'/>}
                         </div>
@@ -66,7 +71,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                                         </div>
                                         <div className="flex gap-2">
                                             <Edit3 color='#6b7280' className="w-4 flex-shrink-0"/>
-                                            <p className="text-gray-500 text-sm lg:text-base">97</p>
+                                            <p className="text-gray-500 text-sm lg:text-base">{reviewAmount}</p>
                                         </div>
                                         <div className="flex gap-2">
                                             <Heart color='#6b7280' className="w-4 flex-shrink-0"/>
@@ -96,9 +101,9 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                         </div>
                     </section>
             </>
-            
         );
     } catch (error) {
+        console.error(error)
         return notFound();
     }
 }

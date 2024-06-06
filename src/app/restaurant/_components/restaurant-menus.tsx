@@ -13,17 +13,18 @@ interface RestaurantMenusProps {
 export default async function RestaurantMenus({recordId}: RestaurantMenusProps) {
 	try {
 		const menus = await getRestaurantMenusPaged(recordId, 1, 10);
-		if (menus.totalItems == 0) return null;
-
+		const totalItems = menus.totalItems
+		const length = menus.items.length
+		if (length == 0) return null
 		return (
 			<>
-				<Separator />
+				<Separator className='my-8'/>
                 <h1 className="font-medium text-2xl lg:text-3xl">Menus</h1>
 				<div>
-					{menus.items.length !== 0 && (
-						<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+					{length !== 0 && (
+						<div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-8">
 							{menus.items.map((menu, i) => {
-								if (i <= 8) {
+								if (i <= 15) {
 									return (
 										<MenuCard
 											menu={menu}

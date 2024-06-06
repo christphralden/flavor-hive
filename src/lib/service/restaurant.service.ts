@@ -4,14 +4,14 @@ import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
-import { MenuGetSchema, MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import {  MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
 import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 
 export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<RestaurantBase>> {
     try {
         const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
             next:{
-                revalidate:3600
+                revalidate:600
             }
         });
 
@@ -27,19 +27,28 @@ export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<R
     }
 }
 
-export async function getRestaurantReviews(recordId:string):Promise<Review_Poster[]>{
-    return pb.collection(PB_KEYS.REVIEWS).getFullList({
-        cache: 'no-cache',
+export async function getRestaurantReviewsPaged(recordId:string, page: number, perPage: number = 10, sort: string = ""):Promise<PocketbaseListTyped<Review_Poster>>{
+    return pb.collection(PB_KEYS.REVIEWS).getList(page, perPage, {
+        sort: sort as string,
+        cache: 'no-store',
         expand:"poster",
         filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
     });
+}
+
+export async function getRestaurantReviewsAmount(recordId:string):Promise<number>{
+    const { totalItems } = await pb.collection(PB_KEYS.REVIEWS).getList(1, 1,{
+        cache: 'no-store',
+        filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
+    });
+    return totalItems
 }
 
 export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
     try {
         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
             next:{
-                revalidate:3600
+                revalidate:600
             }
         });
 
@@ -60,7 +69,7 @@ export async function getRestaurantMenusPaged(restaurantId:string, page:number, 
         const records = await pb.collection(PB_KEYS.MENUS).getList(page, perPage, {
             filter: pb.filter('restaurant ?= {:id}', {id: restaurantId}),
             next:{
-                revalidate:3600
+                revalidate:600
             }
         });
 

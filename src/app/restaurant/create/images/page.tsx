@@ -9,6 +9,12 @@ import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { InfoIcon } from 'lucide-react'
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+  } from "@components/ui/accordion"
 
 export default function CreateRestaurantImages() {
     const {
@@ -54,7 +60,7 @@ export default function CreateRestaurantImages() {
 								<section className='flex flex-col gap-8'>
 									<InputLabelled
 										{...formRegister('cover')}
-										label="Cover image"
+										label="Cover Image"
 										type="file"
 										multiple={false}
 									>{errors.cover && <p>{errors.cover?.message}</p>}</InputLabelled>
@@ -66,8 +72,21 @@ export default function CreateRestaurantImages() {
 									>{errors.images && <p>{errors.images?.message}</p>}</InputLabelled>
 								</section>
 								<section className='text-gray-500 flex gap-2 justify-start items-center'>
-									<InfoIcon color='#6b7280' className='w-4 flex-shrink-0'/>
-									<span className='text-xs lg:text-sm'>We recommend more than 4 images</span>
+									<Accordion type="single" collapsible className="w-full">
+										<AccordionItem value="item-1">
+											<AccordionTrigger className='justify-start flex gap-2'>
+												<InfoIcon color='#6b7280' className='w-4 flex-shrink-0'/>
+												<span className='text-xs lg:text-sm'>Our reccomendations</span>
+											</AccordionTrigger>
+											<AccordionContent>
+												<ul>
+													<li>We reccomend to include more than 4 restaurant images</li>
+													<li>First 4 images will be use as a header for your restaurant</li>
+													<li>Use .webp to decrease load time which increases coversions by 25%</li>
+												</ul>
+											</AccordionContent>
+										</AccordionItem>
+									</Accordion>
 								</section>
 							</CardContent>
 							<CardFooter className="flex justify-between w-full gap-4">

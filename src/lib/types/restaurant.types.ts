@@ -1,4 +1,7 @@
 
+//TODO: tambahin favorited, sama review count (display aja), 
+// opening hours
+// sentiment overview -> ai generated summary
 interface RestaurantBase{
     name: string,
     cover?: File | FileList | string,
@@ -18,7 +21,7 @@ interface Restaurant_RestaurantOwner{
 
 interface RestaurantKeywords{
     tags:string[]
-    //tambahin nanti mungkin buat sentiment AI
+    //TODO: tambahin nanti mungkin buat sentiment AI
 }
 
 interface MenuBase{

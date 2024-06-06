@@ -1,6 +1,7 @@
 import { getAllRestaurantPaged } from "@service/restaurant.service"
 import RestaurantProfileCard from "app/_components/restaurant-profile-card";
 
+// TODO: change to sliderjs
 export default async function RestaurantSlider(){
     try{
         const restaurants = await getAllRestaurantPaged(1,10);
