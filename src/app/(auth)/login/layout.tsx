@@ -8,11 +8,11 @@ export default function LoginLayout({
 
 	return (
         <>
-            <div className="w-full h-[80%] flex justify-start items-center">
+            <div className="w-full h-fit flex justify-start items-center">
 					{children}
             </div>
-            <div className="w-full h-[10%] flex justify-start items-end">
-					<Link href={'/register'} className="text-sm lg:text-base text-gray-500 underline">Dont have an account?</Link>
+            <div className="w-full h-[20%] flex justify-start items-end">
+					<Link href={'/register'} className="  text-base  text-gray-500 underline">Dont have an account?</Link>
             </div>
         </>
 	);

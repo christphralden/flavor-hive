@@ -8,11 +8,11 @@ export default function RegisterLayout({
 
 	return (
         <>
-            <div className="w-full h-[80%] flex justify-start items-center">
+            <div className="w-full h-fit flex justify-start items-center">
 					{children}
             </div>
-            <div className="w-full h-[10%] flex justify-start items-end">
-					<Link href={'/login'} className="text-sm lg:text-base text-gray-500 underline">Already have an account?</Link>
+            <div className="w-full h-[20%] flex justify-start items-end">
+					<Link href={'/login'} className="  text-base  text-gray-500 underline">Already have an account?</Link>
             </div>
         </>
 	);

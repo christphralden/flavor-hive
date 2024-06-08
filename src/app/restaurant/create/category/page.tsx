@@ -69,8 +69,8 @@ export default function CreateRestaurantCategory() {
 					/>
 				</section>
 				<section className="w-full h-full">
-					<Card className="w-full h-full flex flex-col justify-between">
-						<CardHeader>
+					<Card className="w-full h-full min-h-[400px] flex flex-col justify-between">
+						<CardHeader className='flex flex-col gap-2'>
 							<CardTitle className='font-normal'>
 								<form
 									onSubmit={handleSubmit(handleAddTag)}
@@ -83,16 +83,16 @@ export default function CreateRestaurantCategory() {
 											label="Tags"
 											{...formRegister('tag', {required: 'Tag is required'})}
 										/>
-										<Button className="flex gap-2 w-1/6">
+										<Button className="flex gap-2 w-1/6 min-w-fit">
 											<Plus className="w-4 flex-shrink-0" />
 											<p>Add</p>
 										</Button>
 									</div>
 								</form>
 							</CardTitle>
+							<Separator/>
 						</CardHeader>
 						<CardContent className="h-full flex flex-col gap-4">
-							<Separator/>
 							<div className="flex flex-wrap gap-2 overflow-y-scroll">
 									{tags.map((tag, index) => (
 										<Badge

@@ -21,8 +21,8 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                 <CardHeader className='h-[40%] w-full bg-black p-0 relative '>
                     <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='coverImage'></Image>
                     <div className='w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end'>
-                        <Badge className='text-white lg:text-xs px-4 py-2 lg:p-3 h-fit lg:h-full' variant={'dark'}>Liked by 1.2k</Badge>
-                        <Badge className='text-white lg:text-xs px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-4'/></Badge>
+                        <Badge className='text-white lg:text-sm px-4 py-2 lg:p-3 h-fit lg:h-full' variant={'dark'}>Liked by 1.2k</Badge>
+                        <Badge className='text-white lg:text-sm px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-4'/></Badge>
                     </div>
                     <Avatar className='lg:w-20 lg:h-20 w-16 h-16 absolute bottom-0 lg:left-8 left-4 translate-y-[50%]' >
                         <AvatarImage className='w-full h-full object-cover' src={coverImage} alt={`@${restaurant.name}`}/>
@@ -40,12 +40,12 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                                 </div>
                             </div>
                             <div className='w-full'>
-                                <p className='text-gray-500 text-xs lg:text-sm font-normal line-clamp-1'>{restaurant.location}</p>
+                                <p className='text-gray-500 text-sm lg:  font-normal line-clamp-1'>{restaurant.location}</p>
                             </div>
                             <Separator className='lg:mt-2 mt-1'/>
                         </div>
                         <div className='w-full'>
-                            <p className='text-gray-500  line-clamp-3 text-xs lg:text-sm'>{restaurant.description}</p>
+                            <p className='text-gray-500  line-clamp-3 text-sm lg: '>{restaurant.description}</p>
                         </div>
                     </section>
                     <section className='hidden  gap-2 lg:flex'>
@@ -53,10 +53,10 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                             restaurant.keywords?.tags.map((tag, i)=>{
                                 const limit = 2
                                 if(i==limit)return(
-                                    <Badge key={i} variant={'outline'} className='p-2 px-4 text-xs lg:text-xs'>+{(restaurant.keywords?.tags.length||0) - limit}</Badge>
+                                    <Badge key={i} variant={'outline'} className='p-2 px-4 text-xs lg:text-sm'>+{(restaurant.keywords?.tags.length||0) - limit}</Badge>
                                 )
                                 if(i<limit)return(
-                                    <Badge key={i} variant={'secondary'} className='p-2 px-4 text-xs lg:text-xs'>{tag}</Badge>
+                                    <Badge key={i} variant={'secondary'} className='p-2 px-4 text-xs lg:text-sm'>{tag}</Badge>
                                 )
                             })
                         }

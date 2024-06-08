@@ -76,9 +76,9 @@ export default function CreateRestaurantImages() {
 										<AccordionItem value="item-1">
 											<AccordionTrigger className='justify-start flex gap-2'>
 												<InfoIcon color='#6b7280' className='w-4 flex-shrink-0'/>
-												<span className='text-xs lg:text-sm'>Our reccomendations</span>
+												<span className='text-sm'>Our reccomendations</span>
 											</AccordionTrigger>
-											<AccordionContent>
+											<AccordionContent className='text-sm'>
 												<ul>
 													<li>We reccomend to include more than 4 restaurant images</li>
 													<li>First 4 images will be use as a header for your restaurant</li>

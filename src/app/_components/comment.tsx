@@ -20,19 +20,19 @@ export default function Comment({review}: CommentProps) {
             <div className="flex flex-col w-full gap-2 lg:gap-0">
                 <div className="flex justify-between items-start">
                     <div className="flex flex-col items-start justify-center">
-                        <span className="font-medium text-sm lg:text-base">{review.expand.poster.name}</span>
-                        <span className="text-sm text-gray-500">@{review.expand.poster.username}</span>
+                        <span className="font-medium   text-base ">{review.expand.poster.name}</span>
+                        <span className=" text-sm  text-gray-500">@{review.expand.poster.username}</span>
                     </div>
                     <div className="flex flex-col items-end">
                         <span className="text-yellow-500">{'★'.repeat(review.rating)}</span>
-                        <span className="text-xs lg:text-sm text-gray-500 text-right">{time}</span>
+                        <span className="text-xs lg:text-sm  text-gray-500 text-right">{time}</span>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
-                    <div className="lg:mt-2 text-sm lg:text-base ">
+                    <div className="lg:mt-2   text-base  ">
                         <p className='text-gray-500'>{review.description}</p>
                     </div>
-                    <div className="flex gap-4 text-sm text-gray-500">
+                    <div className="flex gap-4 text-sm   text-gray-500">
                         <div className='flex gap-2 items-center'>
                             <span><ThumbsUp className='w-4 flex-shrink-0'/></span>
                             <span>31</span>

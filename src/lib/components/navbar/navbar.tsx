@@ -20,7 +20,7 @@ export default function Navbar() {
 							<Link
 								key={i}
 								href={routes.path}
-								className="text-sm lg:text-base text-gray-500"
+								className="  text-base  text-gray-500"
 							>
 								{routes.name}
 							</Link>

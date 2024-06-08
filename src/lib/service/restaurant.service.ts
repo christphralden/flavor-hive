@@ -27,7 +27,7 @@ export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<R
     }
 }
 
-export async function getRestaurantReviewsPaged(recordId:string, page: number, perPage: number = 10, sort: string = ""):Promise<PocketbaseListTyped<Review_Poster>>{
+export async function getRestaurantReviewsPaged(recordId:string, page: number, perPage: number = 10, sort: string = ""):Promise<PocketbaseListTyped<PocketbaseTyped<Review_Poster>>>{
     return pb.collection(PB_KEYS.REVIEWS).getList(page, perPage, {
         sort: sort as string,
         cache: 'no-store',

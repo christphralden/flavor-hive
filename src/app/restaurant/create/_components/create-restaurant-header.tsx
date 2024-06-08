@@ -18,12 +18,11 @@ export default function CreateRestaurantHeader({header, description, step}:Creat
 		<div className="w-full flex flex-col gap-4">
 			<div className="flex flex-col gap-1 w-full">
 				<h1 className="text-2xl lg:text-3xl font-medium">{header}</h1>
-				<p className="text-gray-500">{description}</p>
+				<p className="text-gray-500 lg:flex hidden">{description}</p>
 			</div>
 			<div className="flex flex-col gap-2">
 				<p className='text-gray-500'>{`Step ${step} of 4`}</p>
-				<div className="flex gap-4 w-full ">
-
+				<div className="gap-4 w-full hidden lg:flex ">
           {
             Array.from({length:4}).map((_, i)=>{
               let completed;

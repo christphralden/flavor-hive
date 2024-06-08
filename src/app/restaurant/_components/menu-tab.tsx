@@ -26,9 +26,9 @@ export default function MenuTab({ menu, onClick =()=>{} }: MenuTabProps) {
     }, [menu.image]);
 
     return (
-			<div className="w-full flex gap-4 border-[1px] rounded-lg bg-secondary p-4 justify-between">
+			<div className="w-full flex gap-4 border-[1px] rounded-lg bg-secondary p-2 lg:p-4 justify-between">
 				<section className='w-fit h-full flex gap-4'>
-                    <div className="w-24 h-24 bg-gray-500 rounded-lg overflow-clip">
+                    <div className="w-20 h-20 lg:w-24 lg:h-24 bg-gray-500 rounded-lg overflow-clip">
                         {imageUrl && (
                             <Image
                                 width={1024}
@@ -43,13 +43,13 @@ export default function MenuTab({ menu, onClick =()=>{} }: MenuTabProps) {
                     <div className='flex flex-col justify-between'>
                         <div className='flex flex-col gap-1'>
                             <h1 className='text-base lg:text-lg font-medium'>{menu.name}</h1>
-                            <p className='text-sm lg:text-base font-normal text-gray-500'>{menu.description}</p>
+                            <p className='  text-sm  font-normal text-gray-500'>{menu.description}</p>
                         </div>
-                        <p className='text-sm lg:text-base font-normal'>Rp.&nbsp;{menu.price}</p>
+                        <p className='  text-base  font-normal'>Rp.&nbsp;{menu.price}</p>
                     </div>
                 </section >
                 <section>
-                    <Button onClick={()=>onClick(menu)} className='p-0 h-fit w-fit ' variant={'secondary'}><X color='#6b7280' className='h-fit w-fit'/></Button>
+                    <Button onClick={()=>onClick(menu)} className='p-0 h-fit w-fit ' variant={'secondary'}><X color='#6b7280' className='flex-shrink-0 w-4'/></Button>
                 </section>
 			</div>
 		);

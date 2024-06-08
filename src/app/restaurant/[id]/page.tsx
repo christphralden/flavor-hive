@@ -1,9 +1,7 @@
 import { Suspense } from 'react';
 import RestaurantHeader from '../_components/restaurant-header';
 import RestaurantReviews from '../_components/restaurant-reviews';
-import { notFound } from 'next/navigation';
 import RestaurantMenus from '../_components/restaurant-menus';
-import { Separator } from '@components/ui/separator';
 
 interface RestaurantProps{
     params: {
