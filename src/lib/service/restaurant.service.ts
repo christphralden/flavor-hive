@@ -1,4 +1,3 @@
-
 "use server"
 import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
@@ -26,24 +25,6 @@ export async function getRestaurant(recordId: string): Promise<PocketbaseTyped<R
         }
     }
 }
-
-export async function getRestaurantReviewsPaged(recordId:string, page: number, perPage: number = 10, sort: string = ""):Promise<PocketbaseListTyped<PocketbaseTyped<Review_Poster>>>{
-    return pb.collection(PB_KEYS.REVIEWS).getList(page, perPage, {
-        sort: sort as string,
-        cache: 'no-store',
-        expand:"poster",
-        filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
-    });
-}
-
-export async function getRestaurantReviewsAmount(recordId:string):Promise<number>{
-    const { totalItems } = await pb.collection(PB_KEYS.REVIEWS).getList(1, 1,{
-        cache: 'no-store',
-        filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
-    });
-    return totalItems
-}
-
 export async function getAllRestaurantPaged(page: number, perPage: number = 10): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
     try {
         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {

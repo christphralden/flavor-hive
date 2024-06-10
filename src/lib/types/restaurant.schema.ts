@@ -1,9 +1,5 @@
 import { z } from "zod";
-
-// Reusable Schemas
-const fileSchema = z.instanceof(File);
-const fileArraySchema = z.array(fileSchema);
-const dateStringSchema = z.union([z.string(), z.string().transform((str) => new Date(str))]);
+import { dateStringSchema, fileArraySchema, fileSchema } from "./utils.schema";
 
 // Keywords Schema
 const keywordsSchema = z.object({

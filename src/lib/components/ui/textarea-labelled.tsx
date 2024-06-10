@@ -12,12 +12,12 @@ const TextareaLabelled = React.forwardRef<HTMLTextAreaElement, TextAreaLabelledP
 		return (
 			<div className="flex flex-col gap-1">
 				<div className="flex gap-2 items-baseline justify-between">
-					<p className="font-medium   text-base ">{label}</p>
-					<div className="text-gray-500 text-sm lg:  ">{children}</div>
+					<p className="font-normal  text-sm ">{label}</p>
+					<div className="text-gray-500 text-sm   ">{children}</div>
 				</div>
 				<textarea
 					className={cn(
-						'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2   text-base  ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
+						'flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2   text-base  focus-visible:outline-none outline-gray-500 focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50',
 						className
 					)}
 					ref={ref}

@@ -60,13 +60,13 @@ export default function CreateRestaurantImages() {
 								<section className='flex flex-col gap-8'>
 									<InputLabelled
 										{...formRegister('cover')}
-										label="Cover Image"
+										label="Cover Image (optional)"
 										type="file"
 										multiple={false}
 									>{errors.cover && <p>{errors.cover?.message}</p>}</InputLabelled>
 									<InputLabelled
 										{...formRegister('images')}
-										label="Restaurant Images"
+										label="Restaurant Images (optional)"
 										type="file"
 										multiple
 									>{errors.images && <p>{errors.images?.message}</p>}</InputLabelled>

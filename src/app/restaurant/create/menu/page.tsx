@@ -106,8 +106,7 @@ export default function CreateRestaurantMenu() {
 
 							<CredenzaContent className="pt-10 w-full p-8 ">
 								<CredenzaHeader>
-									<CredenzaTitle className="font-medium">Create a new menu</CredenzaTitle>
-									<CredenzaDescription>Remember to keep things respectful</CredenzaDescription>
+									<CredenzaTitle className="font-medium text-base lg:text-xl">Create a new menu</CredenzaTitle>
 								</CredenzaHeader>
 								<form
 									onSubmit={handleSubmit(submit)}

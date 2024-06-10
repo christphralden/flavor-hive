@@ -1,5 +1,6 @@
 import pb from "@service/pocketbase.service";
-import { getRestaurant, getRestaurantReviewsAmount } from "@service/restaurant.service";
+import { getRestaurant } from "@service/restaurant.service";
+import { getRestaurantReviewsAmount } from "@service/reviews.service";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";

@@ -54,7 +54,7 @@ export default function CreateRestaurantInfo() {
 						<CardContent className="flex flex-col gap-8 ">
 							<div className="flex flex-col gap-1">
 								<div className="flex gap-2 items-baseline justify-between">
-									<p className="font-medium   text-base ">Restaurant Name</p>
+									<p className="font-normal   text-sm ">Restaurant Name</p>
 									<div className="text-gray-500 text-sm lg:  ">
 										{errors.name && <p>{errors.name?.message}</p>}
 									</div>

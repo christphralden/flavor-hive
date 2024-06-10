@@ -1,10 +1,9 @@
 import { Separator } from '@components/ui/separator';
-import { getRestaurantReviewsPaged } from '@service/restaurant.service';
-import Comment from 'app/_components/comment';
+import { getRestaurantReviewsPaged} from  '@service/reviews.service'
+import Comment from '@components/review/comment';
 import { notFound } from 'next/navigation';
 
 import ReviewModal from './review-modal';
-import { Suspense } from 'react';
 
 interface RestaurantReviewsProps {
     recordId: string;
@@ -34,7 +33,7 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
                         )}
                     </div>
                     <div className="w-full xl:w-[40%] h-fit xl:sticky xl:top-28">
-                        <ReviewModal reviews={reviews}/>
+                        <ReviewModal reviews={reviews} restaurantId={recordId}/>
                     </div>
                 </div>
             </>

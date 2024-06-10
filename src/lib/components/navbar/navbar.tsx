@@ -4,7 +4,7 @@ import { NavbarRoutes } from "./navbar.routes";
 import Link from "next/link";
 import { Separator } from "@components/ui/separator";
 import { AnimatePresence, motion } from "framer-motion";
-import { Crosshair, Search, User, X } from "@geist-ui/icons";
+import { Search, User, X } from "@geist-ui/icons";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 
@@ -12,7 +12,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed w-full z-[50] flex flex-col">
+    <div className="fixed w-full h-fit z-[50] flex flex-col">
       <div className="flex w-full h-full justify-between p-4 px-8 items-center bg-white">
         <section className="w-fit flex justify-start gap-8 items-center">
           <div className="w-fit">
@@ -31,8 +31,16 @@ export default function Navbar() {
           </div>
         </section>
         <section className="w-fit flex gap-4 items-center">
-          <Link href={""} onClick={() => setIsOpen(!isOpen)}>
+          
+          <Button className="p-2" variant={'ghost'} onClick={() => setIsOpen(!isOpen)}>
             <Search color="#6b7280" />
+          </Button>
+
+          <Link
+            href={"/profile"}
+            className="p-2 hover:bg-secondary rounded-lg transition-all duration-300"
+          >
+            <User color="#6b7280" />
           </Link>
           <Link href={"/restaurant/create/info"}>
             <Button
@@ -41,12 +49,6 @@ export default function Navbar() {
             >
               Set up restaurant
             </Button>
-          </Link>
-          <Link
-            href={"/profile"}
-            className="p-2 hover:bg-secondary rounded-lg transition-all duration-300"
-          >
-            <User color="#6b7280" />
           </Link>
         </section>
       </div>

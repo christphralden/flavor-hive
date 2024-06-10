@@ -13,13 +13,13 @@ const InputLabelled = React.forwardRef<HTMLInputElement, InputLabelledProps>(
 		return (
 			<div className={cn("flex flex-col gap-1 w-full",className)}>
 				<div className="flex gap-2 items-baseline justify-between">
-					<p className="font-medium text-base">{label}</p>
+					<p className="font-normal text-sm">{label}</p>
 					<div className="text-gray-500 text-sm  ">{children}</div>
 				</div>
 				<input
 					type={type}
 					className={
-						'flex w-full rounded-md border border-input bg-background p-3   text-base  ring-offset-background file:border-0 file:bg-transparent file:  file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50'}
+						'flex w-full rounded-md border border-input bg-background p-3  text-base file:border-0 file:bg-transparent file:font-medium focus-visible:outline-none outline-gray-500 focus-visible:ring-0 focus-visible:ring-transparent disabled:cursor-not-allowed disabled:opacity-50'}
 					ref={ref}
 					{...props}
 				/>
