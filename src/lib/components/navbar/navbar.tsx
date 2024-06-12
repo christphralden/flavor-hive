@@ -7,9 +7,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Search, User, X } from "@geist-ui/icons";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
+import Searchbar from "@components/searchbar/searchbar";
+
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const closeSearch = () => {setIsOpen(false)};
 
   return (
     <div className="fixed w-full h-fit z-[50] flex flex-col">
@@ -55,19 +58,9 @@ export default function Navbar() {
       <Separator orientation="horizontal" className="w-full border-black" />
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: -1000 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -1200 }}
-            className="bg-gray-200 w-full h-fit px-8 py-4 flex items-center justify-center"
-          >
-            <Search color="#6b7280" />
-            <Input
-              placeholder="Search Restaurant"
-              className="bg-transparent text-lg px-3 w-full placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
-            />
-            <X className="cursor-pointer" onClick={() => setIsOpen(false)} />
-          </motion.div>
+          <>
+            <Searchbar closeSearch={closeSearch }/>
+          </>
         )}
       </AnimatePresence>
     </div>
