@@ -44,8 +44,7 @@ export async function getRestaurantReviewStats(recordId:String):Promise<ReviewSt
         total += review.rating;
         reviewStats.stars[review.rating] += 1;
     });
-    
-    reviewStats.average = total / reviewData.length;
+    reviewStats.average = reviewData.length > 0 ? (total / reviewData.length) : 0;
 
     return reviewStats
 }
