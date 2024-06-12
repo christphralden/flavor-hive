@@ -22,3 +22,13 @@ interface Review_Poster extends Review{
         poster:User
     }
 }
+
+interface Stars{
+    [key:number]:number;
+}
+
+interface ReviewStats{
+    amount:number,
+    average:number,
+    stars:Stars,
+}

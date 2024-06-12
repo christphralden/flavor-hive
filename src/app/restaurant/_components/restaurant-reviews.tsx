@@ -1,5 +1,5 @@
 import { Separator } from '@components/ui/separator';
-import { getRestaurantReviewsPaged} from  '@service/reviews.service'
+import { getRestaurantReviewsPaged, getRestaurantReviewStats} from  '@service/reviews.service'
 import Comment from '@components/review/comment';
 import { notFound } from 'next/navigation';
 
@@ -12,9 +12,11 @@ interface RestaurantReviewsProps {
 // TODO: Sort based on recent, most upvoted
 export default async function RestaurantReviews({ recordId }: RestaurantReviewsProps) {
     try {
-        const reviews = await getRestaurantReviewsPaged(recordId, 1, 8);
-        const length = reviews.items.length;
-
+        const [reviews, stats] = await Promise.all([
+            getRestaurantReviewsPaged(recordId, 1, 8),
+            getRestaurantReviewStats(recordId)
+        ])
+        const length = stats.amount
         return (
             <>
                 <Separator className="my-8" />
@@ -33,7 +35,7 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
                         )}
                     </div>
                     <div className="w-full xl:w-[40%] h-fit xl:sticky xl:top-28">
-                        <ReviewModal reviews={reviews} restaurantId={recordId}/>
+                        <ReviewModal reviews={reviews} restaurantId={recordId} stats={stats}/>
                     </div>
                 </div>
             </>

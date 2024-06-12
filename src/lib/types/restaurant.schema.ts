@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dateStringSchema, fileArraySchema, fileSchema } from "./utils.schema";
+import { dateStringSchema, fileArraySchema, fileSchema, PocketbaseAttributes, PocketbaseListAttributes } from "./utils.schema";
 
 // Keywords Schema
 const keywordsSchema = z.object({
@@ -23,19 +23,11 @@ export const RestaurantGetSchema = RestaurantBaseSchema.extend({
     cover: z.string().optional(),
     images: z.array(z.string()).optional(),
     id: z.string(),
-    created: dateStringSchema,
-    updated: dateStringSchema,
-    collectionId: z.string(),
-    collectionName: z.string(),
-});
+}).merge(PocketbaseAttributes);
 
 export const RestaurantListGetSchema = z.object({
-    page: z.number(),
-    perPage: z.number(),
-    totalPages: z.number(),
-    totalItems: z.number(),
     items: z.array(RestaurantGetSchema)
-});
+}).merge(PocketbaseListAttributes);
 
 // Menu Schemas
 export const MenuBaseSchema = z.object({
@@ -51,18 +43,10 @@ export const MenuPostSchema = MenuBaseSchema;
 export const MenuGetSchema = MenuBaseSchema.extend({
     image: z.string(),
     id: z.string(),
-    created: dateStringSchema,
-    updated: dateStringSchema,
-    collectionId: z.string(),
-    collectionName: z.string(),
-});
+}).merge(PocketbaseAttributes);
 
 export const MenuListPostSchema = z.array(MenuPostSchema)
 
 export const MenuListGetSchema = z.object({
-    page: z.number(),
-    perPage: z.number(),
-    totalPages: z.number(),
-    totalItems: z.number(),
     items: z.array(MenuGetSchema)
-});
+}).merge(PocketbaseListAttributes);
