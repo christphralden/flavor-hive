@@ -4,7 +4,6 @@ import {InputLabelled} from '@components/ui/input-labelled';
 import {InputPrefixed} from '@components/ui/input-prefixed';
 import {Button} from '@components/ui/button';
 import {TextareaLabelled} from '@components/ui/textarea-labelled';
-import Link from 'next/link';
 import CreateRestaurantHeader from '../_components/create-restaurant-header';
 import {useCreateRestaurant} from '@hooks/useCreateRestaurant';
 import {useForm} from 'react-hook-form';

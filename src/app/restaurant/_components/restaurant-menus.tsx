@@ -22,7 +22,7 @@ export default async function RestaurantMenus({recordId}: RestaurantMenusProps) 
                 <h1 className="font-medium text-2xl lg:text-3xl">Menus</h1>
 				<div>
 					{length !== 0 && (
-						<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-8">
+						<div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-8">
 							{menus.items.map((menu, i) => {
 								if (i <= 15) {
 									return (

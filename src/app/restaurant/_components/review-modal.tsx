@@ -21,28 +21,36 @@ import CreateReviewForm from './create-review-form';
 interface ReviewModalInterface {
     reviews: PocketbaseListTyped<PocketbaseTyped<Review_Poster>>;
     restaurantId: string;
+    stats: ReviewStats
 }
 
-export default function ReviewModal({reviews, restaurantId}: ReviewModalInterface) {
+export default function ReviewModal({reviews, restaurantId, stats}: ReviewModalInterface) {
     const totalItems = reviews.totalItems;
+    const percentage = (value:number, ratio:number):number => {
+        return value/ratio *100
+    }
     return (
         <>
-            <Credenza>
+            <Credenza >
                 <div className="w-full h-full bg-secondary rounded-lg p-6 lg:p-8">
                     <div className="flex flex-col gap-4">
-                        <div className="w-full flex justify-between items-baseline">
+                        <div className="w-full flex justify-between items-start">
                             <h1 className="text-2xl lg:text-3xl font-medium">Ratings & Reviews</h1>
-                            <p className="text-sm lg:text-base text-gray-500">{totalItems}&nbsp;Ratings</p>
+                            <p className="text-sm lg:text-base text-gray-500 hidden lg:flex">{totalItems}&nbsp;Ratings</p>
+                            <div className="flex lg:hidden flex-col w-[20%] min-w-fit justify-start items-center ">
+                                <h1 className="text-4xl md:text-5xl font-medium">{stats.average.toFixed(2)}</h1>
+                                <p className="text-sm lg:text-base text-nowrap text-gray-500">out of {totalItems}</p>
+                            </div>
                         </div>
                         <div className="w-full flex gap-4 justify-between">
-                            <div className="flex flex-col w-fit justify-start items-center">
-                                <h1 className="text-4xl md:text-5xl font-medium">4.5</h1>
-                                <p className="text-sm lg:text-base text-gray-500">out of {totalItems}</p>
+                            <div className="hidden lg:flex flex-col w-[20%] min-w-fit justify-start items-center ">
+                                <h1 className="text-4xl md:text-5xl font-medium">{stats.average.toFixed(2)}</h1>
+                                <p className="text-sm lg:text-base text-nowrap text-gray-500">out of {totalItems}</p>
                             </div>
-                            <div className="w-full flex flex-col">
+                            <div className="w-full lg:w-[80%] flex flex-col">
                                 {Array.from({length: 5}).map((_, i) => (
                                     <StarRating
-                                        value={100 - i * 10}
+                                        value={percentage(stats.stars[5-i], stats.amount)}
                                         key={i}
                                         star={5 - i}
                                     />
