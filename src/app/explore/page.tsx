@@ -1,17 +1,16 @@
-import { Input } from "@components/ui/input";
-import { useSearchParams } from "next/navigation";
 
 interface ExploreProps {
-  params: {
-    searchParams: { [key: string]: string | string[] | undefined };
-  };
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function Explore({ params }: ExploreProps) {
+export default function Explore({ searchParams }: ExploreProps) {
+  console.log(searchParams)
+  console.log(searchParams.search)
   return (
+    
     <>
-      {/* <div>{params.searchParams}</div> */}
       <div>Explore</div>
     </>
   );
 }
+
