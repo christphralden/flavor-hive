@@ -41,6 +41,7 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
             </>
         );
     } catch (error) {
+        console.error(error)
         notFound();
     }
 }

@@ -1,12 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavbarRoutes } from "./navbar.routes";
 import Link from "next/link";
 import { Separator } from "@components/ui/separator";
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, User, X } from "@geist-ui/icons";
 import { Button } from "@components/ui/button";
-import { Input } from "@components/ui/input";
 import Searchbar from "@components/searchbar/searchbar";
 
 

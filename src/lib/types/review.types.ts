@@ -11,8 +11,7 @@ interface ReviewBase{
     poster:string,
     rating:number,
     restaurant:string,
-    minPriceRange:number,
-    maxPriceRange:number,
+    spent:number
 }
 
 // TODO: price range, remove title, add upvotes and downvotes

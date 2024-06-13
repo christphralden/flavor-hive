@@ -2,7 +2,6 @@ import pb from '@service/pocketbase.service';
 import { formatPrice } from '@utils/utils';
 import {PocketbaseTyped} from 'lib/types/utils.types';
 import Image from 'next/image';
-import React from 'react';
 
 interface MenuCardProps {
 	menu: PocketbaseTyped<MenuBase>;

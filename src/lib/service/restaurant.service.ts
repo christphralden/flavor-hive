@@ -31,7 +31,7 @@ export async function getRestaurant({ recordId }: { recordId: string; }): Promis
 export async function getAllRestaurantPaged({ page, perPage = 10 }: { page: number; perPage?: number; }): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
     try {
         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
-            cache:'force-cache',
+            cache:'no-store',
             next:{
                 tags:['restaurant'],
                 revalidate:60*5

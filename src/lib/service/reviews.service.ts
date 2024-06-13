@@ -4,7 +4,7 @@ import pb, {PB_KEYS} from '@service/pocketbase.service';
 import {PocketbaseListTyped, PocketbaseTyped} from 'lib/types/utils.types';
 import {fetchData} from '@service/auth.service';
 import {ReviewGetAllSchema, ReviewPostSchema} from 'lib/types/review.schema';
-import {revalidatePath, revalidateTag} from 'next/cache';
+import {revalidatePath} from 'next/cache';
 import {z, ZodError} from 'zod';
 import { getRestaurant } from './restaurant.service';
 
@@ -99,16 +99,14 @@ export async function createRestaurantReview({ review }: { review: FormData; }):
 	try {
 		const reviewData = JSON.parse(review.get('otherData') as string);
 
-		const minPriceRange = Number(reviewData.minPriceRange);
-		const maxPriceRange = Number(reviewData.maxPriceRange);
+		const spent = Number(reviewData.spent);
 		const reviewRecord: ReviewBase = ReviewPostSchema.parse({
 			...reviewData,
-			minPriceRange,
-			maxPriceRange,
+            spent,
 			poster: userData.id,
 			images: review.getAll('images') as File[],
 		});
-		if (reviewRecord.minPriceRange >= reviewData.maxPriceRange) throw new Error();
+		// if (reviewRecord.spent <= 0) throw new Error();
 		if (!(reviewRecord.rating >= 0 || reviewRecord.rating <= 5)) throw new Error();
 
 		await pb.collection(PB_KEYS.REVIEWS).create(reviewRecord);
