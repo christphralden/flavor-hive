@@ -12,3 +12,7 @@ export function formatPrice(price:number):string{
 		maximumFractionDigits:0
 	}).format(price)
 }
+
+export const round = (value:number) =>{
+	return (value % 1 !== 0) ? value.toFixed(2) : value
+}

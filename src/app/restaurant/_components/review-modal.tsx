@@ -17,6 +17,7 @@ import {
 	CredenzaTrigger,
 } from '@components/ui/credenza';
 import CreateReviewForm from './create-review-form';
+import { round } from '@utils/utils';
 
 interface ReviewModalInterface {
 	reviews: PocketbaseListTyped<PocketbaseTyped<Review_Poster>>;
@@ -29,9 +30,7 @@ export default function ReviewModal({reviews, restaurantId, stats}: ReviewModalI
 	const percentage = (value: number, ratio: number): number => {
 		return (value / ratio) * 100;
 	};
-    const round = (value:number) =>{
-        return (value % 1 !== 0) ? value.toFixed(2) : value
-    }
+
 
 	return (
 		<>

@@ -132,7 +132,7 @@ export default function CreateRestaurantMenu() {
 										{errors.description && errors.description.message}
 									</TextareaLabelled>
 									<InputLabelled
-										{...formRegister('image')}
+										{...formRegister('image',{required: 'Image is required'})}
 										label="Cover image"
 										type="file"
 									>

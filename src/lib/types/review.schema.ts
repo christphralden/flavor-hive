@@ -4,7 +4,7 @@ import { fileArraySchema, PocketbaseAttributes, PocketbaseListAttributes } from 
 const ReviewBaseSchema = z.object({
     description: z.string(),
     rating: z.number(),
-    images: fileArraySchema,
+    images: fileArraySchema.optional(),
     poster: z.string(),
     restaurant: z.string(),
     minPriceRange: z.number(),

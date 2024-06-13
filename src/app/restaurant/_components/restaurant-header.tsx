@@ -4,6 +4,7 @@ import { getRestaurantReviewsAmount } from "@service/reviews.service";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";
+import { round } from "@utils/utils";
 
 interface RestaurantHeaderProps {
     recordId: string;
@@ -11,12 +12,10 @@ interface RestaurantHeaderProps {
 
 export default async function RestaurantHeader({ recordId }: RestaurantHeaderProps) {
     try {
-        const restaurantRequest = getRestaurant(recordId)
-        const reviewAmountRequest = getRestaurantReviewsAmount(recordId)
 
         const [restaurant, reviewAmount] = await Promise.all([
-            restaurantRequest,
-            reviewAmountRequest
+            getRestaurant({ recordId }),
+            getRestaurantReviewsAmount({ recordId })
         ])
 
         const images: string[] = (restaurant.images as string[] || []).map(image => {
@@ -63,7 +62,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                                 <div className="flex gap-4 ">
                                     <div className="flex gap-1 items-center">
                                         <Star color='#6b7280' className="w-4 flex-shrink-0" />
-                                        <p className="text-gray-500 text-sm lg:text-base ">4.5</p>
+                                        <p className="text-gray-500 text-sm lg:text-base ">{round(restaurant.cachedRating)}</p>
                                     </div>
                                     <div className="flex gap-1 items-center">
                                         <Eye color='#6b7280' className="w-4 flex-shrink-0" />

@@ -37,7 +37,7 @@ export default function CreateReviewForm({ restaurantId }: { restaurantId: strin
                 Array.from(data.images).forEach((file) => formData.append('images', file));
             }
 
-            await createRestaurantReview(formData);
+            await createRestaurantReview({ review: formData });
 
             toast.success('Review submitted successfully');
         } catch (error) {

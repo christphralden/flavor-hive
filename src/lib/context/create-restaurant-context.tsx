@@ -106,7 +106,7 @@ export default function CreateRestaurantContextProvider({children}: CreateRestau
         async ()=>{
             const restaurant:FormData = transformRestaurantData();
             const menu:FormData[] = transformMenuData()
-            return await createRestaurant(restaurant, menu)
+            return await createRestaurant({ restaurant, menus: menu })
         },
         {
             onSuccess:(data)=>{

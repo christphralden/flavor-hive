@@ -22,7 +22,12 @@ interface Review_Poster extends Review{
         poster:User
     }
 }
-
+interface Review_Poster_Restaurant extends Review{
+    expand:{
+        poster:User,
+        restaurant:RestaurantBase
+    }
+}
 interface Stars{
     [key:number]:number;
 }

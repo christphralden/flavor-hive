@@ -5,7 +5,7 @@ import { formatDate } from '@utils/date-utils';
 import { dateType } from 'lib/types/date.types';
 
 interface CommentProps {
-    review: Review_Poster;
+    review: Review_Poster | Review_Poster_Restaurant;
 }
 
 // TODO: upvote, downvote

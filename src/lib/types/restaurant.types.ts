@@ -10,6 +10,7 @@ interface RestaurantBase{
     location:string,
     keywords?:RestaurantKeywords,
     restaurantOwner:string,
+    cachedRating:number
 }
 
 interface Restaurant_RestaurantOwner{

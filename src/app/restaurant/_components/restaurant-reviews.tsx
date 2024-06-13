@@ -13,8 +13,8 @@ interface RestaurantReviewsProps {
 export default async function RestaurantReviews({ recordId }: RestaurantReviewsProps) {
     try {
         const [reviews, stats] = await Promise.all([
-            getRestaurantReviewsPaged(recordId, 1, 8),
-            getRestaurantReviewStats(recordId)
+            getRestaurantReviewsPaged({ recordId, page: 1, perPage: 8 }),
+            getRestaurantReviewStats({ recordId })
         ])
         const length = stats.amount
         return (
@@ -41,7 +41,6 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
             </>
         );
     } catch (error) {
-        console.error(error)
         notFound();
     }
 }

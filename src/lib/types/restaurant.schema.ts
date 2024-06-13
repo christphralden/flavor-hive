@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { dateStringSchema, fileArraySchema, fileSchema, PocketbaseAttributes, PocketbaseListAttributes } from "./utils.schema";
+import { fileArraySchema, fileSchema, PocketbaseAttributes, PocketbaseListAttributes } from "./utils.schema";
 
 // Keywords Schema
 const keywordsSchema = z.object({
@@ -15,6 +15,7 @@ export const RestaurantBaseSchema = z.object({
     location: z.string(),
     keywords: keywordsSchema,
     restaurantOwner: z.string(),
+    cachedRating: z.number()
 });
 
 export const RestaurantPostSchema = RestaurantBaseSchema;
@@ -35,7 +36,7 @@ export const MenuBaseSchema = z.object({
     description: z.string(),
     price: z.number(),
     restaurant: z.string(),
-    image: fileSchema.optional(),
+    image: fileSchema,
 });
 
 export const MenuPostSchema = MenuBaseSchema;

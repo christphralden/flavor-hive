@@ -3,11 +3,11 @@ import { Card, CardContent, CardHeader } from '@components/ui/card';
 import pb from '@service/pocketbase.service';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { Fragment } from 'react';
 import { Star, Heart } from '@geist-ui/icons'
 import { Separator } from '@components/ui/separator';
 import { Badge } from '@components/ui/badge';
 import { PocketbaseTyped } from 'lib/types/utils.types';
+import { round } from '@utils/utils';
 
 interface RestaurantProfileCardInterface{
     restaurant:PocketbaseTyped<RestaurantBase>
@@ -36,7 +36,7 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                                 <h1 className='w-[70%] text-wrap line-clamp-2'>{restaurant.name}</h1>
                                 <div className='w-[30%] flex gap-1 items-center justify-end'>
                                     <Star className='w-4 flex-shrink-0' color='#FDCC0D'/>
-                                    <p>4.5</p>
+                                    <p>{round(restaurant.cachedRating)}</p>
                                 </div>
                             </div>
                             <div className='w-full'>

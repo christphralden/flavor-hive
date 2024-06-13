@@ -12,7 +12,7 @@ interface RestaurantMenusProps {
 
 export default async function RestaurantMenus({recordId}: RestaurantMenusProps) {
 	try {
-		const menus = await getRestaurantMenusPaged(recordId, 1, 10);
+		const menus = await getRestaurantMenusPaged({ restaurantId: recordId, page: 1, perPage: 10 });
 		const totalItems = menus.totalItems
 		const length = menus.items.length
 		if (length == 0) return null
