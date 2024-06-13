@@ -8,36 +8,27 @@ import { TextareaLabelled } from '@components/ui/textarea-labelled';
 import { createRestaurantReview } from '@service/reviews.service';
 import StarSelect from '@components/review/star-select';
 
-interface ReviewFormInputs {
-    description: string;
-    images?: FileList;
-    poster: string;
-    rating: number;
-    restaurant: string;
-    minPriceRange: number;
-    maxPriceRange: number;
-}
-
 export default function CreateReviewForm({ restaurantId }: { restaurantId: string }) {
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<ReviewFormInputs>();
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<ReviewBase>();
 
-    const submitReview = async (data: ReviewFormInputs) => {
+    const submitReview = async (reviewData: ReviewBase) => {
         try {
-            const formData = new FormData();
+            const reviewForm = new FormData();
             const otherData = {
-                description: data.description,
-                rating: data.rating,
+                description: reviewData.description,
+                rating: reviewData.rating,
                 restaurant: restaurantId,
-                minPriceRange: data.minPriceRange,
-                maxPriceRange: data.maxPriceRange,
+                spent: reviewData.spent,
             }
-            formData.append('otherData', JSON.stringify(otherData));
+            reviewForm.append('otherData', JSON.stringify(otherData));
 
-            if (data.images) {
-                Array.from(data.images).forEach((file) => formData.append('images', file));
+            if (reviewData.images && reviewData.images.length) {
+                for (let i = 0; i < reviewData.images.length; i++) {
+                    reviewForm.append('images', reviewData.images[i]);
+                }
             }
 
-            await createRestaurantReview({ review: formData });
+            await createRestaurantReview({ review: reviewForm });
 
             toast.success('Review submitted successfully');
         } catch (error) {
@@ -66,19 +57,13 @@ export default function CreateReviewForm({ restaurantId }: { restaurantId: strin
                 </InputLabelled>
                 <div className="flex items-center gap-4">
                     <InputLabelled
-                        label="Min Price"
+                        label="Total spent"
                         type="number"
-                        {...register('minPriceRange', { required: 'Required' })}
+                        {...register('spent', { required: 'Required' })}
                     >
-                        {errors.minPriceRange && errors.minPriceRange.message}
+                        {errors.spent && errors.spent.message}
                     </InputLabelled>
-                    <InputLabelled
-                        label="Max Price"
-                        type="number"
-                        {...register('maxPriceRange', { required: 'Required' })}
-                    >
-                        {errors.maxPriceRange && errors.maxPriceRange.message}
-                    </InputLabelled>
+                    
                 </div>
                 <div className="flex items-center gap-4">
                     <h1 className='font-medium'>Rating</h1>

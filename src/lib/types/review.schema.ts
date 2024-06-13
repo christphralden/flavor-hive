@@ -7,8 +7,7 @@ const ReviewBaseSchema = z.object({
     images: fileArraySchema.optional(),
     poster: z.string(),
     restaurant: z.string(),
-    minPriceRange: z.number(),
-    maxPriceRange: z.number(),
+    spent: z.number(),
 })
 
 export const ReviewPostSchema = ReviewBaseSchema

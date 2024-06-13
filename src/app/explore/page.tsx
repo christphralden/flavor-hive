@@ -1,6 +1,5 @@
 import { Input } from "@components/ui/input";
 import { useSearchParams } from "next/navigation";
-import React from "react";
 
 interface ExploreProps {
   params: {

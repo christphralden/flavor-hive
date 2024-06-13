@@ -1,4 +1,4 @@
 export enum dateType {
-    default = "yyyy/MM/dd, HH:mm",
+    default = "dd-MM-yyyy HH:mm",
     ago = "ago",
 }

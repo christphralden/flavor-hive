@@ -19,7 +19,7 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
         <Link className='m-0' href={`/restaurant/${restaurant.id}`}>
             <Card className='w-[250px] h-[350px] lg:w-[350px] lg:h-[500px] overflow-clip bg-white rounded-lg'>
                 <CardHeader className='h-[40%] w-full bg-black p-0 relative '>
-                    <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='coverImage'></Image>
+                    <Image width={1024} height={720} className='w-full h-full object-cover opacity-60 absolute' src={headerImage} alt='headerImage'></Image>
                     <div className='w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end'>
                         <Badge className='text-white lg:text-sm px-4 py-2 lg:p-3 h-fit lg:h-full' variant={'dark'}>Liked by 1.2k</Badge>
                         <Badge className='text-white lg:text-sm px-3 py-2 h-fit lg:p-3 lg:h-full' variant={'dark'}><Heart className='w-4 h-4'/></Badge>
@@ -35,7 +35,7 @@ export default async function RestaurantProfileCard({restaurant}:RestaurantProfi
                             <div className='w-full flex justify-start items-start font-medium leading-5 '>
                                 <h1 className='w-[70%] text-wrap line-clamp-2'>{restaurant.name}</h1>
                                 <div className='w-[30%] flex gap-1 items-center justify-end'>
-                                    <Star className='w-4 flex-shrink-0' color='#FDCC0D'/>
+                                    <Star color='#6b7280' className="w-4 flex-shrink-0" />
                                     <p>{round(restaurant.cachedRating)}</p>
                                 </div>
                             </div>
