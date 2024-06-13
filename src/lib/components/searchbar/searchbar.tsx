@@ -15,7 +15,7 @@ export default function Searchbar({ closeSearch }: Searchbar) {
 
   const explore = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      router.push("/explore?explore=" + search);
+      router.push("/explore?search=" + search);
       closeSearch();
     }
   };

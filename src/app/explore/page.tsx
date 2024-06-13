@@ -1,5 +1,4 @@
-import { Input } from "@components/ui/input";
-import { useSearchParams } from "next/navigation";
+
 import React from "react";
 
 interface ExploreProps {
@@ -9,9 +8,11 @@ interface ExploreProps {
 }
 
 export default function Explore({ params }: ExploreProps) {
+  console.log(params.searchParams)
   return (
+    
     <>
-      {/* <div>{params.searchParams}</div> */}
+      <div>{params.searchParams?.search}</div>
       <div>Explore</div>
     </>
   );
