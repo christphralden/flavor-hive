@@ -5,9 +5,8 @@ interface ExploreProps {
 
 export default function Explore({ searchParams }: ExploreProps) {
   return (
-    
     <>
-      <div>Explore</div>
+      <div>{searchParams?.search}</div>
     </>
   );
 }

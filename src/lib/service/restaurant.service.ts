@@ -197,3 +197,24 @@ export async function getFavorited({ restaurantId }: { restaurantId: string; }):
         return false;
     }
 }
+
+// export async function getSearchedRestaurant({ restaurantName }: { restaurantName: string; }){
+//     try {
+//         const data = await pb.collection(PB_KEYS.RESTAURANTS).getFullList({
+//             cache: 'no-store',
+//             filter: pb.filter('name ?~ {:name}', {name: restaurantName}),
+//         });
+//     } catch (error) {
+        
+//     }
+// }
+
+// export async function getAllRestaurant(){
+//     try {
+//         const records = await pb.collection(PB_KEYS.RESTAURANTS).getFullList({
+//             sort: '-created',
+//         });
+//     } catch (error) {
+        
+//     }
+// }
