@@ -8,7 +8,6 @@ interface UserBase{
 }
 
 interface User extends UserBase{
-    id: string,
     verified: boolean,
     avatar:string|null
 

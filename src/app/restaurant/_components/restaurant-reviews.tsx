@@ -28,7 +28,7 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
                             </p>
                         ) : (
                             <>
-                                {reviews.items.map((review: Review_Poster, i) => (
+                                {reviews.items.map((review , i) => (
                                     <Comment review={review} key={i} />
                                 ))}
                             </>

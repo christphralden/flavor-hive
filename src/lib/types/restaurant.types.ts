@@ -36,6 +36,12 @@ interface MenuPost extends MenuBase{
 }
 
 
+interface FavoritedRestaurant{
+    user:string
+    restaurant:string
+    favorited:boolean
+}
+
 // ======= form handling =========
 interface AppendRestaurantData{
     data: any,

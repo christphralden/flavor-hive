@@ -14,7 +14,7 @@ interface AuthContextProviderProps {
 }
 
 export type AuthContextType = {
-	user: User | null;
+	user: PocketbaseTyped<User> | null;
 	login: (data: UserLogin) => any;
 	logout: () => any;
 	isLoading: boolean;
@@ -28,7 +28,7 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export default function AuthContextProvider({children}: AuthContextProviderProps) {
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<PocketbaseTyped<User> | null>(null);
 	const router = useRouter()
 	const queryClient = useQueryClient()
 
@@ -79,7 +79,11 @@ export default function AuthContextProvider({children}: AuthContextProviderProps
 					username: data.username,
 					name: data.name,
 					verified: data.verified,
-					isRestaurantOwner: data.isRestaurantOwner
+					isRestaurantOwner: data.isRestaurantOwner,
+					created:data.created,
+					updated:data.updated,
+					collectionId:data.collectionId,
+					collectionName:data.collectionName
 				});
 			}
 		},

@@ -100,7 +100,7 @@ export async function createRestaurantReview({ review }: { review: FormData; }):
 		const reviewData = JSON.parse(review.get('otherData') as string);
 
 		const spent = Number(reviewData.spent);
-		const reviewRecord: ReviewBase = ReviewPostSchema.parse({
+		const reviewRecord: Review = ReviewPostSchema.parse({
 			...reviewData,
             spent,
 			poster: userData.id,

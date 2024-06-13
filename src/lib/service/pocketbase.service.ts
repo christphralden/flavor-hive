@@ -11,4 +11,5 @@ export enum PB_KEYS {
     RESTAURANTS = 'restaurants',
     REVIEWS = 'reviews',
     MENUS = 'menus',
+    FAVORITED = 'favorited'
 }

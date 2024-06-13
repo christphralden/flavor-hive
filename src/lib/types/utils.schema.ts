@@ -6,6 +6,7 @@ export const fileArraySchema = z.array(fileSchema);
 export const dateStringSchema = z.union([z.string(), z.string().transform((str) => new Date(str))]);
 
 export const PocketbaseAttributes = z.object({
+    id:z.string(),
     created: dateStringSchema,
     updated: dateStringSchema,
     collectionId: z.string(),

@@ -11,7 +11,7 @@ export default function ReviewLayout({
 	return (
 		<>
             <Navbar/>
-            <div className="w-full min-h-screen p-6 lg:p-8 lg:pt-[100px] pt-[100px]">
+            <div className="w-full flex justify-center min-h-screen p-6 lg:p-8 lg:pt-[100px] pt-[100px]">
                 {children}
             </div>
             <Footer/>

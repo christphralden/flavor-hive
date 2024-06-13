@@ -14,7 +14,6 @@ export const ReviewPostSchema = ReviewBaseSchema
 
 export const ReviewGetSchema = ReviewBaseSchema.extend({
     images: z.string().array().optional(),
-    id:z.string()
 }).merge(PocketbaseAttributes)
 export const ReviewGetAllSchema = ReviewGetSchema.array()
 

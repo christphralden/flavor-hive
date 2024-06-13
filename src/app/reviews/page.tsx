@@ -7,7 +7,7 @@ export default async function Reviews() {
 	const pastReviews: PocketbaseListTyped<PocketbaseTyped<Review_Poster_Restaurant>> = await getUserPastReviewsPaged(
         { page: 1, perPage: 10, sort: '-created' }	);
 	return (
-		<div className='w-full flex flex-col gap-4'>
+		<div className='w-[100%] flex flex-col gap-4'>
 			{pastReviews.items.map((pastReview, i) => {
 				return (
 					<>

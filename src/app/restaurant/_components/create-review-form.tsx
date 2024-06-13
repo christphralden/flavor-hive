@@ -9,9 +9,9 @@ import { createRestaurantReview } from '@service/reviews.service';
 import StarSelect from '@components/review/star-select';
 
 export default function CreateReviewForm({ restaurantId }: { restaurantId: string }) {
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<ReviewBase>();
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Review>();
 
-    const submitReview = async (reviewData: ReviewBase) => {
+    const submitReview = async (reviewData: Review) => {
         try {
             const reviewForm = new FormData();
             const otherData = {

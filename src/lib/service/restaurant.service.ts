@@ -3,7 +3,7 @@ import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
 import { ZodError } from "zod";
-import {  MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
+import {  FavoritedRestaurantGetSchema, FavoritedRestaurantPostSchema, MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
 import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 
 
@@ -127,6 +127,50 @@ export async function createRestaurant({ restaurant, menus }: { restaurant: Form
             throw new Error("Please fill in the necessary data correctly.");
         } else {
             throw new Error("Failed to process the request.");
+        }
+    }
+}
+
+
+export async function toggleFavorite({ restaurantId }: { restaurantId: string; }) {
+    const userData = await fetchData();
+    if (!userData) throw new Error("You are not authorized");
+
+    try {
+        // Check if already favorited
+        const favoriteData = await pb.collection(PB_KEYS.FAVORITED).getFirstListItem(`user="${userData.id}" && restaurant="${restaurantId}"`, {
+            cache: 'no-store'
+        });
+
+        if (favoriteData) {
+            const favorited = FavoritedRestaurantGetSchema.parse(favoriteData)
+            favorited.favorited = !favorited.favorited
+            try {
+                await pb.collection(PB_KEYS.FAVORITED).update(favorited.id, favorited);
+            } catch (error) {
+                throw new Error("Unable to update favorite")
+            }
+            return;
+        }
+    } catch (error:any) {
+        // Create new record if not
+        try {
+            const favoritedRestaurant = FavoritedRestaurantPostSchema.parse({
+                user: userData.id,
+                restaurant: restaurantId,
+                favorited: true
+            });
+
+            await pb.collection(PB_KEYS.FAVORITED).create(favoritedRestaurant);
+            console.log("Restaurant favorited successfully");
+        } catch (validationError) {
+            if (validationError instanceof ZodError) {
+                console.error("Validation error:", validationError.errors);
+                throw new Error("Failed to validate data integrity");
+            } else {
+                console.error("Failed to process the request:", validationError);
+                throw new Error("Failed to process the request.");
+            }
         }
     }
 }

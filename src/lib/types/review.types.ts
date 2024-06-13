@@ -1,11 +1,5 @@
-interface Review extends ReviewBase{
-    id:string,
-    created:Date,
-    updated:Date,
-    expand?:any
-}
 
-interface ReviewBase{
+interface Review{
     description:string,
     images?: File[] | FileList | string[],
     poster:string,
@@ -35,4 +29,12 @@ interface ReviewStats{
     amount:number,
     average:number,
     stars:Stars,
+}
+
+type VoteInteractions = "upvote" | "downvote" | "none"
+
+interface Vote{
+    review:string,
+    user:string,
+    type:VoteInteractions
 }

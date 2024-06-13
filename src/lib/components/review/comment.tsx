@@ -3,14 +3,15 @@ import { Avatar, AvatarFallback, AvatarImage } from '@components/ui/avatar';
 import { formatDate } from '@utils/date-utils';
 import { dateType } from 'lib/types/date.types';
 import StarRepeat from './star-repeat';
+import { PocketbaseTyped } from 'lib/types/utils.types';
 
 interface CommentProps {
-    review: Review_Poster | Review_Poster_Restaurant;
+    review: PocketbaseTyped<Review_Poster>
 }
 
 // TODO: upvote, downvote
 export default function Comment({review}: CommentProps) {
-    const time = formatDate(review.created, dateType.ago)
+    const time = formatDate(new Date(review.created), dateType.ago)
     const poster = review.expand.poster
     return (
         <div className="flex items-start gap-4 p-4 lg:px-4 px-0">
