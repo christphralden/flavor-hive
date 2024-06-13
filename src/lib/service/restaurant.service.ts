@@ -152,6 +152,10 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
             }
             return;
         }
+
+        revalidatePath(`restaurant/${restaurantId}`)
+        // revalidatePath(`favorites`)
+        // revalidatePath(`home`)
     } catch (error:any) {
         // Create new record if not
         try {
@@ -162,15 +166,34 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
             });
 
             await pb.collection(PB_KEYS.FAVORITED).create(favoritedRestaurant);
+            revalidatePath(`restaurant/${restaurantId}`)
+
             console.log("Restaurant favorited successfully");
-        } catch (validationError) {
-            if (validationError instanceof ZodError) {
-                console.error("Validation error:", validationError.errors);
+        } catch (error) {
+            console.error(error)
+            if (error instanceof ZodError) {
+                console.error("Validation error:", error.errors);
                 throw new Error("Failed to validate data integrity");
             } else {
-                console.error("Failed to process the request:", validationError);
+                console.error("Failed to process the request:", error);
                 throw new Error("Failed to process the request.");
             }
         }
+    }
+}
+
+export async function getFavorited({ restaurantId }: { restaurantId: string; }):Promise<PocketbaseTyped<FavoritedRestaurant> | boolean>{
+    const userData = await fetchData();
+    if (!userData) throw new Error("You are not authorized");
+    try {
+        const favoritedData =  await pb.collection(PB_KEYS.FAVORITED).getFirstListItem(`user="${userData.id}" && restaurant="${restaurantId}"`, {
+            cache: 'no-store'
+        });
+
+        const favorited = FavoritedRestaurantGetSchema.parse(favoritedData)
+        return favorited
+    } catch (error) {
+        console.error(error)
+        return false;
     }
 }

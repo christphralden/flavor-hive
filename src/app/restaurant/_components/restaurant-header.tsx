@@ -1,10 +1,13 @@
 import pb from "@service/pocketbase.service";
-import { getRestaurant } from "@service/restaurant.service";
+import { getFavorited, getRestaurant } from "@service/restaurant.service";
 import { getRestaurantReviewsAmount } from "@service/reviews.service";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";
 import { round } from "@utils/utils";
+import { Button } from "@components/ui/button";
+import FavoriteButton from "@components/favorite/favorite-button";
+import { PocketbaseTyped } from "lib/types/utils.types";
 
 interface RestaurantHeaderProps {
     recordId: string;
@@ -13,10 +16,13 @@ interface RestaurantHeaderProps {
 export default async function RestaurantHeader({ recordId }: RestaurantHeaderProps) {
     try {
 
-        const [restaurant, reviewAmount] = await Promise.all([
+        const [restaurant, reviewAmount, favorited] = await Promise.all([
             getRestaurant({ recordId }),
-            getRestaurantReviewsAmount({ recordId })
+            getRestaurantReviewsAmount({ recordId }),
+            getFavorited({restaurantId:recordId})
         ])
+
+        const favoriteBool = (typeof favorited === 'boolean') ? favorited as boolean : (favorited as PocketbaseTyped<FavoritedRestaurant>).favorited
 
         const images: string[] = (restaurant.images as string[] || []).map(image => {
             return pb.files.getUrl(restaurant, image, { 'thumb': '0x300' });
@@ -54,12 +60,14 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                         </div>
                     </div>
                 </section>
-                <section className="w-full h-fit flex flex-col xl:flex-row justify-between gap-16">
-                    <div className="w-full xl:w-[60%] h-full flex flex-col gap-8">
-                        <div className="w-full h-full flex flex-col gap-8">
+                <section className="w-full h-fit flex flex-col xl:flex-row justify-between gap-16  ">
+                    <div className="w-full xl:w-[60%] h-full flex flex-col gap-8 ">
+                        <div className="w-full h-full flex flex-col gap-8 ">
                             <div className="w-full h-full flex flex-col gap-1">
-                                <h1 className="text-2xl lg:text-3xl font-medium">{restaurant.name}</h1>
-                                <div className="flex gap-4 ">
+                                <div className="flex gap-4 w-full justify-between">
+                                    <h1 className="text-2xl lg:text-3xl font-medium">{restaurant.name}</h1>
+                                </div>
+                                <div className="flex gap-4 items-center h-f">
                                     <div className="flex gap-1 items-center">
                                         <Star color='#6b7280' className="w-4 flex-shrink-0" />
                                         <p className="text-gray-500 text-sm lg:text-base ">{round(restaurant.cachedRating)}</p>
@@ -89,21 +97,27 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                             </div>
                             <p className="  text-base  text-gray-500 w-full xl:w-[80%]">{restaurant.description}</p>
                         </div>
-                        <div className="bg-secondary p-6 rounded-lg flex flex-col gap-2">
+                        <div className="bg-secondary p-6 rounded-lg flex flex-col gap-2 ">
                             <h1 className="  text-base  font-medium">Customer Sentiment Overview:</h1>
                             <div>
                                 <p className="  text-base  text-gray-500 italic">“Absolutely the best sushi I’ve ever had! The fish was so fresh and the presentation was stunning. The chef’s special rolls are a must-try.”</p>
                             </div>
                         </div>
                     </div>
-                    <div className="w-full xl:w-[40%] h-full items-end flex-col gap-1 hidden xl:flex">
-                        <div>
-                            <p className="  text-base  text-gray-500 text-wrap">Opening Hours: 07:00 - 18:00</p>
+                    
+                    <div className="w-full xl:w-[40%] h-auto items-end  justify-between  flex-col gap-8 hidden xl:flex ">
+                        <div className="w-full h-fit items-end flex-col gap-1 hidden xl:flex">
+                            <div>
+                                <p className="  text-base  text-gray-500 text-wrap">Opening Hours: 07:00 - 18:00</p>
+                            </div>
+                            <span className="flex h-fit gap-2 items-center xl:items-start justify-end ">
+                                <MapPin color='#6b7280' className="w-4 flex-shrink-0 " />
+                                <p className="  text-base  text-gray-500 text-wrap text-right w-fit">{restaurant.location}</p>
+                            </span>
                         </div>
-                        <span className="flex h-fit gap-2 items-center xl:items-start justify-end ">
-                            <MapPin color='#6b7280' className="w-4 flex-shrink-0 " />
-                            <p className="  text-base  text-gray-500 text-wrap text-right w-fit">{restaurant.location}</p>
-                        </span>
+                        <div>
+                            <FavoriteButton favorited={favoriteBool} restaurantId={recordId} />
+                        </div>
                     </div>
                 </section>
             </>
