@@ -10758,7 +10758,7 @@ namespace models {
  type _subeDKbD = BaseModel
  interface ExternalAuth extends _subeDKbD {
   collectionId: string
-  recordId: string
+  restaurantId: string
   provider: string
   providerId: string
  }
@@ -13360,14 +13360,14 @@ namespace daos {
   /**
    * FindRecordById finds the Record model by its id.
    */
-  findRecordById(collectionNameOrId: string, recordId: string, ...optFilters: ((q: dbx.SelectQuery) => void)[]): (models.Record)
+  findRecordById(collectionNameOrId: string, restaurantId: string, ...optFilters: ((q: dbx.SelectQuery) => void)[]): (models.Record)
  }
  interface Dao {
   /**
    * FindRecordsByIds finds all Record models by the provided ids.
    * If no records are found, returns an empty slice.
    */
-  findRecordsByIds(collectionNameOrId: string, recordIds: Array<string>, ...optFilters: ((q: dbx.SelectQuery) => void)[]): Array<(models.Record | undefined)>
+  findRecordsByIds(collectionNameOrId: string, restaurantIds: Array<string>, ...optFilters: ((q: dbx.SelectQuery) => void)[]): Array<(models.Record | undefined)>
  }
  interface Dao {
   /**

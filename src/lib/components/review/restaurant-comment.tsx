@@ -34,16 +34,9 @@ export default async function RestaurantComment({review}: RestaurantCommentProps
 			<section className="w-[30%] flex-1 flex flex-col justify-between">
 				<Link
 					href={`/restaurant/${review.restaurant}`}
-					className="w-full h-fit flex gap-4 items-center "
+					className="w-full h-fit flex gap-4 items-center"
 				>
-					<Avatar className="lg:w-20 lg:h-20 w-16 h-16">
-						<AvatarImage
-							className="w-full h-full object-cover"
-							src={coverImage}
-							alt={`@${review.restaurant}`}
-						/>
-						<AvatarFallback>DC</AvatarFallback>
-					</Avatar>
+					<Image width={1024} height={720} src={coverImage} alt='coverImage' className="lg:w-20 lg:h-20 w-16 h-16 rounded-md aspect-square"/>
 					<div className="w-full flex flex-col h-full justify-center items-start gap-1">
 						<div className="flex gap-2 items-center">
                             <h1 className="font-medium text-base leading-5">{restaurant.name}</h1>
@@ -75,7 +68,7 @@ export default async function RestaurantComment({review}: RestaurantCommentProps
 								key={i}
 								width={1024}
 								height={720}
-								className="w-32 h-32 object-cover opacity-80"
+								className="w-32 h-32 object-cover opacity-80 rounded-md"
 								src={image}
 								alt="image"
 							/>

@@ -13,13 +13,13 @@ export default async function Restaurant({params}: RestaurantProps) {
 	return (
 		<>
 			<Suspense fallback="loading...">
-				<RestaurantHeader recordId={params.id} />
+				<RestaurantHeader restaurantId={params.id} />
 			</Suspense>
 			<Suspense fallback="loading...">
-				<RestaurantReviews recordId={params.id} />
+				<RestaurantReviews restaurantId={params.id} />
 			</Suspense>
 			<Suspense fallback="loading...">
-				<RestaurantMenus recordId={params.id} />
+				<RestaurantMenus restaurantId={params.id} />
 			</Suspense>
 		</>
 	);

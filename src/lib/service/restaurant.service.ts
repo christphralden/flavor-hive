@@ -2,14 +2,14 @@
 import pb, { PB_KEYS } from "./pocketbase.service";
 import { fetchData } from "./auth.service";
 import { revalidatePath } from "next/cache";
-import { ZodError } from "zod";
+import { boolean, ZodError } from "zod";
 import {  FavoritedRestaurantGetSchema, FavoritedRestaurantPostSchema, MenuListGetSchema, MenuListPostSchema, RestaurantGetSchema, RestaurantListGetSchema, RestaurantPostSchema } from "lib/types/restaurant.schema";
 import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 
 
-export async function getRestaurant({ recordId }: { recordId: string; }): Promise<PocketbaseTyped<RestaurantBase>> {
+export async function getRestaurant({ restaurantId }: { restaurantId: string; }): Promise<PocketbaseTyped<RestaurantBase>> {
     try {
-        const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(recordId, {
+        const record = await pb.collection(PB_KEYS.RESTAURANTS).getOne(restaurantId, {
             cache:'force-cache',
             next:{
                 tags:['restaurant'],
@@ -139,7 +139,7 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
     try {
         // Check if already favorited
         const favoriteData = await pb.collection(PB_KEYS.FAVORITED).getFirstListItem(`user="${userData.id}" && restaurant="${restaurantId}"`, {
-            cache: 'no-store'
+            cache: 'force-cache'
         });
 
         if (favoriteData) {
@@ -147,13 +147,13 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
             favorited.favorited = !favorited.favorited
             try {
                 await pb.collection(PB_KEYS.FAVORITED).update(favorited.id, favorited);
+                revalidatePath(`/restaurant/${restaurantId}`)
             } catch (error) {
                 throw new Error("Unable to update favorite")
             }
             return;
         }
 
-        revalidatePath(`restaurant/${restaurantId}`)
         // revalidatePath(`favorites`)
         // revalidatePath(`home`)
     } catch (error:any) {
@@ -166,7 +166,7 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
             });
 
             await pb.collection(PB_KEYS.FAVORITED).create(favoritedRestaurant);
-            revalidatePath(`restaurant/${restaurantId}`)
+            revalidatePath(`/restaurant/${restaurantId}`)
 
             console.log("Restaurant favorited successfully");
         } catch (error) {
@@ -182,20 +182,33 @@ export async function toggleFavorite({ restaurantId }: { restaurantId: string; }
     }
 }
 
-export async function getFavorited({ restaurantId }: { restaurantId: string; }):Promise<PocketbaseTyped<FavoritedRestaurant> | boolean>{
+
+export async function getUserFavorited({ restaurantId }: { restaurantId: string; }):Promise<boolean>{
     const userData = await fetchData();
     if (!userData) throw new Error("You are not authorized");
     try {
         const favoritedData =  await pb.collection(PB_KEYS.FAVORITED).getFirstListItem(`user="${userData.id}" && restaurant="${restaurantId}"`, {
-            cache: 'no-store'
+            cache: 'force-cache'
         });
 
         const favorited = FavoritedRestaurantGetSchema.parse(favoritedData)
-        return favorited
+        return favorited.favorited
     } catch (error) {
         console.error(error)
         return false;
     }
+}
+
+export async function getRestaurantFavoritedAmount({ restaurantId }: { restaurantId: string; }){
+    const {totalItems} = await pb.collection(PB_KEYS.FAVORITED).getList(1, 1, {
+		next: {
+			revalidate: 60 * 1,
+		},
+		cache: 'force-cache',
+		fields:'none',
+		filter: pb.filter('restaurant.id ?= {:id} &&  favorited = {:value}', {id: restaurantId, value: true}),
+	});
+	return totalItems;
 }
 
 export async function getSearchedRestaurant({ restaurantName, page = 1, perPage = 10 }: { restaurantName: string; page?: number; perPage?: number; }): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {

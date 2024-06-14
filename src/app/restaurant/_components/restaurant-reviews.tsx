@@ -6,15 +6,15 @@ import { notFound } from 'next/navigation';
 import ReviewModal from './review-modal';
 
 interface RestaurantReviewsProps {
-    recordId: string;
+    restaurantId: string;
 }
 
 // TODO: Sort based on recent, most upvoted
-export default async function RestaurantReviews({ recordId }: RestaurantReviewsProps) {
+export default async function RestaurantReviews({ restaurantId }: RestaurantReviewsProps) {
     try {
         const [reviews, stats] = await Promise.all([
-            getRestaurantReviewsPaged({ recordId, page: 1, perPage: 8 }),
-            getRestaurantReviewStats({ recordId })
+            getRestaurantReviewsPaged({ restaurantId, page: 1, perPage: 8 }),
+            getRestaurantReviewStats({ restaurantId })
         ])
         const length = stats.amount
         return (
@@ -35,7 +35,7 @@ export default async function RestaurantReviews({ recordId }: RestaurantReviewsP
                         )}
                     </div>
                     <div className="w-full xl:w-[40%] h-fit xl:sticky xl:top-28">
-                        <ReviewModal reviews={reviews} restaurantId={recordId} stats={stats}/>
+                        <ReviewModal reviews={reviews} restaurantId={restaurantId} stats={stats}/>
                     </div>
                 </div>
             </>

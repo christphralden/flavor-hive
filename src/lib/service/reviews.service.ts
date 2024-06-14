@@ -32,12 +32,12 @@ export async function getUserPastReviewsPaged({
 }
 
 export async function getRestaurantReviewsPaged({
-	recordId,
+	restaurantId,
 	page,
 	perPage = 10,
 	sort = '-created',
 }: {
-	recordId: string;
+	restaurantId: string;
 	page: number;
 	perPage?: number;
 	sort?: string;
@@ -49,29 +49,30 @@ export async function getRestaurantReviewsPaged({
 		cache: 'force-cache',
 		sort: sort as string,
 		expand: 'poster',
-		filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
+		filter: pb.filter('restaurant.id ?= {:id}', {id: restaurantId}),
 	});
 }
 
-export async function getRestaurantReviewsAmount({ recordId }: { recordId: string; }): Promise<number> {
+export async function getRestaurantReviewsAmount({ restaurantId }: { restaurantId: string; }): Promise<number> {
 	const {totalItems} = await pb.collection(PB_KEYS.REVIEWS).getList(1, 1, {
-		next: {
-			revalidate: 60 * 1,
-		},
-		cache: 'force-cache',
-		filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
+		
+
+
+
+
+		filter: pb.filter('restaurant.id ?= {:id}', {id: restaurantId}),
 	});
 	return totalItems;
 }
 
 // TODO: ini sama get reviews paged agak redundant krn atas paged ini full, but we chilling
-export async function getRestaurantReviewStats({ recordId }: { recordId: String; }): Promise<ReviewStats> {
+export async function getRestaurantReviewStats({ restaurantId }: { restaurantId: String; }): Promise<ReviewStats> {
 	const data = await pb.collection(PB_KEYS.REVIEWS).getFullList({
 		cache: 'force-cache',
 		next: {
 			revalidate: 60 * 1,
 		},
-		filter: pb.filter('restaurant.id ?= {:id}', {id: recordId}),
+		filter: pb.filter('restaurant.id ?= {:id}', {id: restaurantId}),
 	});
 	const reviewData = ReviewGetAllSchema.parse(data);
 
@@ -111,9 +112,9 @@ export async function createRestaurantReview({ review }: { review: FormData; }):
 
 		await pb.collection(PB_KEYS.REVIEWS).create(reviewRecord);
 
-        const restaurantReviewAmount = await getRestaurantReviewsAmount({recordId:reviewRecord.restaurant})
+        const restaurantReviewAmount = await getRestaurantReviewsAmount({restaurantId:reviewRecord.restaurant})
         const futureRestaurantReviewAmount = restaurantReviewAmount + 1
-		const restaurant = await getRestaurant({recordId:reviewRecord.restaurant})
+		const restaurant = await getRestaurant({restaurantId:reviewRecord.restaurant})
         const newAverageRating = ((restaurant.cachedRating * restaurantReviewAmount) + reviewRecord.rating) / futureRestaurantReviewAmount;
         
         restaurant.cachedRating = newAverageRating

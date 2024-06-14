@@ -1,5 +1,6 @@
 import Comment from '@components/review/comment';
 import RestaurantComment from '@components/review/restaurant-comment';
+import { Separator } from '@components/ui/separator';
 import {getUserPastReviewsPaged} from '@service/reviews.service';
 import {PocketbaseListTyped, PocketbaseTyped} from 'lib/types/utils.types';
 
@@ -7,7 +8,7 @@ export default async function Reviews() {
 	const pastReviews: PocketbaseListTyped<PocketbaseTyped<Review_Poster_Restaurant>> = await getUserPastReviewsPaged(
         { page: 1, perPage: 10, sort: '-created' }	);
 	return (
-		<div className='w-[100%] flex flex-col gap-4'>
+		<div className='w-[100%] flex flex-col gap-8'>
 			{pastReviews.items.map((pastReview, i) => {
 				return (
 					<>
@@ -15,6 +16,7 @@ export default async function Reviews() {
 							review={pastReview}
 							key={i}
 						/>
+						<Separator/>
 					</>
 				);
 			})}

@@ -1,28 +1,26 @@
 import pb from "@service/pocketbase.service";
-import { getFavorited, getRestaurant } from "@service/restaurant.service";
+import { getUserFavorited, getRestaurant, getRestaurantFavoritedAmount } from "@service/restaurant.service";
 import { getRestaurantReviewsAmount } from "@service/reviews.service";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { Edit3, Eye, Heart, MapPin, Star } from "@geist-ui/icons";
 import { round } from "@utils/utils";
-import { Button } from "@components/ui/button";
 import FavoriteButton from "@components/favorite/favorite-button";
 import { PocketbaseTyped } from "lib/types/utils.types";
 
 interface RestaurantHeaderProps {
-    recordId: string;
+    restaurantId: string;
 }
 
-export default async function RestaurantHeader({ recordId }: RestaurantHeaderProps) {
+export default async function RestaurantHeader({ restaurantId }: RestaurantHeaderProps) {
     try {
 
-        const [restaurant, reviewAmount, favorited] = await Promise.all([
-            getRestaurant({ recordId }),
-            getRestaurantReviewsAmount({ recordId }),
-            getFavorited({restaurantId:recordId})
+        const [restaurant, reviewAmount, favorited, favoritedAmount] = await Promise.all([            
+            getRestaurant({ restaurantId }),
+            getRestaurantReviewsAmount({ restaurantId }),
+            getUserFavorited({restaurantId:restaurantId}),
+            getRestaurantFavoritedAmount({restaurantId}),
         ])
-
-        const favoriteBool = (typeof favorited === 'boolean') ? favorited as boolean : (favorited as PocketbaseTyped<FavoritedRestaurant>).favorited
 
         const images: string[] = (restaurant.images as string[] || []).map(image => {
             return pb.files.getUrl(restaurant, image, { 'thumb': '0x300' });
@@ -82,7 +80,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                                     </div>
                                     <div className="flex gap-1 items-center">
                                         <Heart color='#6b7280' className="w-4 flex-shrink-0" />
-                                        <p className="text-gray-500 text-sm lg:text-base ">231</p>
+                                        <p className="text-gray-500 text-sm lg:text-base ">{favoritedAmount}</p>
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +114,7 @@ export default async function RestaurantHeader({ recordId }: RestaurantHeaderPro
                             </span>
                         </div>
                         <div>
-                            <FavoriteButton favorited={favoriteBool} restaurantId={recordId} />
+                            <FavoriteButton favorited={favorited} restaurantId={restaurantId} />
                         </div>
                     </div>
                 </section>

@@ -7,12 +7,12 @@ import MenuCard from './menu-card';
 import {Separator} from '@components/ui/separator';
 
 interface RestaurantMenusProps {
-	recordId: string;
+	restaurantId: string;
 }
 
-export default async function RestaurantMenus({recordId}: RestaurantMenusProps) {
+export default async function RestaurantMenus({restaurantId}: RestaurantMenusProps) {
 	try {
-		const menus = await getRestaurantMenusPaged({ restaurantId: recordId, page: 1, perPage: 10 });
+		const menus = await getRestaurantMenusPaged({ restaurantId: restaurantId, page: 1, perPage: 10 });
 		const totalItems = menus.totalItems
 		const length = menus.items.length
 		if (length == 0) return null
