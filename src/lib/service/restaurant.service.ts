@@ -198,23 +198,43 @@ export async function getFavorited({ restaurantId }: { restaurantId: string; }):
     }
 }
 
-// export async function getSearchedRestaurant({ restaurantName }: { restaurantName: string; }){
-//     try {
-//         const data = await pb.collection(PB_KEYS.RESTAURANTS).getFullList({
-//             cache: 'no-store',
-//             filter: pb.filter('name ?~ {:name}', {name: restaurantName}),
-//         });
-//     } catch (error) {
-        
-//     }
-// }
+export async function getSearchedRestaurant({ restaurantName, page = 1, perPage = 10 }: { restaurantName: string; page?: number; perPage?: number; }): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
+    try {
+        const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
+            cache: 'no-store',
+            filter: pb.filter("name~{:id}", {id:restaurantName}),
 
-// export async function getAllRestaurant(){
+            
+        })
+
+        const recordsTransformed: PocketbaseListTyped<PocketbaseTyped<RestaurantBase>> = RestaurantListGetSchema.parse(records)
+        return recordsTransformed
+    } catch (error) {
+    if (error instanceof ZodError) {
+            throw new Error("Failed to validate data integrity");
+        } else {
+            throw new Error("Error retrieving restaurant data");
+        }
+    }
+}
+
+// export async function getAllRestaurantPaged({ page, perPage = 10 }: { page: number; perPage?: number; }): Promise<PocketbaseListTyped<PocketbaseTyped<RestaurantBase>>> {
 //     try {
-//         const records = await pb.collection(PB_KEYS.RESTAURANTS).getFullList({
-//             sort: '-created',
+//         const records = await pb.collection(PB_KEYS.RESTAURANTS).getList(page, perPage, {
+//             cache:'no-store',
+//             next:{
+//                 tags:['restaurant'],
+//                 revalidate:60*5
+//             }
 //         });
-//     } catch (error) {
+//         const recordsTransformed: PocketbaseListTyped<PocketbaseTyped<RestaurantBase>> = RestaurantListGetSchema.parse(records)
         
+//         return recordsTransformed
+//     } catch (error) {
+//         if (error instanceof ZodError) {
+//             throw new Error("Failed to validate data integrity");
+//         } else {
+//             throw new Error("Error retrieving restaurant data");
+//         }
 //     }
 // }
