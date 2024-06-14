@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@components/ui/avatar";
 import { Badge } from "@components/ui/badge";
-import { MapPin, Star } from "@geist-ui/icons";
+import { Heart, MapPin, Star } from "@geist-ui/icons";
 import pb from "@service/pocketbase.service";
 import { round } from "@utils/utils";
 import { PocketbaseTyped } from "lib/types/utils.types";
@@ -25,13 +25,23 @@ export default function RestaurantExploreCard({
         className="m-0 cursor-pointer"
         href={`/restaurant/${restaurant.id}`}
       >
-        <Image
-          width={350}
-          height={250}
-          src={coverImage === "" ? "/images/placeholder.jpg" : coverImage}
-          alt=""
-          className="object-cover w-full h-[17rem] rounded-sm"
-        />
+        <div className="relative w-full h-[17rem]">
+          <Image
+            width={350}
+            height={250}
+            src={coverImage === "" ? "/images/placeholder.jpg" : coverImage}
+            alt=""
+            className="object-cover w-full h-[17rem] rounded-sm absolute z-5"
+          />
+          <div className="w-full overflow-clip px-2 py-2 z-10 gap-2 flex justify-end absolute">
+            <Badge
+              className="text-white lg:text-sm px-3 py-2 h-fit lg:p-3 lg:h-full"
+              variant={"dark"}
+            >
+              <Heart className="w-4 h-4" />
+            </Badge>
+          </div>
+        </div>
       </Link>
       <div className="w-full flex justify-start items-start font-medium">
         <h1 className="w-[70%] text-wrap line-clamp-2 text-xl">
@@ -43,9 +53,9 @@ export default function RestaurantExploreCard({
         </div>
       </div>
       <div className="w-[full%] flex gap-1 items-start justify-start">
-          <MapPin color="#6b7280" className="w-4 flex-shrink-0" />
-          <p>{restaurant.location}</p>
-        </div>
+        <MapPin color="#6b7280" className="w-4 flex-shrink-0" />
+        <p>{restaurant.location}</p>
+      </div>
       <section className="hidden  gap-2 lg:flex">
         {restaurant.keywords?.tags.map((tag, i) => {
           const limit = 4;
