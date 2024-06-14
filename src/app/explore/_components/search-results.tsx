@@ -13,16 +13,26 @@ export default async function SearchResults({
   // fetch search
   try {
     const searchResults = await getSearchedRestaurant({
-        restaurantName: searchParams,
-      });
-      return (
-        <>
+      restaurantName: searchParams,
+    });
+    return (
+      <>
+        <div className="grid grid-cols-3 w-full gap-8">
           {searchResults &&
             searchResults.items.map((r) => {
               return <RestaurantExploreCard restaurant={r} />;
             })}
-        </>
-      );
+          {searchResults &&
+            searchResults.items.map((r) => {
+              return <RestaurantExploreCard restaurant={r} />;
+            })}
+          {searchResults &&
+            searchResults.items.map((r) => {
+              return <RestaurantExploreCard restaurant={r} />;
+            })}
+        </div>
+      </>
+    );
   } catch (error) {
     return (
       <>
