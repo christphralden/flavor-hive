@@ -1,7 +1,6 @@
 import { getSearchedRestaurant } from "@service/restaurant.service";
 import React from "react";
 import RestaurantExploreCard from "./restaurant-explore-card";
-import { notFound } from "next/navigation";
 
 interface SearchResultsProps {
   searchParams: string;
@@ -17,7 +16,7 @@ export default async function SearchResults({
     });
     return (
       <>
-        <div className="grid grid-cols-3 w-full gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full gap-8">
           {searchResults &&
             searchResults.items.map((r) => {
               return <RestaurantExploreCard restaurant={r} />;

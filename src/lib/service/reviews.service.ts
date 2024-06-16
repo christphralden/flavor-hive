@@ -71,7 +71,7 @@ export async function getRestaurantReviewStats({
   restaurantId: String;
 }): Promise<ReviewStats> {
   const data = await pb.collection(PB_KEYS.REVIEWS).getFullList({
-    cache: "no-store",
+    cache: "force-cache",
     next: {
       revalidate: 60 * 1,
     },
