@@ -36,17 +36,14 @@ export default async function RestaurantProfileCard({
             alt="headerImage"
           ></Image>
           <div className="w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end">
-            <Badge
-              className="text-white lg:text-sm px-4 py-2 lg:p-3 h-fit lg:h-full"
-              variant={"dark"}
-            >
+            <Badge className="text-white py-2 h-fit lg:h-full" variant={"dark"}>
               Liked by 1.2k
             </Badge>
             <Badge
-              className="text-white lg:text-sm px-3 py-2 h-fit lg:p-3 lg:h-full"
+              className="text-white py-2  px-3 h-fit lg:h-full"
               variant={"dark"}
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-5 h-5" />
             </Badge>
           </div>
           <Avatar className="lg:w-20 lg:h-20 w-16 h-16 absolute bottom-0 lg:left-8 left-4 translate-y-[50%]">

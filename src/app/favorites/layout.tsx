@@ -1,7 +1,7 @@
 import Footer from "@components/footer/footer";
 import Navbar from "@components/navbar/navbar";
 
-export default function ReviewLayout({
+export default function FavoritesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,7 +9,7 @@ export default function ReviewLayout({
   return (
     <>
       <Navbar />
-      <div className="w-full flex flex-col h-full min-h-screen p-6 lg:p-8 lg:pt-[100px] pt-[100px]">
+      <div className="w-full min-h-screen h-full p-8 pt-[100px]">
         {children}
       </div>
       <Footer />

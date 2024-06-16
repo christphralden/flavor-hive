@@ -23,18 +23,15 @@ export default function RestaurantExploreCard({
     <Card className="w-full h-[25rem] overflow-clip bg-white rounded-lg">
       <Link className="w-full h-full" href={`/restaurant/${restaurant.id}`}>
         <section className="w-full h-[50%] bg-black relative">
-          <div className="w-full overflow-clip px-2 py-2 z-10 absolute  gap-2 flex justify-end">
-            <Badge
-              className="text-white lg:text-sm px-4 py-2 lg:p-3 h-fit lg:h-full"
-              variant={"dark"}
-            >
+          <div className="w-full overflow-clip p-4 z-10 absolute  gap-2 flex justify-end">
+            <Badge className="text-white py-2 h-fit lg:h-full" variant={"dark"}>
               Liked by 1.2k
             </Badge>
             <Badge
-              className="text-white lg:text-sm px-3 py-2 h-fit lg:p-3 lg:h-full"
+              className="text-white py-2  px-3 h-fit lg:h-full"
               variant={"dark"}
             >
-              <Heart className="w-4 h-4" />
+              <Heart className="w-5 h-5" />
             </Badge>
           </div>
           <Image
@@ -53,7 +50,7 @@ export default function RestaurantExploreCard({
               </h1>
               <div className="w-[20%] flex gap-1 items-center justify-end">
                 <Star color="#6b7280" className="w-4 flex-shrink-0" />
-                <p>{round(restaurant.cachedRating)}</p>
+                <p>{round(restaurant.cachedRating ?? 0)}</p>
               </div>
             </div>
             <div>

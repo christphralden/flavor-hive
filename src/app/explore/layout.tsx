@@ -9,8 +9,10 @@ export default function ExploreLayout({
   return (
     <>
       <Navbar />
-      <div className="w-full h-screen p-8 pt-[100px]">{children}</div>
-      {/* <Footer /> */}
+      <div className="w-full min-h-screen h-full p-8 pt-[100px]">
+        {children}
+      </div>
+      <Footer />
     </>
   );
 }

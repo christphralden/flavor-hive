@@ -7,10 +7,7 @@ import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
 import {
   Credenza,
   CredenzaBody,
-  CredenzaClose,
   CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,

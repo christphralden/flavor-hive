@@ -13,6 +13,7 @@ import {
   RestaurantPostSchema,
 } from "lib/types/restaurant.schema";
 import { PocketbaseListTyped, PocketbaseTyped } from "lib/types/utils.types";
+import { cache } from "react";
 
 export async function getRestaurant({
   restaurantId,
@@ -217,8 +218,9 @@ export async function toggleFavorite({
       return;
     }
 
-    // revalidatePath(`favorites`)
-    // revalidatePath(`home`)
+    revalidatePath(`/favorites`);
+    revalidatePath(`/home`);
+    revalidatePath(`/explore`);
   } catch (error: any) {
     // Create new record if not
     try {
@@ -231,7 +233,9 @@ export async function toggleFavorite({
       await pb.collection(PB_KEYS.FAVORITED).create(favoritedRestaurant);
       revalidatePath(`/restaurant/${restaurantId}`);
 
-      console.log("Restaurant favorited successfully");
+      revalidatePath(`/favorites`);
+      revalidatePath(`/home`);
+      revalidatePath(`/explore`);
     } catch (error) {
       console.error(error);
       if (error instanceof ZodError) {
@@ -245,7 +249,7 @@ export async function toggleFavorite({
   }
 }
 
-export async function getUserFavorited({
+export async function getIsUserFavorites({
   restaurantId,
 }: {
   restaurantId: string;
@@ -256,7 +260,7 @@ export async function getUserFavorited({
     const favoritedData = await pb
       .collection(PB_KEYS.FAVORITED)
       .getFirstListItem(
-        `user="${userData.id}" && restaurant="${restaurantId}"`,
+        `user="${userData.id}" && restaurant="${restaurantId}" && favorited=true`,
         {
           cache: "force-cache",
         },
@@ -270,6 +274,32 @@ export async function getUserFavorited({
   }
 }
 
+export async function getUserFavoriteRestaurants(): Promise<
+  PocketbaseListTyped<PocketbaseTyped<any>>
+> {
+  const userData = await fetchData();
+  if (!userData) throw new Error("You are not authorized");
+
+  try {
+    const userFavoriteRestaurantData = await pb
+      .collection(PB_KEYS.FAVORITED)
+      .getList(1, 10, {
+        cache: "no-store",
+        filter: pb.filter("user = {:id} && favorited=true", {
+          id: userData.id,
+        }),
+        expand: "restaurant",
+      });
+
+    return userFavoriteRestaurantData;
+  } catch (error) {
+    if (error instanceof ZodError) {
+      throw new Error("Failed to validate data integrity");
+    } else {
+      throw new Error("Error retrieving restaurant data");
+    }
+  }
+}
 export async function getRestaurantFavoritedAmount({
   restaurantId,
 }: {

@@ -3,15 +3,16 @@ import { useState } from "react";
 import { NavbarRoutes } from "./navbar.routes";
 import Link from "next/link";
 import { Separator } from "@components/ui/separator";
-import { AnimatePresence, motion } from "framer-motion";
-import { Search, User, X } from "@geist-ui/icons";
+import { AnimatePresence } from "framer-motion";
+import { Search, User } from "@geist-ui/icons";
 import { Button } from "@components/ui/button";
 import Searchbar from "@components/searchbar/searchbar";
 
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const closeSearch = () => {setIsOpen(false)};
+  const closeSearch = () => {
+    setIsOpen(false);
+  };
 
   return (
     <div className="fixed w-full h-fit z-[50] flex flex-col">
@@ -33,8 +34,11 @@ export default function Navbar() {
           </div>
         </section>
         <section className="w-fit flex gap-4 items-center">
-          
-          <Button className="p-2" variant={'ghost'} onClick={() => setIsOpen(!isOpen)}>
+          <Button
+            className="p-2"
+            variant={"ghost"}
+            onClick={() => setIsOpen(!isOpen)}
+          >
             <Search color="#6b7280" />
           </Button>
 
@@ -58,7 +62,7 @@ export default function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <>
-            <Searchbar closeSearch={closeSearch }/>
+            <Searchbar closeSearch={closeSearch} />
           </>
         )}
       </AnimatePresence>

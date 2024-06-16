@@ -1,6 +1,6 @@
 import pb from "@service/pocketbase.service";
 import {
-  getUserFavorited,
+  getIsUserFavorites,
   getRestaurant,
   getRestaurantFavoritedAmount,
 } from "@service/restaurant.service";
@@ -23,7 +23,7 @@ export default async function RestaurantHeader({
       await Promise.all([
         getRestaurant({ restaurantId }),
         getRestaurantReviewsAmount({ restaurantId }),
-        getUserFavorited({ restaurantId: restaurantId }),
+        getIsUserFavorites({ restaurantId: restaurantId }),
         getRestaurantFavoritedAmount({ restaurantId }),
       ]);
 

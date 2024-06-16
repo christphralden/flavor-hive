@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { Search, X } from "@geist-ui/icons";
 import { Input } from "@components/ui/input";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ export default function Searchbar({ closeSearch }: Searchbar) {
       closeSearch();
     }
   };
+
   useEffect(() => {
     ref.current?.focus();
   }, []);
@@ -29,8 +30,8 @@ export default function Searchbar({ closeSearch }: Searchbar) {
       initial={{ opacity: 0, x: -1000 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -1200 }}
+      transition={{ ease: [0.42, 0, 0.58, 1], duration: 0.2 }}
       className="bg-gray-200 w-full h-fit px-8 py-4 flex items-center justify-center"
-      // transition={{ ease: "easeOut", duration: 0.5, times: [0, 0.8, 1] }}
     >
       <Search color="#6b7280" />
       <Input
