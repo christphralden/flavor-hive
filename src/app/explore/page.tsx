@@ -1,5 +1,4 @@
 import { Suspense } from "react";
-import RestaurantExploreCard from "./_components/restaurant-explore-card";
 import SearchResults from "./_components/search-results";
 
 interface ExploreProps {

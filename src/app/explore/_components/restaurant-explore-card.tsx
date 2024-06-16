@@ -17,7 +17,7 @@ export default function RestaurantExploreCard({
 }: RestaurantExploreCardProps) {
   const coverImage = pb.files.getUrl(
     restaurant,
-    Array.isArray(restaurant.images) ? (restaurant.images[0] as string) : ""
+    Array.isArray(restaurant.images) ? (restaurant.images[0] as string) : "",
   );
   return (
     <div className="flex flex-col w-full h-[25rem] gap-2">
