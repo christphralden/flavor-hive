@@ -8,6 +8,7 @@ import { Separator } from "@components/ui/separator";
 import { Badge } from "@components/ui/badge";
 import { PocketbaseTyped } from "lib/types/utils.types";
 import { round } from "@utils/utils";
+import { getRestaurantFavoritedAmount } from "@service/restaurant.service";
 
 interface RestaurantProfileCardInterface {
   restaurant: PocketbaseTyped<RestaurantBase>;
@@ -16,6 +17,9 @@ interface RestaurantProfileCardInterface {
 export default async function RestaurantProfileCard({
   restaurant,
 }: RestaurantProfileCardInterface) {
+  const favoritedAmount = await getRestaurantFavoritedAmount({
+    restaurantId: restaurant.id,
+  });
   const headerImage = pb.files.getUrl(
     restaurant,
     Array.isArray(restaurant.images) ? (restaurant.images[0] as string) : "",
@@ -36,13 +40,15 @@ export default async function RestaurantProfileCard({
             alt="headerImage"
           ></Image>
           <div className="w-full overflow-clip px-2 py-2 z-10  gap-2 flex justify-end">
-            <Badge className="text-white py-2 h-fit lg:h-full" variant={"dark"}>
-              Liked by 1.2k
-            </Badge>
-            <Badge
-              className="text-white py-2  px-3 h-fit lg:h-full"
-              variant={"dark"}
-            >
+            {favoritedAmount > 0 && (
+              <Badge
+                className="text-white py-2 h-fit lg:h-full"
+                variant={"dark"}
+              >
+                Liked by {favoritedAmount}
+              </Badge>
+            )}
+            <Badge className="text-white p-2 h-fit lg:h-full" variant={"dark"}>
               <Heart className="w-5 h-5" />
             </Badge>
           </div>
@@ -75,7 +81,7 @@ export default async function RestaurantProfileCard({
               <Separator className="lg:mt-2 mt-1" />
             </div>
             <div className="w-full">
-              <p className="text-gray-500 line-clamp-3 lg:line-clamp-4 text-sm ">
+              <p className="text-gray-500 line-clamp-3 text-sm ">
                 {restaurant.description}
               </p>
             </div>

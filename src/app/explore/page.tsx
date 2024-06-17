@@ -11,8 +11,8 @@ export default function Explore({ searchParams }: ExploreProps) {
   console.log(searchParams.search);
   return (
     <>
-      <div className="flex flex-col gap-4">
-        <div className="w-full flex flex-col items-center justify-center gap-2 h-64">
+      <div className="flex flex-col gap-16">
+        <div className="w-full flex flex-col items-center justify-center gap-2 h-48">
           <h1 className="text-3xl font-medium ">
             Find your next favorite place
           </h1>
@@ -22,7 +22,9 @@ export default function Explore({ searchParams }: ExploreProps) {
             </p>
           ) : (
             <>
-              <h2>Showing results for "{searchParams.search}"</h2>
+              <p className="text-base text-gray-500">
+                Showing results for "{searchParams.search}"
+              </p>
             </>
           )}
         </div>

@@ -21,18 +21,11 @@ export default async function SearchResults({
             searchResults.items.map((r) => {
               return <RestaurantExploreCard restaurant={r} />;
             })}
-          {searchResults &&
-            searchResults.items.map((r) => {
-              return <RestaurantExploreCard restaurant={r} />;
-            })}
-          {searchResults &&
-            searchResults.items.map((r) => {
-              return <RestaurantExploreCard restaurant={r} />;
-            })}
         </div>
       </>
     );
   } catch (error) {
+    console.log("no results");
     return (
       <>
         <p>no results</p>

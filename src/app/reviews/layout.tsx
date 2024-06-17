@@ -9,7 +9,7 @@ export default function ReviewLayout({
   return (
     <>
       <Navbar />
-      <div className="w-full flex flex-col h-full min-h-screen p-6 lg:p-8 lg:pt-[100px] pt-[100px]">
+      <div className="w-full flex flex-col h-full gap-16 min-h-screen p-6 lg:p-8 lg:pt-[100px] pt-[100px]">
         {children}
       </div>
       <Footer />

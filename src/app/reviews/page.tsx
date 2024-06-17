@@ -9,7 +9,7 @@ export default async function Reviews() {
   > = await getUserPastReviewsPaged({ page: 1, perPage: 10, sort: "-created" });
   return (
     <>
-      <div className="w-full flex flex-col items-center justify-center gap-2 h-64">
+      <div className="w-full flex flex-col items-center justify-center gap-2 h-48">
         <h1 className="text-3xl font-medium ">Your past reviews</h1>
         <p className="text-gray-500 text-sm lg:text-base">
           Revisit your past culinary journeys that you shared with us

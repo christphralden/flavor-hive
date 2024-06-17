@@ -2,6 +2,7 @@ import { Badge } from "@components/ui/badge";
 import { Card } from "@components/ui/card";
 import { Heart, Star } from "@geist-ui/icons";
 import pb from "@service/pocketbase.service";
+import { getRestaurantFavoritedAmount } from "@service/restaurant.service";
 import { round } from "@utils/utils";
 import { PocketbaseTyped } from "lib/types/utils.types";
 import Image from "next/image";
@@ -12,9 +13,12 @@ interface RestaurantExploreCardProps {
   restaurant: PocketbaseTyped<RestaurantBase>;
 }
 
-export default function RestaurantExploreCard({
+export default async function RestaurantExploreCard({
   restaurant,
 }: RestaurantExploreCardProps) {
+  const favoritedAmount = await getRestaurantFavoritedAmount({
+    restaurantId: restaurant.id,
+  });
   const coverImage = pb.files.getUrl(
     restaurant,
     Array.isArray(restaurant.images) ? (restaurant.images[0] as string) : "",
@@ -24,13 +28,16 @@ export default function RestaurantExploreCard({
       <Link className="w-full h-full" href={`/restaurant/${restaurant.id}`}>
         <section className="w-full h-[50%] bg-black relative">
           <div className="w-full overflow-clip p-4 z-10 absolute  gap-2 flex justify-end">
-            <Badge className="text-white py-2 h-fit lg:h-full" variant={"dark"}>
-              Liked by 1.2k
-            </Badge>
-            <Badge
-              className="text-white py-2  px-3 h-fit lg:h-full"
-              variant={"dark"}
-            >
+            {favoritedAmount > 0 && (
+              <Badge
+                className="text-white py-2 h-fit lg:h-full"
+                variant={"dark"}
+              >
+                Liked by {favoritedAmount}
+              </Badge>
+            )}
+
+            <Badge className="text-white p-2 h-fit lg:h-full" variant={"dark"}>
               <Heart className="w-5 h-5" />
             </Badge>
           </div>
