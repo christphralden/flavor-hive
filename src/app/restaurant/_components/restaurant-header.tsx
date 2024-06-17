@@ -156,9 +156,9 @@ export default async function RestaurantHeader({
               </h1>
               <div>
                 <p className="  text-base  text-gray-500 italic">
-                  “Absolutely the best sushi I’ve ever had! The fish was so
-                  fresh and the presentation was stunning. The chef’s special
-                  rolls are a must-try.”
+                  “Visitors have consistently reported a positive experience.
+                  The ‘Buta Kara’ dish is frequently mentioned as a favorite
+                  menu item.
                 </p>
               </div>
             </div>
